@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang="id">
+<html lang="id" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f7f8">
+  <meta name="theme-color" content="#f7f7f8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0e0f12" media="(prefers-color-scheme: dark)">
 
   <title>Studioworks — Portofolio Web Developer</title>
-  <meta name="description" content="Studioworks adalah portofolio web developer yang menampilkan project web, eksplorasi UI/UX, dan tools digital dengan pendekatan bersih, responsif, dan detail.">
+  <meta name="description" content="Portofolio Muhammad Rafly: pengembangan web front-end, eksplorasi UI/UX, dan tools kriptografi interaktif. Dibangun dengan HTML, CSS, dan JavaScript murni.">
   <meta name="author" content="Muhammad Rafly">
   <meta name="robots" content="index, follow">
 
-  <!-- Jika domain Anda bukan studioworks.my.id, ganti semua URL domain di bawah ini. -->
   <link rel="canonical" href="https://studioworks.my.id/">
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
 
@@ -18,7 +18,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Studioworks">
   <meta property="og:title" content="Studioworks — Portofolio Web Developer">
-  <meta property="og:description" content="Project web, eksplorasi UI/UX, dan tools digital yang dirancang dengan pendekatan bersih, responsif, dan detail.">
+  <meta property="og:description" content="Pengembangan web front-end, eksplorasi UI/UX, dan tools kriptografi interaktif.">
   <meta property="og:url" content="https://studioworks.my.id/">
   <meta property="og:image" content="https://studioworks.my.id/assets/images/social-preview.png">
   <meta property="og:image:width" content="1200">
@@ -27,7 +27,7 @@
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Studioworks — Portofolio Web Developer">
-  <meta name="twitter:description" content="Project web, eksplorasi UI/UX, dan tools digital yang bersih, responsif, dan detail.">
+  <meta name="twitter:description" content="Pengembangan web front-end, eksplorasi UI/UX, dan tools kriptografi interaktif.">
   <meta name="twitter:image" content="https://studioworks.my.id/assets/images/social-preview.png">
 
   <script type="application/ld+json">
@@ -36,10 +36,30 @@
     "@type": "ProfilePage",
     "name": "Studioworks",
     "url": "https://studioworks.my.id/",
-    "description": "Portofolio web developer yang menampilkan project web, eksplorasi UI/UX, dan tools digital.",
-    "creator": { "@type": "Person", "name": "Muhammad Rafly" },
-    "author": { "@type": "Person", "name": "Muhammad Rafly" }
+    "inLanguage": "id-ID",
+    "description": "Portofolio web developer: project web, UI/UX, dan tools digital.",
+    "mainEntity": {
+      "@type": "Person",
+      "name": "Muhammad Rafly",
+      "alternateName": "Jexen",
+      "jobTitle": "Front-end Web Developer",
+      "email": "mailto:rexha4u@gmail.com",
+      "url": "https://studioworks.my.id/",
+      "knowsAbout": ["HTML", "CSS", "JavaScript", "UI/UX Design", "Kriptografi"]
+    }
   }
+  </script>
+
+  <!-- Set tema sebelum render supaya tidak ada kedipan putih di mode gelap. -->
+  <script>
+    (() => {
+      try {
+        const saved = localStorage.getItem("sw-theme");
+        const dark = saved ? saved === "dark"
+          : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+      } catch (e) { /* localStorage diblokir, pakai default terang */ }
+    })();
   </script>
 
   <link rel="stylesheet" href="assets/css/style.css">
@@ -49,6 +69,7 @@
 
 <body>
   <a class="skip-link" href="#main-content">Lewati ke konten utama</a>
+  <div class="read-progress" id="read-progress" aria-hidden="true"><span></span></div>
 
   <header class="site-header" id="site-header">
     <nav class="navbar container" aria-label="Navigasi utama">
@@ -57,216 +78,384 @@
         <span>Studioworks</span>
       </a>
 
-      <button class="menu-toggle" type="button" aria-label="Buka menu navigasi" aria-controls="main-menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-
       <div class="nav-panel" id="main-menu">
         <ul class="nav-links">
           <li><a class="nav-link is-active" href="#beranda">Beranda</a></li>
           <li><a class="nav-link" href="#tentang">Tentang</a></li>
           <li><a class="nav-link" href="#keahlian">Keahlian</a></li>
+          <li><a class="nav-link" href="#lab">Lab</a></li>
           <li><a class="nav-link" href="#project">Project</a></li>
           <li><a class="nav-link" href="#kontak">Kontak</a></li>
         </ul>
       </div>
+
+      <div class="nav-tools">
+        <button class="theme-toggle" id="theme-toggle" type="button"
+                aria-label="Ubah ke mode gelap" aria-pressed="false">
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="4.2"/>
+            <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M20 14.5A8.2 8.2 0 0 1 9.5 4a8.3 8.3 0 1 0 10.5 10.5z"/>
+          </svg>
+        </button>
+
+        <button class="menu-toggle" type="button" aria-label="Buka menu navigasi"
+                aria-controls="main-menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </nav>
   </header>
 
-  <noscript>
-    <div class="noscript-message">
-      Sebagian konten (daftar project dan formulir kontak) memerlukan JavaScript.
-    </div>
-  </noscript>
-
   <main id="main-content" tabindex="-1">
+
+    <!-- ============================ HERO ============================ -->
     <section class="hero section" id="beranda" aria-labelledby="hero-title">
       <div class="hero-glow hero-glow-one" aria-hidden="true"></div>
       <div class="hero-glow hero-glow-two" aria-hidden="true"></div>
+      <div class="hero-grid-lines" aria-hidden="true"></div>
 
       <div class="container hero-grid">
-        <div class="hero-copy reveal">
-          <p class="eyebrow">Portofolio mahasiswa, front-end</p>
-          <h1 id="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow reveal"><span class="pulse" aria-hidden="true"></span> Front-end developer, berbasis di Indonesia</p>
+
+          <h1 id="hero-title" class="reveal">
             <span class="hero-brand">Studioworks</span>
             <span>Membangun pengalaman web yang bersih dan berkesan.</span>
           </h1>
-          <p class="hero-description">
-            Ruang eksplorasi untuk project web, UI/UX, dan tools digital yang dirancang
-            dengan fokus pada fungsi, responsivitas, serta perhatian pada detail.
+
+          <p class="hero-description reveal">
+            Ruang kerja untuk project web, eksplorasi antarmuka, dan tools digital,
+            dengan fokus pada fungsi, kecepatan, dan perhatian pada detail.
           </p>
 
-          <div class="hero-actions">
-            <a class="button button-primary" href="#project">Lihat project</a>
-            <a class="button button-secondary" href="#kontak">Hubungi saya</a>
+          <div class="hero-actions reveal">
+            <a class="button button-primary magnetic" href="#project">Lihat project</a>
+            <a class="button button-secondary magnetic" href="#lab">Coba lab interaktif</a>
           </div>
 
-          <ul class="hero-meta" aria-label="Karakteristik Studioworks">
-            <li><span aria-hidden="true"></span> Berbasis di Indonesia</li>
-            <li><span aria-hidden="true"></span> Terbuka untuk kolaborasi</li>
-          </ul>
+          <dl class="hero-stats reveal">
+            <div>
+              <dt>Project</dt>
+              <dd><span class="counter" data-target="3" data-pad="2">00</span></dd>
+            </div>
+            <div>
+              <dt>Kategori</dt>
+              <dd><span class="counter" data-target="3" data-pad="2">00</span></dd>
+            </div>
+            <div>
+              <dt>Dependency</dt>
+              <dd><span class="counter" data-target="0" data-pad="2">00</span></dd>
+            </div>
+          </dl>
         </div>
 
-        <div class="hero-visual reveal" aria-hidden="true">
-          <article class="dashboard-card dashboard-main">
-            <div class="dashboard-head">
-              <div>
-                <p class="card-label">Ilustrasi workspace</p>
-                <h2>Front-end focus</h2>
-              </div>
-              <span class="live-status"><i></i> Aktif</span>
+        <!-- Terminal dekoratif. Disembunyikan dari pembaca layar. -->
+        <div class="hero-visual" aria-hidden="true">
+          <div class="terminal tilt">
+            <div class="terminal-bar">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+              <span class="terminal-name">studioworks — bash</span>
             </div>
-
-            <div class="chart-area">
-              <span style="--height: 34%"></span>
-              <span style="--height: 53%"></span>
-              <span style="--height: 45%"></span>
-              <span style="--height: 74%"></span>
-              <span style="--height: 61%"></span>
-              <span style="--height: 90%"></span>
-              <span style="--height: 80%"></span>
+            <div class="terminal-body">
+              <p><span class="t-prompt">$</span> <span class="t-cmd">whoami</span></p>
+              <p class="t-out">muhammad-rafly · front-end</p>
+              <p><span class="t-prompt">$</span> <span class="t-cmd">cat stack.txt</span></p>
+              <p class="t-out">HTML5 · CSS3 · JavaScript</p>
+              <p><span class="t-prompt">$</span> <span class="t-cmd">npm run build</span></p>
+              <p class="t-out t-ok">no framework · no dependency · 0 kb runtime</p>
+              <p><span class="t-prompt">$</span> <span class="t-type" id="type-line"></span><span class="t-caret"></span></p>
             </div>
+          </div>
 
-            <div class="chart-labels">
-              <span>Eksplorasi</span>
-              <span>Implementasi</span>
-            </div>
-          </article>
+          <div class="float-card float-status tilt">
+            <span class="live-status"><i></i> Tersedia untuk kolaborasi</span>
+          </div>
 
-          <article class="dashboard-card dashboard-stack">
+          <div class="float-card float-stack tilt">
             <span class="stack-icon">&lt;/&gt;</span>
             <div>
               <p class="card-label">Tech stack</p>
-              <strong>HTML, CSS, JavaScript</strong>
-              <small>Tanpa framework</small>
+              <strong>Vanilla JavaScript</strong>
             </div>
-          </article>
-
-          <article class="dashboard-card dashboard-stat">
-            <p class="card-label">Project tercatat</p>
-            <strong id="hero-project-count">03</strong>
-            <span id="hero-category-count">Dalam 3 kategori</span>
-          </article>
+          </div>
         </div>
       </div>
 
       <a class="scroll-hint" href="#tentang" aria-label="Gulir ke bagian Tentang">
-        <span>Jelajahi</span>
-        <i aria-hidden="true"></i>
+        <span>Jelajahi</span><i aria-hidden="true"></i>
       </a>
     </section>
 
+    <!-- ============================ TENTANG ============================ -->
     <section class="section section-muted" id="tentang" aria-labelledby="about-title">
       <div class="container">
         <header class="section-heading">
-          <h2 id="about-title">Studio kecil untuk ide digital yang dikerjakan dengan serius.</h2>
+          <p class="eyebrow reveal">Tentang</p>
+          <h2 id="about-title" class="reveal">Studio kecil untuk ide digital yang dikerjakan dengan serius.</h2>
         </header>
 
         <div class="about-grid">
-          <div class="about-copy">
+          <div class="about-copy reveal">
             <p>
-              Studioworks adalah ruang karya yang dibuat oleh Muhammad Rafly, seorang
-              mahasiswa yang tertarik pada pengembangan web dan perancangan antarmuka.
+              Studioworks adalah ruang karya milik <strong>Muhammad Rafly</strong>, mahasiswa
+              yang menekuni pengembangan web dan perancangan antarmuka.
             </p>
             <p>
-              Setiap project menjadi ruang untuk belajar, bereksperimen, dan membangun
-              pengalaman digital yang bersih, responsif, serta nyaman digunakan.
+              Setiap project jadi tempat belajar dan bereksperimen: menyusun struktur yang rapi,
+              menjaga performa tetap ringan, dan memastikan hasilnya nyaman dipakai siapa pun.
             </p>
           </div>
 
           <div class="principles">
-            <article class="principle-card">
-              <h3>Fokus pada detail</h3>
-              <p>Menjaga tipografi, spacing, warna, dan interaksi tetap konsisten.</p>
+            <article class="principle-card reveal">
+              <span class="principle-index">01</span>
+              <div>
+                <h3>Fokus pada detail</h3>
+                <p>Tipografi, spacing, warna, dan interaksi dijaga tetap konsisten di seluruh halaman.</p>
+              </div>
             </article>
-            <article class="principle-card">
-              <h3>Responsif</h3>
-              <p>Menghadirkan pengalaman yang tetap optimal pada berbagai ukuran layar.</p>
+            <article class="principle-card reveal">
+              <span class="principle-index">02</span>
+              <div>
+                <h3>Responsif dan cepat</h3>
+                <p>Tanpa framework dan tanpa webfont eksternal, halaman tetap ringan di koneksi lambat.</p>
+              </div>
             </article>
-            <article class="principle-card">
-              <h3>Terstruktur</h3>
-              <p>Menyusun kode agar mudah dibaca, dirawat, dan dikembangkan kembali.</p>
+            <article class="principle-card reveal">
+              <span class="principle-index">03</span>
+              <div>
+                <h3>Dapat diakses</h3>
+                <p>Navigasi keyboard, kontras warna, dan dukungan pembaca layar diperhitungkan sejak awal.</p>
+              </div>
             </article>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- ============================ KEAHLIAN ============================ -->
     <section class="section" id="keahlian" aria-labelledby="skills-title">
       <div class="container">
         <header class="section-heading">
-          <h2 id="skills-title">Teknologi yang saya pelajari dan gunakan.</h2>
-          <p>Daftar ini bisa Anda sesuaikan dengan kemampuan dan tools yang benar-benar dipakai.</p>
+          <p class="eyebrow reveal">Keahlian</p>
+          <h2 id="skills-title" class="reveal">Teknologi yang saya pelajari dan gunakan.</h2>
+          <p class="reveal">Fokus saat ini pada front-end dengan HTML, CSS, dan JavaScript murni.</p>
         </header>
 
         <div class="skills-grid">
-          <article class="skill-card">
+          <article class="skill-card reveal tilt">
             <h3>Front-end</h3>
             <ul class="chip-list">
-              <li>HTML5</li>
-              <li>CSS3</li>
-              <li>JavaScript</li>
-              <li>Responsive design</li>
+              <li>HTML5</li><li>CSS3</li><li>JavaScript</li><li>Responsive design</li>
             </ul>
           </article>
-          <article class="skill-card">
+          <article class="skill-card reveal tilt">
             <h3>Desain</h3>
             <ul class="chip-list">
-              <li>UI/UX dasar</li>
-              <li>Aksesibilitas</li>
+              <li>UI/UX dasar</li><li>Aksesibilitas</li><li>Design system</li>
             </ul>
           </article>
-          <article class="skill-card">
+          <article class="skill-card reveal tilt">
             <h3>Tools</h3>
             <ul class="chip-list">
-              <li>Git</li>
-              <li>GitHub</li>
-              <li>GitHub Pages</li>
+              <li>Git</li><li>GitHub</li><li>GitHub Pages</li><li>Vercel</li>
             </ul>
           </article>
         </div>
       </div>
     </section>
 
+    <!-- ============================ LAB INTERAKTIF ============================ -->
+    <section class="section section-dark" id="lab" aria-labelledby="lab-title">
+      <div class="container">
+        <header class="section-heading">
+          <p class="eyebrow reveal">Lab</p>
+          <h2 id="lab-title" class="reveal">Coba langsung di sini.</h2>
+          <p class="reveal">
+            Tiga transformasi teks yang berjalan sepenuhnya di browser Anda. Ketik sesuatu,
+            hasilnya berubah seketika. Tidak ada data yang dikirim ke mana pun.
+          </p>
+        </header>
+
+        <div class="lab-card reveal">
+          <div class="lab-tabs" role="tablist" aria-label="Pilih metode">
+            <button class="lab-tab is-active" type="button" role="tab" id="tab-caesar"
+                    aria-selected="true" aria-controls="lab-panel" data-mode="caesar">Caesar cipher</button>
+            <button class="lab-tab" type="button" role="tab" id="tab-base64"
+                    aria-selected="false" aria-controls="lab-panel" data-mode="base64">Base64</button>
+            <button class="lab-tab" type="button" role="tab" id="tab-xor"
+                    aria-selected="false" aria-controls="lab-panel" data-mode="xor">XOR hex</button>
+          </div>
+
+          <div class="lab-panel" id="lab-panel" role="tabpanel" aria-labelledby="tab-caesar">
+            <div class="lab-io">
+              <div class="lab-field">
+                <label for="lab-input">Teks asli</label>
+                <textarea id="lab-input" rows="5" spellcheck="false"
+                          placeholder="Ketik pesan apa pun di sini...">Halo, saya Muhammad Rafly.</textarea>
+              </div>
+
+              <div class="lab-field">
+                <div class="lab-output-head">
+                  <label for="lab-output">Hasil</label>
+                  <button class="copy-button" id="lab-copy" type="button">Salin</button>
+                </div>
+                <output class="lab-output" id="lab-output" for="lab-input"></output>
+              </div>
+            </div>
+
+            <div class="lab-controls">
+              <div class="lab-control" id="control-shift">
+                <label for="lab-shift">Pergeseran huruf: <strong id="lab-shift-value">3</strong></label>
+                <input id="lab-shift" type="range" min="1" max="25" value="3" step="1">
+              </div>
+
+              <div class="lab-control" id="control-key" hidden>
+                <label for="lab-key">Kunci XOR</label>
+                <input id="lab-key" type="text" value="studioworks" spellcheck="false" autocomplete="off" maxlength="32">
+              </div>
+
+              <p class="lab-note" id="lab-note"></p>
+            </div>
+          </div>
+        </div>
+
+        <p class="lab-disclaimer reveal">
+          Catatan: ketiganya adalah transformasi klasik untuk tujuan belajar, bukan enkripsi
+          yang aman untuk data sungguhan.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================ PROJECT ============================ -->
     <section class="section section-muted project-section" id="project" aria-labelledby="project-title">
       <div class="container">
         <header class="section-heading project-heading">
           <div>
-            <p class="eyebrow">Project</p>
-            <h2 id="project-title">Eksperimen yang diubah menjadi karya.</h2>
+            <p class="eyebrow reveal">Project</p>
+            <h2 id="project-title" class="reveal">Eksperimen yang diubah menjadi karya.</h2>
           </div>
-          <p>Kumpulan project dalam pengembangan web, UI/UX, dan utility tools.</p>
+          <p class="reveal">Kumpulan project dalam pengembangan web, UI/UX, dan utility tools.</p>
         </header>
 
-        <div class="project-filters" role="group" aria-label="Filter kategori project">
+        <div class="project-filters reveal" role="group" aria-label="Filter kategori project">
           <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">Semua</button>
           <button class="filter-button" type="button" data-filter="web" aria-pressed="false">Web</button>
           <button class="filter-button" type="button" data-filter="uiux" aria-pressed="false">UI/UX</button>
           <button class="filter-button" type="button" data-filter="tools" aria-pressed="false">Tools</button>
         </div>
 
-        <div class="project-grid" id="project-grid" aria-live="polite"></div>
-        <p class="empty-state" id="project-empty" hidden>Belum ada project di kategori ini.</p>
+        <p class="sr-only" id="project-announce" aria-live="polite"></p>
 
-        <noscript>
-          <div class="noscript-projects">
-            <p>Aktifkan JavaScript untuk melihat daftar project.</p>
-          </div>
-        </noscript>
+        <div class="project-grid" id="project-grid">
+
+          <!-- ---------- PROJECT 1: JexCrypt (nyata) ---------- -->
+          <article class="project-card is-featured reveal" data-category="tools">
+            <div class="project-image-wrap">
+              <img class="project-image" src="assets/images/jexcrypt.webp"
+                   alt="Pratinjau JexCrypt, laboratorium enkripsi interaktif bertema terminal"
+                   width="1200" height="675" loading="lazy" decoding="async">
+              <span class="project-category">Tools</span>
+            </div>
+            <div class="project-body">
+              <div class="project-top">
+                <h3 class="project-title">JexCrypt — Encryption Laboratory</h3>
+                <span class="project-status is-live"><i aria-hidden="true"></i> Live</span>
+              </div>
+              <p class="project-description">
+                Laboratorium kriptografi interaktif berisi lima tool yang berjalan langsung di
+                browser: algoritma enkripsi multi-layer buatan sendiri (substitusi S-Box, XOR,
+                transposisi blok, dan rotasi bit dengan salt 16-byte), hash generator, Base64,
+                Caesar cipher, dan password generator. Dibangun untuk tujuan edukasi.
+              </p>
+              <ul class="tech-list" aria-label="Teknologi JexCrypt">
+                <li>Next.js</li><li>React</li><li>JavaScript</li><li>Vercel</li>
+              </ul>
+              <div class="project-actions">
+                <a class="project-link is-primary" href="https://jexcrypt.vercel.app/"
+                   target="_blank" rel="noopener noreferrer">
+                  Live demo
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 17 17 7M9 7h8v8"/></svg>
+                </a>
+                <span class="project-link is-disabled" aria-disabled="true">Repository belum tersedia</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ---------- PROJECT 2: konsep ---------- -->
+          <article class="project-card reveal" data-category="web">
+            <div class="project-image-wrap">
+              <img class="project-image" src="assets/images/project-placeholder.svg"
+                   alt="Pratinjau konsep Nexa Product Catalog"
+                   width="1200" height="675" loading="lazy" decoding="async">
+              <span class="project-category">Web</span>
+            </div>
+            <div class="project-body">
+              <div class="project-top">
+                <h3 class="project-title">Nexa Product Catalog</h3>
+                <span class="project-status">Konsep</span>
+              </div>
+              <p class="project-description">
+                Katalog produk responsif dengan pencarian instan, filter kategori, dan halaman
+                detail yang berfokus pada kemudahan eksplorasi di layar kecil.
+              </p>
+              <ul class="tech-list" aria-label="Teknologi Nexa Product Catalog">
+                <li>HTML</li><li>CSS Grid</li><li>JavaScript</li>
+              </ul>
+              <div class="project-actions">
+                <span class="project-link is-disabled" aria-disabled="true">Dalam pengerjaan</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ---------- PROJECT 3: konsep ---------- -->
+          <article class="project-card reveal" data-category="uiux">
+            <div class="project-image-wrap">
+              <img class="project-image" src="assets/images/project-placeholder.svg"
+                   alt="Pratinjau konsep Learnspace Redesign"
+                   width="1200" height="675" loading="lazy" decoding="async">
+              <span class="project-category">UI/UX</span>
+            </div>
+            <div class="project-body">
+              <div class="project-top">
+                <h3 class="project-title">Learnspace Redesign</h3>
+                <span class="project-status">Studi kasus</span>
+              </div>
+              <p class="project-description">
+                Perancangan ulang alur aplikasi pembelajaran: menyederhanakan navigasi,
+                memperjelas hierarki informasi, dan mengurangi langkah menuju materi.
+              </p>
+              <ul class="tech-list" aria-label="Teknologi Learnspace Redesign">
+                <li>UI Design</li><li>UX Research</li><li>Prototype</li>
+              </ul>
+              <div class="project-actions">
+                <span class="project-link is-disabled" aria-disabled="true">Dalam pengerjaan</span>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <p class="empty-state" id="project-empty" hidden>Belum ada project di kategori ini.</p>
       </div>
     </section>
 
+    <!-- ============================ KONTAK ============================ -->
     <section class="section" id="kontak" aria-labelledby="contact-title">
       <div class="container contact-layout">
         <div class="contact-intro">
-          <h2 id="contact-title">Mari membicarakan ide berikutnya.</h2>
-          <p>Punya ide, pertanyaan, atau tawaran kolaborasi? Kirim pesan lewat kanal berikut.</p>
-
-          <div class="social-list" id="social-list" aria-label="Kontak dan media sosial" hidden></div>
+          <p class="eyebrow reveal">Kontak</p>
+          <h2 id="contact-title" class="reveal">Mari membicarakan ide berikutnya.</h2>
+          <p class="reveal">Punya ide, pertanyaan, atau tawaran kolaborasi? Kirim pesan lewat kanal berikut.</p>
+          <div class="social-list reveal" id="social-list" aria-label="Kontak dan media sosial" hidden></div>
         </div>
 
-        <div class="contact-side">
-          <!-- Terlihat sampai email atau formEndpoint diisi di assets/js/data.js -->
+        <div class="contact-side reveal">
           <p class="contact-fallback" id="contact-fallback">Kontak akan segera tersedia.</p>
 
           <form class="contact-form" id="contact-form" novalidate hidden>
@@ -295,7 +484,6 @@
               <small class="field-error" id="message-error"></small>
             </div>
 
-            <!-- Honeypot anti-spam: pengunjung asli tidak melihat kolom ini. -->
             <div class="hp" aria-hidden="true">
               <label for="website">Jangan diisi</label>
               <input id="website" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
