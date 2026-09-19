@@ -17,7 +17,7 @@
  *  menampilkan "Kontak akan segera tersedia."
  */
 window.SITE_CONFIG = {
-  email: "",
+  email: "rexha4u@gmail.com",
   formEndpoint: "",
   social: {
     github: "",
