@@ -1,38 +1,77 @@
 "use strict";
 
 (() => {
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const select = (selector, context = document) => context.querySelector(selector);
-  const selectAll = (selector, context = document) => [...context.querySelectorAll(selector)];
-
+  const select = (s, c = document) => c.querySelector(s);
+  const selectAll = (s, c = document) => [...c.querySelectorAll(s)];
   const config = window.SITE_CONFIG || {};
-  const projects = Array.isArray(window.PORTFOLIO_PROJECTS) ? window.PORTFOLIO_PROJECTS : [];
 
-  const isHttpUrl = (value) => typeof value === "string" && /^https?:\/\//i.test(value.trim());
-  const isEmail = (value) => typeof value === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+  const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let reducedMotion = motionQuery.matches;
 
-  /* ---------- Navbar ---------- */
-  function initNavbar() {
-    const header = select("#site-header");
-    const toggle = select(".menu-toggle");
-    const panel = select("#main-menu");
+  const isHttpUrl = (v) => typeof v === "string" && /^https?:\/\//i.test(v.trim());
+  const isEmail = (v) => typeof v === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 
-    if (!header) return;
+  // Safari < 14 belum mendukung addEventListener pada MediaQueryList.
+  const onMediaChange = (mql, handler) => {
+    if (typeof mql.addEventListener === "function") mql.addEventListener("change", handler);
+    else if (typeof mql.addListener === "function") mql.addListener(handler);
+  };
+  onMediaChange(motionQuery, (e) => { reducedMotion = e.matches; });
+
+  /* ================= Tema ================= */
+  function initTheme() {
+    const toggle = select("#theme-toggle");
+    if (!toggle) return;
+
+    const sync = () => {
+      const dark = document.documentElement.dataset.theme === "dark";
+      toggle.setAttribute("aria-pressed", String(dark));
+      toggle.setAttribute("aria-label", dark ? "Ubah ke mode terang" : "Ubah ke mode gelap");
+    };
+
+    sync();
+
+    toggle.addEventListener("click", () => {
+      const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      document.documentElement.dataset.theme = next;
+      try { localStorage.setItem("sw-theme", next); } catch (e) { /* diabaikan */ }
+      sync();
+    });
+  }
+
+  /* ================= Progress bar ================= */
+  function initProgress() {
+    const bar = select("#read-progress span");
+    if (!bar) return;
 
     let ticking = false;
-    const updateHeader = () => {
-      header.classList.toggle("is-scrolled", window.scrollY > 16);
+    const update = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const ratio = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+      bar.style.transform = `scaleX(${ratio})`;
       ticking = false;
     };
 
     window.addEventListener("scroll", () => {
-      if (!ticking) {
-        window.requestAnimationFrame(updateHeader);
-        ticking = true;
-      }
+      if (!ticking) { window.requestAnimationFrame(update); ticking = true; }
     }, { passive: true });
 
-    updateHeader();
+    update();
+  }
+
+  /* ================= Navbar ================= */
+  function initNavbar() {
+    const header = select("#site-header");
+    const toggle = select(".menu-toggle");
+    const panel = select("#main-menu");
+    if (!header) return;
+
+    let ticking = false;
+    const update = () => { header.classList.toggle("is-scrolled", window.scrollY > 16); ticking = false; };
+    window.addEventListener("scroll", () => {
+      if (!ticking) { window.requestAnimationFrame(update); ticking = true; }
+    }, { passive: true });
+    update();
 
     if (!toggle || !panel) return;
 
@@ -43,66 +82,44 @@
       document.body.classList.toggle("menu-open", open);
     };
 
-    toggle.addEventListener("click", () => {
-      setMenu(toggle.getAttribute("aria-expanded") !== "true");
+    toggle.addEventListener("click", () => setMenu(toggle.getAttribute("aria-expanded") !== "true"));
+    selectAll(".nav-link", panel).forEach((l) => l.addEventListener("click", () => setMenu(false)));
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && panel.classList.contains("is-open")) { setMenu(false); toggle.focus(); }
     });
 
-    selectAll(".nav-link", panel).forEach((link) => {
-      link.addEventListener("click", () => setMenu(false));
+    document.addEventListener("click", (e) => {
+      if (panel.classList.contains("is-open") && !panel.contains(e.target) && !toggle.contains(e.target)) setMenu(false);
     });
 
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && panel.classList.contains("is-open")) {
-        setMenu(false);
-        toggle.focus();
-      }
-    });
-
-    document.addEventListener("click", (event) => {
-      if (
-        panel.classList.contains("is-open") &&
-        !panel.contains(event.target) &&
-        !toggle.contains(event.target)
-      ) setMenu(false);
-    });
-
-    // Jika layar diperbesar saat menu terbuka, tutup menu agar scroll tidak terkunci.
-    window.matchMedia("(min-width: 901px)").addEventListener("change", (event) => {
-      if (event.matches) setMenu(false);
-    });
+    onMediaChange(window.matchMedia("(min-width: 961px)"), (e) => { if (e.matches) setMenu(false); });
   }
 
-  /* ---------- Navigasi anchor + scroll spy ---------- */
+  /* ================= Anchor + scroll spy ================= */
   function initNavigation() {
     selectAll('a[href^="#"]').forEach((link) => {
-      link.addEventListener("click", (event) => {
+      link.addEventListener("click", (e) => {
         const id = link.getAttribute("href");
         if (!id || id === "#") return;
-
         const target = select(id);
         if (!target) return;
 
-        event.preventDefault();
+        e.preventDefault();
         target.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" });
-
-        // Pindahkan fokus keyboard ke tujuan (penting untuk skip link).
         if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
         target.focus({ preventScroll: true });
-
         if (history.replaceState) history.replaceState(null, "", id);
       });
     });
 
     const sections = selectAll("main section[id]");
     const links = selectAll(".nav-link");
-
     if (!("IntersectionObserver" in window) || !sections.length) return;
 
     const observer = new IntersectionObserver((entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
+      const visible = entries.filter((en) => en.isIntersecting)
         .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
       if (!visible) return;
 
       links.forEach((link) => {
@@ -113,109 +130,247 @@
       });
     }, { rootMargin: "-30% 0px -55%", threshold: [0.1, 0.25, 0.5] });
 
-    sections.forEach((section) => observer.observe(section));
+    sections.forEach((s) => observer.observe(s));
   }
 
-  /* ---------- Project ---------- */
-  const CATEGORY_LABELS = { web: "Web", uiux: "UI/UX", tools: "Tools" };
+  /* ================= Reveal saat scroll ================= */
+  function initReveal() {
+    const items = selectAll(".reveal");
+    if (!items.length) return;
 
-  function createTextElement(tag, className, text) {
-    const element = document.createElement(tag);
-    if (className) element.className = className;
-    element.textContent = text;
-    return element;
-  }
-
-  function createProjectLink(url, activeLabel, inactiveLabel) {
-    if (!isHttpUrl(url)) {
-      const disabled = createTextElement("span", "project-link is-disabled", inactiveLabel);
-      disabled.setAttribute("aria-disabled", "true");
-      return disabled;
+    if (reducedMotion || !("IntersectionObserver" in window)) {
+      items.forEach((el) => el.classList.add("is-visible"));
+      return;
     }
 
-    const link = createTextElement("a", "project-link", activeLabel);
-    link.href = url.trim();
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    return link;
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry, i) => {
+        if (!entry.isIntersecting) return;
+        entry.target.style.transitionDelay = `${Math.min(i * 70, 280)}ms`;
+        entry.target.classList.add("is-visible");
+        obs.unobserve(entry.target);
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+
+    items.forEach((el) => observer.observe(el));
   }
 
-  function createProjectCard(project, allowFeatured) {
-    const article = document.createElement("article");
-    article.className = `project-card${project.featured && allowFeatured ? " is-featured" : ""}`;
-    article.dataset.category = project.category;
+  /* ================= Penghitung angka ================= */
+  function initCounters() {
+    const counters = selectAll(".counter");
+    if (!counters.length) return;
 
-    const imageWrap = document.createElement("div");
-    imageWrap.className = "project-image-wrap";
+    const paint = (el, value) => {
+      const pad = Number(el.dataset.pad || 0);
+      el.textContent = pad ? String(value).padStart(pad, "0") : String(value);
+    };
 
-    const image = document.createElement("img");
-    image.className = "project-image";
-    image.src = project.image || "assets/images/project-placeholder.svg";
-    image.alt = `Pratinjau project ${project.title}`;
-    image.loading = "lazy";
-    image.width = 1200;
-    image.height = 675;
+    const run = (el) => {
+      const target = Number(el.dataset.target || 0);
+      if (reducedMotion) { paint(el, target); return; }
 
-    const category = createTextElement("span", "project-category", CATEGORY_LABELS[project.category] || project.category);
-    imageWrap.append(image, category);
+      const duration = 1100;
+      const start = performance.now();
+      const step = (now) => {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        paint(el, Math.round(target * eased));
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
 
-    const body = document.createElement("div");
-    body.className = "project-body";
+    if (!("IntersectionObserver" in window)) { counters.forEach(run); return; }
 
-    const top = document.createElement("div");
-    top.className = "project-top";
-    top.append(
-      createTextElement("h3", "project-title", project.title),
-      createTextElement("span", "project-status", project.status || "")
-    );
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        run(entry.target);
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.5 });
 
-    const description = createTextElement("p", "project-description", project.description || "");
+    counters.forEach((el) => observer.observe(el));
+  }
 
-    const techList = document.createElement("ul");
-    techList.className = "tech-list";
-    techList.setAttribute("aria-label", `Teknologi ${project.title}`);
-    (project.technologies || []).forEach((technology) => {
-      techList.append(createTextElement("li", "", technology));
+  /* ================= Ketikan di terminal ================= */
+  function initTyping() {
+    const el = select("#type-line");
+    if (!el) return;
+
+    const phrases = ["deploy --prod", "git push origin main", "lighthouse --view", "open studioworks.my.id"];
+    if (reducedMotion) { el.textContent = phrases[0]; return; }
+
+    let phrase = 0, char = 0, deleting = false;
+
+    const tick = () => {
+      const current = phrases[phrase];
+      el.textContent = current.slice(0, char);
+
+      if (!deleting && char < current.length) { char += 1; setTimeout(tick, 75); }
+      else if (!deleting) { deleting = true; setTimeout(tick, 1600); }
+      else if (char > 0) { char -= 1; setTimeout(tick, 35); }
+      else { deleting = false; phrase = (phrase + 1) % phrases.length; setTimeout(tick, 350); }
+    };
+
+    setTimeout(tick, 900);
+  }
+
+  /* ================= Tilt + tombol magnetik ================= */
+  function initPointerEffects() {
+    if (reducedMotion || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    selectAll(".tilt").forEach((card) => {
+      card.addEventListener("pointermove", (e) => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `perspective(900px) rotateX(${-y * 5}deg) rotateY(${x * 5}deg) translateZ(6px)`;
+      });
+      card.addEventListener("pointerleave", () => { card.style.transform = ""; });
     });
 
-    const actions = document.createElement("div");
-    actions.className = "project-actions";
-    actions.append(
-      createProjectLink(project.demoUrl, "Live demo", "Demo belum tersedia"),
-      createProjectLink(project.repositoryUrl, "Repository", "Repository belum tersedia")
-    );
-
-    body.append(top, description, techList, actions);
-    article.append(imageWrap, body);
-    return article;
+    selectAll(".magnetic").forEach((btn) => {
+      btn.addEventListener("pointermove", (e) => {
+        const r = btn.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width / 2;
+        const y = e.clientY - r.top - r.height / 2;
+        btn.style.transform = `translate(${x * 0.16}px, ${y * 0.24}px)`;
+      });
+      btn.addEventListener("pointerleave", () => { btn.style.transform = ""; });
+    });
   }
 
+  /* ================= Lab kriptografi ================= */
+  function initLab() {
+    const input = select("#lab-input");
+    const output = select("#lab-output");
+    const note = select("#lab-note");
+    const tabs = selectAll(".lab-tab");
+    const shift = select("#lab-shift");
+    const shiftValue = select("#lab-shift-value");
+    const keyInput = select("#lab-key");
+    const controlShift = select("#control-shift");
+    const controlKey = select("#control-key");
+    const copyBtn = select("#lab-copy");
+    const panel = select("#lab-panel");
+
+    if (!input || !output) return;
+
+    let mode = "caesar";
+
+    const caesar = (text, amount) =>
+      text.replace(/[a-z]/gi, (ch) => {
+        const base = ch === ch.toUpperCase() ? 65 : 97;
+        const pos = ch.charCodeAt(0) - base;
+        return String.fromCharCode(((pos + amount) % 26 + 26) % 26 + base);
+      });
+
+    const toBase64 = (text) => {
+      const bytes = new TextEncoder().encode(text);
+      let binary = "";
+      bytes.forEach((b) => { binary += String.fromCharCode(b); });
+      return btoa(binary);
+    };
+
+    const toXorHex = (text, key) => {
+      const safeKey = key && key.length ? key : "studioworks";
+      const bytes = new TextEncoder().encode(text);
+      const keyBytes = new TextEncoder().encode(safeKey);
+      return [...bytes]
+        .map((b, i) => (b ^ keyBytes[i % keyBytes.length]).toString(16).padStart(2, "0"))
+        .join(" ");
+    };
+
+    const notes = {
+      caesar: "Setiap huruf digeser sejumlah posisi dalam alfabet. Angka, spasi, dan tanda baca dibiarkan apa adanya.",
+      base64: "Teks diubah menjadi 64 karakter aman transmisi. Ini pengkodean, bukan enkripsi: siapa pun bisa membalikkannya.",
+      xor: "Setiap byte teks di-XOR dengan byte kunci yang diulang, lalu ditampilkan dalam heksadesimal."
+    };
+
+    const render = () => {
+      const text = input.value;
+
+      if (!text.trim()) {
+        output.textContent = "Hasil akan muncul di sini setelah Anda mengetik.";
+        return;
+      }
+
+      try {
+        if (mode === "caesar") output.textContent = caesar(text, Number(shift.value));
+        else if (mode === "base64") output.textContent = toBase64(text);
+        else output.textContent = toXorHex(text, keyInput.value);
+      } catch (e) {
+        output.textContent = "Teks tidak dapat diproses.";
+      }
+    };
+
+    const setMode = (next, tab) => {
+      mode = next;
+      tabs.forEach((t) => {
+        const active = t === tab;
+        t.classList.toggle("is-active", active);
+        t.setAttribute("aria-selected", String(active));
+      });
+      if (panel && tab) panel.setAttribute("aria-labelledby", tab.id);
+      if (controlShift) controlShift.hidden = next !== "caesar";
+      if (controlKey) controlKey.hidden = next !== "xor";
+      if (note) note.textContent = notes[next];
+      render();
+    };
+
+    tabs.forEach((tab) => tab.addEventListener("click", () => setMode(tab.dataset.mode, tab)));
+
+    input.addEventListener("input", render);
+    if (shift) shift.addEventListener("input", () => {
+      if (shiftValue) shiftValue.textContent = shift.value;
+      render();
+    });
+    if (keyInput) keyInput.addEventListener("input", render);
+
+    if (copyBtn) {
+      copyBtn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(output.textContent);
+          copyBtn.textContent = "Tersalin";
+          copyBtn.classList.add("is-done");
+          setTimeout(() => { copyBtn.textContent = "Salin"; copyBtn.classList.remove("is-done"); }, 1800);
+        } catch (e) {
+          copyBtn.textContent = "Gagal";
+          setTimeout(() => { copyBtn.textContent = "Salin"; }, 1800);
+        }
+      });
+    }
+
+    if (note) note.textContent = notes.caesar;
+    render();
+  }
+
+  /* ================= Filter project ================= */
   function initProjects() {
     const grid = select("#project-grid");
     const empty = select("#project-empty");
+    const announce = select("#project-announce");
     const buttons = selectAll(".filter-button");
-
-    // Ringkasan di hero dihitung dari data, jadi selalu sesuai jumlah project asli.
-    const countEl = select("#hero-project-count");
-    const categoryEl = select("#hero-category-count");
-    if (countEl) countEl.textContent = String(projects.length).padStart(2, "0");
-    if (categoryEl) {
-      const categories = new Set(projects.map((project) => project.category)).size;
-      categoryEl.textContent = `Dalam ${categories} kategori`;
-    }
-
     if (!grid) return;
 
-    const render = (filter = "all") => {
-      const filtered = filter === "all" ? projects : projects.filter((project) => project.category === filter);
-      const allowFeatured = filter === "all";
+    const cards = selectAll(".project-card", grid);
 
-      grid.replaceChildren();
-      const fragment = document.createDocumentFragment();
-      filtered.forEach((project) => fragment.append(createProjectCard(project, allowFeatured)));
-      grid.append(fragment);
+    const apply = (filter) => {
+      let visible = 0;
+      cards.forEach((card) => {
+        const match = filter === "all" || card.dataset.category === filter;
+        card.hidden = !match;
+        if (match) visible += 1;
+      });
 
-      if (empty) empty.hidden = filtered.length !== 0;
+      grid.classList.toggle("is-filtered", filter !== "all");
+      if (empty) empty.hidden = visible !== 0;
+      if (announce) {
+        announce.textContent = visible === 0
+          ? "Tidak ada project di kategori ini."
+          : `Menampilkan ${visible} project.`;
+      }
     };
 
     buttons.forEach((button) => {
@@ -225,37 +380,41 @@
           item.classList.toggle("is-active", active);
           item.setAttribute("aria-pressed", String(active));
         });
-        render(button.dataset.filter || "all");
+        apply(button.dataset.filter || "all");
       });
     });
-
-    render();
   }
 
-  /* ---------- Kontak ---------- */
+  /* ================= Kontak ================= */
   function initContact() {
     const socialList = select("#social-list");
     const fallback = select("#contact-fallback");
     const form = select("#contact-form");
     const social = config.social || {};
 
-    // Daftar link sosial: hanya yang terisi dan valid yang ditampilkan.
     if (socialList) {
       const entries = [
         ["GitHub", social.github],
         ["LinkedIn", social.linkedin],
-        ["Instagram", social.instagram]
+        ["Instagram", social.instagram],
+        ["Telegram", social.telegram]
       ].filter(([, url]) => isHttpUrl(url));
 
       if (isEmail(config.email)) entries.push(["Email", `mailto:${config.email.trim()}`]);
 
       entries.forEach(([label, url]) => {
-        const link = createTextElement("a", "social-link", label);
+        const link = document.createElement("a");
+        link.className = "social-link";
         link.href = url;
-        if (url.startsWith("http")) {
-          link.target = "_blank";
-          link.rel = "noopener noreferrer";
-        }
+
+        const name = document.createElement("span");
+        name.textContent = label;
+
+        const value = document.createElement("small");
+        value.textContent = url.startsWith("mailto:") ? url.replace("mailto:", "") : "Buka";
+
+        link.append(name, value);
+        if (url.startsWith("http")) { link.target = "_blank"; link.rel = "noopener noreferrer"; }
         socialList.append(link);
       });
 
@@ -264,9 +423,7 @@
 
     const endpoint = isHttpUrl(config.formEndpoint) ? config.formEndpoint.trim() : "";
     const canSend = Boolean(endpoint || isEmail(config.email));
-
-    if (!form) return;
-    if (!canSend) return; // form tetap tersembunyi, pesan "segera tersedia" tetap tampil
+    if (!form || !canSend) return;
 
     form.hidden = false;
     if (fallback) fallback.hidden = true;
@@ -282,6 +439,12 @@
       email: "Masukkan alamat email yang valid.",
       subject: "Masukkan subjek minimal 3 karakter.",
       message: "Masukkan pesan minimal 10 karakter."
+    };
+
+    const setStatus = (msg, isError = false) => {
+      if (!status) return;
+      status.textContent = msg;
+      status.classList.toggle("is-error", isError);
     };
 
     const validateField = (field) => {
@@ -303,15 +466,9 @@
       });
     });
 
-    const setStatus = (message, isError = false) => {
-      if (!status) return;
-      status.textContent = message;
-      status.classList.toggle("is-error", isError);
-    };
-
-    const showToast = (message, isError = false) => {
+    const showToast = (msg, isError = false) => {
       if (!toast) return;
-      toast.textContent = message;
+      toast.textContent = msg;
       toast.classList.toggle("is-error", isError);
       toast.classList.add("is-visible");
       window.clearTimeout(toastTimer);
@@ -332,8 +489,7 @@
       if (isSubmitting) return;
 
       const results = fields.map(validateField);
-      const firstInvalid = fields.find((_, index) => !results[index]);
-
+      const firstInvalid = fields.find((_, i) => !results[i]);
       if (firstInvalid) {
         firstInvalid.focus();
         setStatus("Periksa kembali kolom yang ditandai.", true);
@@ -345,11 +501,7 @@
       const label = select(".button-label", form);
 
       // Honeypot terisi = kemungkinan bot. Pura-pura berhasil, tidak dikirim.
-      if (data._gotcha) {
-        resetForm();
-        setStatus("Pesan terkirim.");
-        return;
-      }
+      if (data._gotcha) { resetForm(); setStatus("Pesan terkirim."); return; }
 
       isSubmitting = true;
       if (button) button.disabled = true;
@@ -373,6 +525,7 @@
           const href = `mailto:${config.email.trim()}?subject=${encodeURIComponent(data.subject)}&body=${encodeURIComponent(body)}`;
           window.location.href = href;
 
+          resetForm();
           setStatus("Aplikasi email Anda akan terbuka. Kirim pesan dari sana.");
         }
       } catch (error) {
@@ -391,8 +544,15 @@
     if (year) year.textContent = String(new Date().getFullYear());
   }
 
+  initTheme();
+  initProgress();
   initNavbar();
   initNavigation();
+  initReveal();
+  initCounters();
+  initTyping();
+  initPointerEffects();
+  initLab();
   initProjects();
   initContact();
   setYear();
