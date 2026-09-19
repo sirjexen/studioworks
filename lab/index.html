@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab — Studioworks</title>
+<meta name="description" content="Delapan perkakas kriptografi dan konversi teks yang berjalan sepenuhnya di browser. Tidak ada data yang dikirim ke server.">
+<meta name="author" content="Muhammad Rafly">
+<meta name="theme-color" content="#eeebe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0d0c" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://studioworks.my.id/lab/">
+<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Lab — Studioworks">
+<meta property="og:description" content="Delapan perkakas kriptografi dan konversi teks, jalan penuh di browser.">
+<meta property="og:url" content="https://studioworks.my.id/lab/">
+<meta property="og:image" content="https://studioworks.my.id/assets/images/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("sw-theme");
+      if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  })();
+</script>
+<style>
+:root{
+  --paper:#eeebe4; --paper-2:#e5e1d8; --ink:#16150f; --ink-2:#4a473d; --ink-3:#7a7668;
+  --line:#c9c4b6; --accent:#c2400f; --accent-soft:rgba(194,64,15,.10);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  --pad:clamp(20px,5vw,72px); --maxw:1360px;
+}
+[data-theme="dark"]{
+  --paper:#0d0d0c; --paper-2:#151513; --ink:#f0ede4; --ink-2:#b0aa9c; --ink-3:#7e796c;
+  --line:#2c2b27; --accent:#ff6b35; --accent-soft:rgba(255,107,53,.12);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .4s ease,color .4s ease}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E")}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--accent);color:var(--paper)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:-999px;top:0;z-index:100;background:var(--ink);color:var(--paper);padding:10px 16px}
+.skip:focus{left:8px;top:8px}
+
+/* header */
+header{position:sticky;top:0;z-index:70;background:color-mix(in srgb,var(--paper) 86%,transparent);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+@supports not (backdrop-filter:blur(1px)){header{background:var(--paper)}}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:24px;height:68px}
+.mark{display:flex;align-items:baseline;gap:10px;font-family:var(--serif);font-size:19px;letter-spacing:-.01em}
+.mark b{font-weight:600}
+.mark span{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--ink-3);text-transform:uppercase}
+nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0}
+nav a{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);position:relative;padding:4px 0}
+nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--accent);transition:width .35s cubic-bezier(.2,.8,.2,1)}
+nav a.on{color:var(--ink)}
+nav a.on::after,nav a:hover::after{width:100%}
+nav a:hover{color:var(--ink)}
+.btn-i{width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;
+  background:transparent;color:var(--ink);cursor:pointer;transition:background .25s,border-color .25s,transform .25s}
+.btn-i:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);transform:rotate(-15deg)}
+@media(max-width:760px){nav ul{gap:16px}nav a{font-size:10px}.mark span{display:none}}
+
+/* hero lab */
+.top{padding:clamp(44px,8vw,96px) 0 clamp(28px,4vw,52px);border-bottom:1px solid var(--line)}
+.crumb{color:var(--ink-3);margin-bottom:22px;display:flex;gap:10px}
+.crumb a:hover{color:var(--accent)}
+h1{font-family:var(--serif);font-weight:400;margin:0;font-size:clamp(2.4rem,7.4vw,5.6rem);line-height:.96;letter-spacing:-.035em}
+h1 em{font-style:italic;color:var(--accent)}
+.top p{max-width:54ch;color:var(--ink-2);margin:22px 0 0}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.badge{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line);
+  border-radius:100px;padding:5px 12px;color:var(--ink-2)}
+
+/* layout */
+.shell{display:grid;grid-template-columns:230px 1fr;gap:0;border-bottom:1px solid var(--line)}
+@media(max-width:900px){.shell{grid-template-columns:1fr}}
+.side{border-right:1px solid var(--line);padding:clamp(24px,4vw,44px) 0 60px}
+@media(max-width:900px){.side{border-right:0;border-bottom:1px solid var(--line);padding-bottom:20px}}
+.side .lbl{padding:0 var(--pad) 0 0;color:var(--ink-3);margin-bottom:18px;display:block}
+.tabs{display:flex;flex-direction:column;gap:2px;position:sticky;top:92px}
+@media(max-width:900px){.tabs{position:static;flex-direction:row;overflow-x:auto;gap:8px;padding-bottom:6px;-webkit-overflow-scrolling:touch}}
+.tab{display:flex;align-items:baseline;gap:10px;background:none;border:0;cursor:pointer;text-align:left;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
+  padding:9px 12px 9px 0;transition:color .25s,padding .3s;white-space:nowrap}
+.tab i{font-style:normal;font-size:9.5px;color:var(--ink-3)}
+.tab:hover{color:var(--ink);padding-left:5px}
+.tab[aria-selected="true"]{color:var(--accent)}
+.tab[aria-selected="true"] i{color:var(--accent)}
+@media(max-width:900px){.tab{border:1px solid var(--line);border-radius:100px;padding:7px 14px}
+  .tab:hover{padding-left:14px}
+  .tab[aria-selected="true"]{border-color:var(--accent)}}
+
+.stage{padding:clamp(28px,4vw,52px) 0 clamp(60px,9vw,110px);padding-left:clamp(20px,4vw,56px);min-width:0}
+@media(max-width:900px){.stage{padding-left:0}}
+.panel{display:none;animation:fade .45s cubic-bezier(.2,.8,.2,1)}
+.panel.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.p-head{border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:26px}
+.p-head .num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--accent);display:block;margin-bottom:10px}
+.p-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.6rem,3.6vw,2.6rem);letter-spacing:-.02em;margin:0 0 10px;line-height:1.05}
+.p-head p{margin:0;color:var(--ink-2);max-width:62ch;font-size:15px}
+
+/* fields */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+.f{margin-bottom:18px}
+.f label,.lgd{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+textarea,input[type=text],input[type=number],select{width:100%;background:var(--paper-2);border:1px solid var(--line);color:var(--ink);
+  font-family:var(--mono);font-size:14px;padding:12px 14px;border-radius:0;resize:vertical}
+textarea{min-height:128px;line-height:1.55}
+textarea:focus,input:focus,select:focus{outline:none;border-color:var(--accent)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.rowf{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:6px}
+.rowf .v{font-family:var(--mono);font-size:13px;color:var(--accent)}
+.checks{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--ink-2)}
+.checks label{display:inline-flex;align-items:center;gap:7px;cursor:pointer;margin:0;font-size:11.5px;letter-spacing:.06em;text-transform:none;color:var(--ink-2)}
+.checks input{accent-color:var(--accent);width:15px;height:15px}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 20px}
+.btn{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--ink);
+  background:transparent;color:var(--ink);padding:11px 18px;cursor:pointer;transition:background .28s,color .28s,border-color .28s}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.solid{background:var(--ink);color:var(--paper)}
+.btn.solid:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.ghost{border-color:var(--line);color:var(--ink-2)}
+.btn.ghost:hover{border-color:var(--ink);color:var(--paper)}
+
+.out{border:1px dashed var(--line);background:var(--paper-2);padding:15px;font-family:var(--mono);font-size:13.5px;
+  line-height:1.7;word-break:break-all;white-space:pre-wrap;min-height:58px;color:var(--ink)}
+.out.acc{color:var(--accent)}
+.out.err{color:#c2400f;border-color:#c2400f}
+[data-theme="dark"] .out.err{color:#ff6b35;border-color:#ff6b35}
+.outhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.outhead span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.mini{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;background:none;border:0;
+  color:var(--ink-3);cursor:pointer;padding:4px 0;transition:color .25s}
+.mini:hover{color:var(--accent)}
+.note{font-size:13px;color:var(--ink-3);margin-top:14px}
+.meter{height:3px;background:var(--line);margin-top:12px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--accent);transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.brute{max-height:270px;overflow:auto;border:1px solid var(--line);margin-top:8px}
+.brute div{display:flex;gap:14px;padding:7px 13px;font-family:var(--mono);font-size:12.5px;border-bottom:1px solid var(--line)}
+.brute div:last-child{border-bottom:0}
+.brute b{color:var(--ink-3);font-weight:400;min-width:34px}
+.hashrow{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:start;padding:11px 0;border-bottom:1px solid var(--line);
+  font-family:var(--mono);font-size:12.5px;word-break:break-all}
+.hashrow:last-child{border-bottom:0}
+.hashrow b{color:var(--ink-3);font-weight:400;letter-spacing:.08em}
+
+footer{padding:30px 0 40px}
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--ink-3)}
+#toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,120%);background:var(--ink);color:var(--paper);
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:12px 20px;z-index:90;
+  transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+#toast.on{transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<a class="skip" href="#stage">Lewati ke perkakas</a>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="/"><b>Studioworks</b><span>lab</span></a>
+    <nav aria-label="Navigasi utama">
+      <ul>
+        <li><a href="/#kerja">Kerja</a></li>
+        <li><a href="/#pendekatan">Pendekatan</a></li>
+        <li><a href="/lab/" class="on" aria-current="page">Lab</a></li>
+        <li><a href="/#kontak">Kontak</a></li>
+      </ul>
+    </nav>
+    <button class="btn-i" id="theme" type="button" aria-label="Ganti tema terang/gelap">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path id="ic" d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <div class="wrap top">
+    <div class="crumb mono"><a href="/">Beranda</a><span aria-hidden="true">/</span><span>Lab</span></div>
+    <h1>Ruang <em>percobaan</em></h1>
+    <p>Delapan perkakas untuk mengubah, menyandikan, dan meringkas teks. Semuanya dihitung di perangkat Anda dengan JavaScript murni dan Web Crypto API — tidak ada permintaan jaringan, tidak ada yang disimpan.</p>
+    <div class="badges">
+      <span class="badge">Tanpa server</span><span class="badge">Tanpa pustaka</span>
+      <span class="badge">Web Crypto API</span><span class="badge">Untuk belajar</span>
+    </div>
+  </div>
+
+  <div class="wrap shell">
+    <div class="side">
+      <span class="lbl mono">Perkakas</span>
+      <div class="tabs" role="tablist" aria-orientation="vertical" aria-label="Daftar perkakas">
+        <button class="tab" role="tab" id="t-caesar" aria-controls="p-caesar" aria-selected="true" data-k="caesar"><i>01</i>Caesar</button>
+        <button class="tab" role="tab" id="t-rot13"  aria-controls="p-rot13"  aria-selected="false" data-k="rot13"><i>02</i>ROT13</button>
+        <button class="tab" role="tab" id="t-base64" aria-controls="p-base64" aria-selected="false" data-k="base64"><i>03</i>Base64</button>
+        <button class="tab" role="tab" id="t-url"    aria-controls="p-url"    aria-selected="false" data-k="url"><i>04</i>URL Encode</button>
+        <button class="tab" role="tab" id="t-hash"   aria-controls="p-hash"   aria-selected="false" data-k="hash"><i>05</i>Hash SHA</button>
+        <button class="tab" role="tab" id="t-xor"    aria-controls="p-xor"    aria-selected="false" data-k="xor"><i>06</i>XOR</button>
+        <button class="tab" role="tab" id="t-bin"    aria-controls="p-bin"    aria-selected="false" data-k="bin"><i>07</i>Biner &amp; Hex</button>
+        <button class="tab" role="tab" id="t-pass"   aria-controls="p-pass"   aria-selected="false" data-k="pass"><i>08</i>Sandi Acak</button>
+      </div>
+    </div>
+
+    <div class="stage" id="stage">
+
+      <!-- 01 CAESAR -->
+      <section class="panel on" id="p-caesar" role="tabpanel" aria-labelledby="t-caesar" tabindex="0">
+        <div class="p-head"><span class="num">01 / Substitusi</span><h2>Caesar cipher</h2>
+          <p>Menggeser setiap huruf sejauh <em>n</em> posisi dalam alfabet. Sandi tertua yang tercatat dipakai Julius Caesar, dan paling mudah dipecahkan: cukup coba 25 kemungkinan.</p></div>
+        <div class="f"><label for="cz-in">Teks</label>
+          <textarea id="cz-in" spellcheck="false" placeholder="Ketik di sini…">Studioworks Lab</textarea></div>
+        <div class="f">
+          <div class="rowf"><label for="cz-shift" style="margin:0">Pergeseran</label><span class="v" id="cz-val">3</span></div>
+          <input type="range" id="cz-shift" min="0" max="25" value="3">
+        </div>
+        <div class="acts">
+          <button class="btn solid" id="cz-enc" type="button">Sandikan</button>
+          <button class="btn" id="cz-dec" type="button">Pecahkan</button>
+          <button class="btn ghost" id="cz-brute" type="button">Coba 25 kunci</button>
+        </div>
+        <div class="outhead"><span>Hasil</span><button class="mini" data-copy="cz-out" type="button">Salin</button></div>
+        <div class="out acc" id="cz-out" aria-live="polite"></div>
+        <div class="brute" id="cz-list" hidden></div>
+      </section>
+
+      <!-- 02 ROT13 -->
+      <section class="panel" id="p-rot13" role="tabpanel" aria-labelledby="t-rot13" tabindex="0">
+        <div class="p-head"><span class="num">02 / Substitusi</span><h2>ROT13</h2>
+          <p>Caesar dengan pergeseran tetap 13. Karena alfabet Latin punya 26 huruf, proses menyandikan dan membuka sandinya identik — dipakai di forum lama untuk menyembunyikan spoiler, bukan untuk keamanan.</p></div>
+        <div class="grid2">
+          <div class="f"><label for="r-in">Masukan</label><textarea id="r-in" spellcheck="false">Hello Studioworks</textarea></div>
+          <div class="f"><label for="r-out-l">Keluaran</label>
+            <div class="outhead" style="margin-bottom:8px"><span id="r-out-l">ROT13</span><button class="mini" data-copy="r-out" type="button">Salin</button></div>
+            <div class="out acc" id="r-out" aria-live="polite"></div></div>
+        </div>
+        <p class="note">Jalankan dua kali untuk kembali ke teks semula.</p>
+      </section>
+
+      <!-- 03 BASE64 -->
+      <section class="panel" id="p-base64" role="tabpanel" aria-labelledby="t-base64" tabindex="0">
+        <div class="p-head"><span class="num">03 / Pengodean</span><h2>Base64</h2>
+          <p>Mengubah data biner menjadi 64 karakter ASCII yang aman dikirim lewat teks — dipakai di data URI, lampiran surel, dan token. Ini pengodean, bukan enkripsi: siapa pun bisa membalikkannya.</p></div>
+        <div class="f"><label for="b-in">Masukan</label><textarea id="b-in" spellcheck="false">Studioworks — lab kriptografi</textarea></div>
+        <div class="acts">
+          <button class="btn solid" id="b-enc" type="button">Encode</button>
+          <button class="btn" id="b-dec" type="button">Decode</button>
+          <button class="btn ghost" id="b-swap" type="button">Pindah hasil ke masukan</button>
+        </div>
+        <div class="outhead"><span>Hasil</span><button class="mini" data-copy="b-out" type="button">Salin</button></div>
+        <div class="out acc" id="b-out" aria-live="polite"></div>
+        <p class="note">Mendukung karakter non-ASCII lewat UTF-8 (TextEncoder / TextDecoder).</p>
+      </section>
+
+      <!-- 04 URL -->
+      <section class="panel" id="p-url" role="tabpanel" aria-labelledby="t-url" tabindex="0">
+        <div class="p-head"><span class="num">04 / Pengodean</span><h2>URL encode</h2>
+          <p>Mengganti karakter yang tidak aman di alamat web menjadi bentuk persen, misalnya spasi jadi <code>%20</code>. Berguna saat menyusun parameter kueri atau tautan <code>mailto:</code> dengan subjek panjang.</p></div>
+        <div class="f"><label for="u-in">Masukan</label><textarea id="u-in" spellcheck="false">https://studioworks.my.id/?q=halo dunia&amp;lang=id</textarea></div>
+        <div class="acts">
+          <button class="btn solid" id="u-enc" type="button">Encode</button>
+          <button class="btn" id="u-dec" type="button">Decode</button>
+          <button class="btn ghost" id="u-comp" type="button">Encode komponen</button>
+        </div>
+        <div class="outhead"><span>Hasil</span><button class="mini" data-copy="u-out" type="button">Salin</button></div>
+        <div class="out acc" id="u-out" aria-live="polite"></div>
+        <p class="note">“Encode komponen” menyandikan juga <code>&amp; ? / :</code> — pakai ini untuk isi parameter, bukan untuk URL utuh.</p>
+      </section>
+
+      <!-- 05 HASH -->
+      <section class="panel" id="p-hash" role="tabpanel" aria-labelledby="t-hash" tabindex="0">
+        <div class="p-head"><span class="num">05 / Ringkasan</span><h2>Hash SHA</h2>
+          <p>Fungsi hash memampatkan masukan apa pun menjadi sidik jari dengan panjang tetap dan satu arah. Ubah satu huruf saja, seluruh hasilnya berubah total — dipakai untuk verifikasi berkas dan tanda tangan digital.</p></div>
+        <div class="f"><label for="h-in">Masukan</label><textarea id="h-in" spellcheck="false">Studioworks</textarea></div>
+        <div class="acts"><button class="btn solid" id="h-run" type="button">Hitung hash</button>
+          <button class="btn ghost" id="h-clear" type="button">Bersihkan</button></div>
+        <div id="h-out" aria-live="polite">
+          <div class="hashrow"><b>SHA-1</b><span id="h-1">—</span></div>
+          <div class="hashrow"><b>SHA-256</b><span id="h-256">—</span></div>
+          <div class="hashrow"><b>SHA-384</b><span id="h-384">—</span></div>
+          <div class="hashrow"><b>SHA-512</b><span id="h-512">—</span></div>
+        </div>
+        <p class="note">SHA-1 ditampilkan untuk perbandingan saja — sudah dianggap tidak aman sejak tabrakan praktis ditemukan pada 2017. Perlu koneksi HTTPS agar Web Crypto aktif.</p>
+      </section>
+
+      <!-- 06 XOR -->
+      <section class="panel" id="p-xor" role="tabpanel" aria-labelledby="t-xor" tabindex="0">
+        <div class="p-head"><span class="num">06 / Simetris</span><h2>XOR cipher</h2>
+          <p>Setiap byte teks di-XOR dengan byte kunci yang diulang. Operasi yang sama dipakai untuk membuka sandinya. Kalau kuncinya sepanjang pesan dan benar-benar acak, ini menjadi one-time pad; kalau pendek dan berulang, mudah dianalisis.</p></div>
+        <div class="grid2">
+          <div class="f"><label for="x-in">Teks / hex</label><textarea id="x-in" spellcheck="false">rahasia kecil</textarea></div>
+          <div class="f"><label for="x-key">Kunci</label><input type="text" id="x-key" value="studio" spellcheck="false" autocomplete="off">
+            <p class="note" style="margin-top:10px">Hasil sandi ditampilkan sebagai heksadesimal agar tetap bisa disalin sebagai teks.</p></div>
+        </div>
+        <div class="acts">
+          <button class="btn solid" id="x-enc" type="button">Sandikan → hex</button>
+          <button class="btn" id="x-dec" type="button">Hex → teks</button>
+        </div>
+        <div class="outhead"><span>Hasil</span><button class="mini" data-copy="x-out" type="button">Salin</button></div>
+        <div class="out acc" id="x-out" aria-live="polite"></div>
+      </section>
+
+      <!-- 07 BINER -->
+      <section class="panel" id="p-bin" role="tabpanel" aria-labelledby="t-bin" tabindex="0">
+        <div class="p-head"><span class="num">07 / Konversi</span><h2>Biner &amp; heksadesimal</h2>
+          <p>Melihat teks sebagaimana mesin menyimpannya: deretan byte UTF-8 dalam basis dua atau basis enam belas. Berguna untuk memahami kenapa satu emoji bisa memakan empat byte.</p></div>
+        <div class="f"><label for="n-in">Masukan</label><textarea id="n-in" spellcheck="false">Rafly</textarea></div>
+        <div class="acts">
+          <button class="btn solid" id="n-bin" type="button">Teks → biner</button>
+          <button class="btn solid" id="n-hex" type="button">Teks → hex</button>
+          <button class="btn" id="n-rbin" type="button">Biner → teks</button>
+          <button class="btn" id="n-rhex" type="button">Hex → teks</button>
+        </div>
+        <div class="outhead"><span>Hasil</span><button class="mini" data-copy="n-out" type="button">Salin</button></div>
+        <div class="out acc" id="n-out" aria-live="polite"></div>
+        <p class="note" id="n-stat">—</p>
+      </section>
+
+      <!-- 08 PASSWORD -->
+      <section class="panel" id="p-pass" role="tabpanel" aria-labelledby="t-pass" tabindex="0">
+        <div class="p-head"><span class="num">08 / Utilitas</span><h2>Pembangkit sandi</h2>
+          <p>Menghasilkan sandi acak memakai <code>crypto.getRandomValues()</code> — sumber acak kriptografis bawaan browser, bukan <code>Math.random()</code>. Entropi dihitung dari panjang dikali logaritma dua ukuran himpunan karakter.</p></div>
+        <div class="f">
+          <div class="rowf"><label for="w-len" style="margin:0">Panjang</label><span class="v" id="w-len-v">20</span></div>
+          <input type="range" id="w-len" min="8" max="64" value="20">
+        </div>
+        <div class="f"><span class="lgd">Himpunan karakter</span>
+          <div class="checks">
+            <label><input type="checkbox" id="w-low" checked> huruf kecil</label>
+            <label><input type="checkbox" id="w-up" checked> HURUF BESAR</label>
+            <label><input type="checkbox" id="w-num" checked> angka</label>
+            <label><input type="checkbox" id="w-sym" checked> simbol</label>
+            <label><input type="checkbox" id="w-amb"> hindari mirip (0O1lI)</label>
+          </div>
+        </div>
+        <div class="acts"><button class="btn solid" id="w-run" type="button">Buat sandi</button>
+          <button class="btn ghost" data-copy="w-out" type="button">Salin hasil</button></div>
+        <div class="outhead"><span>Hasil</span><span class="mono" id="w-ent">—</span></div>
+        <div class="out acc" id="w-out" style="font-size:16px" aria-live="polite"></div>
+        <div class="meter"><i id="w-bar"></i></div>
+        <p class="note">Sandi dibuat lokal dan tidak pernah meninggalkan peramban. Tetap simpan di pengelola sandi, jangan di catatan biasa.</p>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot mono">
+    <span>© <span id="yr">2026</span> Studioworks — Muhammad Rafly</span>
+    <span>Semua perhitungan berjalan di peramban Anda.</span>
+    <a href="/">Kembali ke beranda ↖</a>
+  </div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite">Tersalin</div>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
+
+  $("#yr").textContent = new Date().getFullYear();
+
+  /* tema */
+  var root = document.documentElement, icon = $("#ic");
+  var sun = "M12 4V2M12 22v-2M4 12H2M22 12h-2M6 6L4.5 4.5M19.5 19.5L18 18M18 6l1.5-1.5M4.5 19.5L6 18M16 12a4 4 0 11-8 0 4 4 0 018 0z";
+  var moon = "M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z";
+  function paint() { icon.setAttribute("d", root.getAttribute("data-theme") === "dark" ? sun : moon); }
+  paint();
+  $("#theme").addEventListener("click", function () {
+    var n = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", n);
+    try { localStorage.setItem("sw-theme", n); } catch (e) {}
+    paint();
+  });
+
+  /* toast + salin */
+  var toast = $("#toast"), tt = null;
+  function flash(m) { toast.textContent = m; toast.classList.add("on"); clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove("on"); }, 1700); }
+  function copy(text) {
+    if (!text) { flash("Belum ada hasil"); return; }
+    if (navigator.clipboard && isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { flash("Tersalin"); }, function () { flash("Gagal menyalin"); });
+    } else {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "absolute"; ta.style.left = "-9999px";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); flash("Tersalin"); } catch (e) { flash("Gagal menyalin"); }
+      document.body.removeChild(ta);
+    }
+  }
+
+  $$("[data-copy]").forEach(function (b) {
+    b.addEventListener("click", function () { var el = document.getElementById(b.getAttribute("data-copy")); copy(el ? el.textContent.trim() : ""); });
+  });
+  function say(el, msg, bad) {
+    el.textContent = msg;
+    el.classList.toggle("err", !!bad);
+    el.classList.toggle("acc", !bad);
+  }
+
+  /* tab */
+  var tabs = $$(".tab");
+  function open(key, focus) {
+    tabs.forEach(function (t) {
+      var on = t.getAttribute("data-k") === key;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      var p = document.getElementById(t.getAttribute("aria-controls"));
+      p.classList.toggle("on", on);
+      if (on && focus) t.focus();
+    });
+    if (history.replaceState) history.replaceState(null, "", "#" + key);
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener("click", function () { open(t.getAttribute("data-k")); });
+    t.addEventListener("keydown", function (e) {
+      var d = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : (e.key === "ArrowUp" || e.key === "ArrowLeft" ? -1 : 0);
+      if (!d) return;
+      e.preventDefault();
+      var n = tabs[(i + d + tabs.length) % tabs.length];
+      open(n.getAttribute("data-k"), true);
+    });
+  });
+  var start = (location.hash || "").replace("#", "");
+  if (start && document.getElementById("p-" + start)) open(start);
+
+  /* util byte */
+  var enc = new TextEncoder(), dec = new TextDecoder();
+  function toHex(bytes) {
+    var s = "";
+    for (var i = 0; i < bytes.length; i++) s += ("0" + bytes[i].toString(16)).slice(-2) + (i < bytes.length - 1 ? " " : "");
+    return s;
+  }
+  function fromHex(str) {
+    var clean = str.replace(/0x/gi, "").replace(/[^0-9a-f]/gi, "");
+    if (clean.length % 2) throw new Error("Jumlah digit hex harus genap.");
+    var out = new Uint8Array(clean.length / 2);
+    for (var i = 0; i < out.length; i++) out[i] = parseInt(clean.substr(i * 2, 2), 16);
+    return out;
+  }
+
+  /* 01 caesar */
+  var czIn = $("#cz-in"), czSh = $("#cz-shift"), czVal = $("#cz-val"), czOut = $("#cz-out"), czList = $("#cz-list");
+  function caesar(s, n) {
+    return s.replace(/[a-z]/gi, function (c) {
+      var b = c <= "Z" ? 65 : 97;
+      return String.fromCharCode(((c.charCodeAt(0) - b + n) % 26 + 26) % 26 + b);
+    });
+  }
+  function czRun(dir) {
+    var n = parseInt(czSh.value, 10) * (dir || 1);
+    czList.hidden = true;
+    say(czOut, caesar(czIn.value, n) || "—");
+  }
+  czSh.addEventListener("input", function () { czVal.textContent = czSh.value; czRun(1); });
+  czIn.addEventListener("input", function () { czRun(1); });
+  $("#cz-enc").addEventListener("click", function () { czRun(1); });
+  $("#cz-dec").addEventListener("click", function () { czRun(-1); });
+  $("#cz-brute").addEventListener("click", function () {
+    czList.textContent = "";
+    for (var k = 1; k <= 25; k++) {
+      var row = document.createElement("div");
+      var b = document.createElement("b"); b.textContent = "+" + k;
+      var s = document.createElement("span"); s.textContent = caesar(czIn.value, -k);
+      row.appendChild(b); row.appendChild(s); czList.appendChild(row);
+    }
+    czList.hidden = false;
+  });
+  czRun(1);
+
+  /* 02 rot13 */
+  var rIn = $("#r-in"), rOut = $("#r-out");
+  function rot13() { say(rOut, caesar(rIn.value, 13) || "—"); }
+  rIn.addEventListener("input", rot13); rot13();
+
+  /* 03 base64 */
+  var bIn = $("#b-in"), bOut = $("#b-out");
+  $("#b-enc").addEventListener("click", function () {
+    try {
+      var by = enc.encode(bIn.value), s = "";
+      for (var i = 0; i < by.length; i++) s += String.fromCharCode(by[i]);
+      say(bOut, btoa(s) || "—");
+    } catch (e) { say(bOut, "Gagal mengodekan: " + e.message, true); }
+  });
+  $("#b-dec").addEventListener("click", function () {
+    try {
+      var bin = atob(bIn.value.replace(/\s+/g, ""));
+      var by = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) by[i] = bin.charCodeAt(i);
+      say(bOut, dec.decode(by) || "—");
+    } catch (e) { say(bOut, "Bukan Base64 yang sah.", true); }
+  });
+  $("#b-swap").addEventListener("click", function () { bIn.value = bOut.textContent; bIn.focus(); });
+
+  /* 04 url */
+  var uIn = $("#u-in"), uOut = $("#u-out");
+  $("#u-enc").addEventListener("click", function () { try { say(uOut, encodeURI(uIn.value)); } catch (e) { say(uOut, "Masukan tidak sah.", true); } });
+  $("#u-comp").addEventListener("click", function () { try { say(uOut, encodeURIComponent(uIn.value)); } catch (e) { say(uOut, "Masukan tidak sah.", true); } });
+  $("#u-dec").addEventListener("click", function () { try { say(uOut, decodeURIComponent(uIn.value)); } catch (e) { say(uOut, "Urutan persen tidak sah.", true); } });
+
+  /* 05 hash */
+  var hIn = $("#h-in");
+  function hashAll() {
+    if (!(window.crypto && crypto.subtle)) {
+      ["h-1", "h-256", "h-384", "h-512"].forEach(function (id) { document.getElementById(id).textContent = "Web Crypto tidak tersedia (butuh HTTPS)."; });
+      return;
+    }
+    [["SHA-1", "h-1"], ["SHA-256", "h-256"], ["SHA-384", "h-384"], ["SHA-512", "h-512"]].forEach(function (p) {
+      crypto.subtle.digest(p[0], enc.encode(hIn.value)).then(function (buf) {
+        var a = new Uint8Array(buf), s = "";
+        for (var i = 0; i < a.length; i++) s += ("0" + a[i].toString(16)).slice(-2);
+        document.getElementById(p[1]).textContent = s;
+      }).catch(function () { document.getElementById(p[1]).textContent = "Gagal menghitung."; });
+    });
+  }
+  $("#h-run").addEventListener("click", hashAll);
+  $("#h-clear").addEventListener("click", function () {
+    hIn.value = "";
+    ["h-1", "h-256", "h-384", "h-512"].forEach(function (id) { document.getElementById(id).textContent = "—"; });
+  });
+  hashAll();
+
+  /* 06 xor */
+  var xIn = $("#x-in"), xKey = $("#x-key"), xOut = $("#x-out");
+  function xorBytes(data, key) {
+    var out = new Uint8Array(data.length);
+    for (var i = 0; i < data.length; i++) out[i] = data[i] ^ key[i % key.length];
+    return out;
+  }
+  $("#x-enc").addEventListener("click", function () {
+    var k = enc.encode(xKey.value);
+    if (!k.length) { say(xOut, "Kunci tidak boleh kosong.", true); return; }
+    say(xOut, toHex(xorBytes(enc.encode(xIn.value), k)) || "—");
+  });
+  $("#x-dec").addEventListener("click", function () {
+    var k = enc.encode(xKey.value);
+    if (!k.length) { say(xOut, "Kunci tidak boleh kosong.", true); return; }
+    try { say(xOut, dec.decode(xorBytes(fromHex(xIn.value), k)) || "—"); }
+    catch (e) { say(xOut, "Masukan harus berupa hex. " + e.message, true); }
+  });
+
+  /* 07 biner & hex */
+  var nIn = $("#n-in"), nOut = $("#n-out"), nStat = $("#n-stat");
+  function stat(by) { nStat.textContent = by.length + " byte · " + (by.length * 8) + " bit · " + Array.from(nIn.value).length + " karakter"; }
+  $("#n-bin").addEventListener("click", function () {
+    var by = enc.encode(nIn.value), a = [];
+    by.forEach(function (b) { a.push(("00000000" + b.toString(2)).slice(-8)); });
+    say(nOut, a.join(" ") || "—"); stat(by);
+  });
+  $("#n-hex").addEventListener("click", function () {
+    var by = enc.encode(nIn.value); say(nOut, toHex(by) || "—"); stat(by);
+  });
+  $("#n-rbin").addEventListener("click", function () {
+    var parts = nIn.value.trim().split(/\s+/).filter(Boolean);
+    if (!parts.length || !parts.every(function (p) { return /^[01]{1,8}$/.test(p); })) { say(nOut, "Masukkan deret biner 8 bit dipisah spasi.", true); return; }
+    var by = new Uint8Array(parts.map(function (p) { return parseInt(p, 2); }));
+    say(nOut, dec.decode(by)); nStat.textContent = by.length + " byte dibaca";
+  });
+  $("#n-rhex").addEventListener("click", function () {
+    try { var by = fromHex(nIn.value); say(nOut, dec.decode(by)); nStat.textContent = by.length + " byte dibaca"; }
+    catch (e) { say(nOut, e.message, true); }
+  });
+
+  /* 08 sandi */
+  var wLen = $("#w-len"), wLenV = $("#w-len-v"), wOut = $("#w-out"), wEnt = $("#w-ent"), wBar = $("#w-bar");
+  wLen.addEventListener("input", function () { wLenV.textContent = wLen.value; });
+  function pool() {
+    var low = "abcdefghijkmnopqrstuvwxyz", up = "ABCDEFGHJKLMNPQRSTUVWXYZ", num = "23456789";
+    if (!$("#w-amb").checked) { low = "abcdefghijklmnopqrstuvwxyz"; up = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; num = "0123456789"; }
+    var s = "";
+    if ($("#w-low").checked) s += low;
+    if ($("#w-up").checked) s += up;
+    if ($("#w-num").checked) s += num;
+    if ($("#w-sym").checked) s += "!@#$%^&*()-_=+[]{};:,.?/";
+    return s;
+  }
+  function gen() {
+    var set = pool(), n = parseInt(wLen.value, 10);
+    if (!set) { say(wOut, "Pilih minimal satu himpunan karakter.", true); wEnt.textContent = "—"; wBar.style.width = "0"; return; }
+    var buf = new Uint32Array(n), out = "", max = Math.floor(4294967296 / set.length) * set.length;
+    crypto.getRandomValues(buf);
+    for (var i = 0; i < n; i++) {
+      var v = buf[i];
+      while (v >= max) { var t = new Uint32Array(1); crypto.getRandomValues(t); v = t[0]; }
+      out += set.charAt(v % set.length);
+    }
+    say(wOut, out);
+    var bits = Math.round(n * Math.log2(set.length));
+    var label = bits < 60 ? "lemah" : bits < 90 ? "cukup" : bits < 128 ? "kuat" : "sangat kuat";
+    wEnt.textContent = bits + " bit entropi · " + label;
+    wBar.style.width = Math.min(100, bits / 1.6) + "%";
+  }
+  $("#w-run").addEventListener("click", gen);
+
+  $$("#p-pass input[type=checkbox]").forEach(function (c) { c.addEventListener("change", gen); });
+  wLen.addEventListener("change", gen);
+  gen();
+})();
+</script>
+</body>
+</html>
