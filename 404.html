@@ -1,49 +1,59 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id" data-theme="light">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>404, halaman tidak ditemukan | Studioworks</title>
-  <meta name="robots" content="noindex">
-  <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
-  <script>
-    (() => {
-      try {
-        const saved = localStorage.getItem("sw-theme");
-        const dark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
-        document.documentElement.dataset.theme = dark ? "dark" : "light";
-      } catch (e) {}
-    })();
-  </script>
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <style>
-    body { display: grid; place-items: center; min-height: 100svh; padding: 24px 14px; }
-    .error-card {
-      width: min(680px, 100%); padding: clamp(32px, 7vw, 68px); text-align: center;
-      background: var(--surface); border: 1px solid var(--line);
-      border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
-    }
-    .error-code {
-      margin: 24px 0 0; font-size: clamp(5.5rem, 20vw, 11rem); font-weight: 720;
-      line-height: .82; letter-spacing: -.09em;
-      background: linear-gradient(130deg, var(--ink), var(--accent));
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-    }
-    .error-card h1 { margin: 28px 0 12px; font-size: clamp(1.7rem, 5vw, 2.6rem);
-      line-height: 1.08; letter-spacing: -.05em; }
-    .error-card > p { max-width: 440px; margin: 0 auto 30px; color: var(--muted); }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Halaman tidak ditemukan — Studioworks</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#eeebe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0d0c" media="(prefers-color-scheme: dark)">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("sw-theme");
+      if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  })();
+</script>
+<style>
+:root{--paper:#eeebe4;--ink:#16150f;--ink-2:#4a473d;--ink-3:#7a7668;--line:#c9c4b6;--accent:#c2400f;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif}
+[data-theme="dark"]{--paper:#0d0d0c;--ink:#f0ede4;--ink-2:#b0aa9c;--ink-3:#7e796c;--line:#2c2b27;--accent:#ff6b35}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6;
+  padding:clamp(24px,6vw,80px);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E")}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(3rem,13vw,9rem);line-height:.9;
+  letter-spacing:-.04em;margin:16px 0 0}
+h1 em{font-style:italic;color:var(--accent)}
+p{color:var(--ink-2);max-width:48ch;margin:22px 0 0}
+.links{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
+a.btn{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid var(--ink);padding:14px 22px;color:var(--ink);text-decoration:none;
+  transition:background .3s,color .3s,border-color .3s}
+a.btn:hover{background:var(--ink);color:var(--paper)}
+a.btn.solid{background:var(--ink);color:var(--paper)}
+a.btn.solid:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+footer{margin-top:clamp(40px,8vw,90px);border-top:1px solid var(--line);padding-top:20px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+</style>
 </head>
 <body>
-  <main class="error-card">
-    <a class="brand" href="/">
-      <span class="brand-mark" aria-hidden="true">SW</span>
-      <span>Studioworks</span>
-    </a>
-    <p class="error-code" aria-hidden="true">404</p>
-    <h1>Halaman tidak ditemukan.</h1>
-    <p>Alamat mungkin salah ditulis, sudah berubah, atau halaman tersebut belum tersedia.</p>
-    <a class="button button-primary" href="/">Kembali ke beranda</a>
-  </main>
+  <span class="mono">Galat 404</span>
+  <h1>Jalan <em>buntu</em>.</h1>
+  <p>Alamat yang Anda tuju tidak ada di server ini. Mungkin tertukar hurufnya, atau halamannya memang belum pernah dibuat.</p>
+  <div class="links">
+    <a class="btn solid" href="/">Kembali ke beranda</a>
+    <a class="btn" href="/lab/">Buka Lab</a>
+    <a class="btn" href="mailto:rexha4u@gmail.com">Lapor ke saya</a>
+  </div>
+  <footer>Studioworks — Muhammad Rafly</footer>
 </body>
 </html>
