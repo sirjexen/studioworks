@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lab — Studioworks</title>
-<meta name="description" content="Delapan perkakas kriptografi dan konversi teks yang berjalan sepenuhnya di browser. Tidak ada data yang dikirim ke server.">
+<meta name="description" content="Tiga belas perkakas kriptografi dan konversi: dari Caesar sampai AES-GCM dan tanda tangan digital ECDSA. Semuanya berjalan di peramban, tanpa server.">
 <meta name="author" content="Muhammad Rafly">
 <meta name="theme-color" content="#eeebe4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0d0d0c" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#0c0c0b" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="https://studioworks.my.id/lab/">
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Lab — Studioworks">
-<meta property="og:description" content="Delapan perkakas kriptografi dan konversi teks, jalan penuh di browser.">
+<meta property="og:description" content="Tiga belas perkakas kriptografi dan konversi, jalan penuh di peramban.">
 <meta property="og:url" content="https://studioworks.my.id/lab/">
 <meta property="og:image" content="https://studioworks.my.id/assets/images/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -28,23 +28,23 @@
 <style>
 :root{
   --paper:#eeebe4; --paper-2:#e5e1d8; --ink:#16150f; --ink-2:#4a473d; --ink-3:#7a7668;
-  --line:#c9c4b6; --accent:#c2400f; --accent-soft:rgba(194,64,15,.10);
+  --line:#c9c4b6; --accent:#c2400f; --ok:#2f6d42; --bad:#a32020;
   --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
   --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
-  --pad:clamp(20px,5vw,72px); --maxw:1360px;
+  --pad:clamp(20px,5vw,72px); --maxw:1360px; --ease:cubic-bezier(.22,.78,.24,1);
 }
 [data-theme="dark"]{
-  --paper:#0d0d0c; --paper-2:#151513; --ink:#f0ede4; --ink-2:#b0aa9c; --ink-3:#7e796c;
-  --line:#2c2b27; --accent:#ff6b35; --accent-soft:rgba(255,107,53,.12);
+  --paper:#0c0c0b; --paper-2:#141413; --ink:#f2efe7; --ink-2:#b3ad9f; --ink-3:#7e796c;
+  --line:#2a2925; --accent:#ff6b35; --ok:#5fbf7e; --bad:#ff6b6b;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;
-  -webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .4s ease,color .4s ease}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.035;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .45s var(--ease),color .45s var(--ease)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.032;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E")}
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--accent);color:var(--paper)}
@@ -56,101 +56,112 @@ a{color:inherit;text-decoration:none}
 .skip:focus{left:8px;top:8px}
 
 /* header */
-header{position:sticky;top:0;z-index:70;background:color-mix(in srgb,var(--paper) 86%,transparent);
-  backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+header{position:sticky;top:0;z-index:70;background:color-mix(in srgb,var(--paper) 85%,transparent);
+  backdrop-filter:blur(16px) saturate(140%);border-bottom:1px solid var(--line)}
 @supports not (backdrop-filter:blur(1px)){header{background:var(--paper)}}
-.bar{display:flex;align-items:center;justify-content:space-between;gap:24px;height:68px}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:24px;height:70px}
 .mark{display:flex;align-items:baseline;gap:10px;font-family:var(--serif);font-size:19px;letter-spacing:-.01em}
 .mark b{font-weight:600}
 .mark span{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--ink-3);text-transform:uppercase}
 nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0}
-nav a{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);position:relative;padding:4px 0}
-nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--accent);transition:width .35s cubic-bezier(.2,.8,.2,1)}
+nav a{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);position:relative;padding:5px 0}
+nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--accent);transition:width .4s var(--ease)}
 nav a.on{color:var(--ink)}
 nav a.on::after,nav a:hover::after{width:100%}
 nav a:hover{color:var(--ink)}
 .btn-i{width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;
-  background:transparent;color:var(--ink);cursor:pointer;transition:background .25s,border-color .25s,transform .25s}
-.btn-i:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);transform:rotate(-15deg)}
-@media(max-width:760px){nav ul{gap:16px}nav a{font-size:10px}.mark span{display:none}}
+  background:transparent;color:var(--ink);cursor:pointer;transition:background .28s,border-color .28s,transform .4s var(--ease)}
+.btn-i:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);transform:rotate(-18deg)}
+@media(max-width:780px){nav ul{gap:15px}nav a{font-size:10px}.mark span{display:none}}
 
-/* hero lab */
+/* hero */
 .top{padding:clamp(44px,8vw,96px) 0 clamp(28px,4vw,52px);border-bottom:1px solid var(--line)}
 .crumb{color:var(--ink-3);margin-bottom:22px;display:flex;gap:10px}
 .crumb a:hover{color:var(--accent)}
-h1{font-family:var(--serif);font-weight:400;margin:0;font-size:clamp(2.4rem,7.4vw,5.6rem);line-height:.96;letter-spacing:-.035em}
+h1{font-family:var(--serif);font-weight:400;margin:0;font-size:clamp(2.4rem,7.4vw,5.6rem);line-height:1.02;
+  letter-spacing:-.035em;padding-bottom:.06em}
 h1 em{font-style:italic;color:var(--accent)}
-.top p{max-width:54ch;color:var(--ink-2);margin:22px 0 0}
+.top p{max-width:56ch;color:var(--ink-2);margin:22px 0 0}
 .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
 .badge{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line);
   border-radius:100px;padding:5px 12px;color:var(--ink-2)}
+.warn{margin-top:26px;border:1px solid var(--bad);color:var(--bad);padding:13px 16px;font-family:var(--mono);
+  font-size:11.5px;letter-spacing:.06em;display:none}
+.warn.on{display:block}
 
 /* layout */
-.shell{display:grid;grid-template-columns:230px 1fr;gap:0;border-bottom:1px solid var(--line)}
-@media(max-width:900px){.shell{grid-template-columns:1fr}}
+.shell{display:grid;grid-template-columns:238px 1fr;border-bottom:1px solid var(--line)}
+@media(max-width:960px){.shell{grid-template-columns:1fr}}
 .side{border-right:1px solid var(--line);padding:clamp(24px,4vw,44px) 0 60px}
-@media(max-width:900px){.side{border-right:0;border-bottom:1px solid var(--line);padding-bottom:20px}}
-.side .lbl{padding:0 var(--pad) 0 0;color:var(--ink-3);margin-bottom:18px;display:block}
-.tabs{display:flex;flex-direction:column;gap:2px;position:sticky;top:92px}
-@media(max-width:900px){.tabs{position:static;flex-direction:row;overflow-x:auto;gap:8px;padding-bottom:6px;-webkit-overflow-scrolling:touch}}
+@media(max-width:960px){.side{border-right:0;border-bottom:1px solid var(--line);padding:22px 0 18px}}
+.rail{position:sticky;top:94px}
+@media(max-width:960px){.rail{position:static;display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch}}
+.grp{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 10px;padding-top:2px}
+.grp + .tl{margin-bottom:26px}
+@media(max-width:960px){.grp{display:none}.grp + .tl{margin-bottom:0}}
+.tl{display:flex;flex-direction:column;gap:1px}
+@media(max-width:960px){.tl{flex-direction:row;gap:8px}}
 .tab{display:flex;align-items:baseline;gap:10px;background:none;border:0;cursor:pointer;text-align:left;
-  font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
-  padding:9px 12px 9px 0;transition:color .25s,padding .3s;white-space:nowrap}
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);
+  padding:8px 12px 8px 0;transition:color .25s,padding .3s var(--ease);white-space:nowrap}
 .tab i{font-style:normal;font-size:9.5px;color:var(--ink-3)}
 .tab:hover{color:var(--ink);padding-left:5px}
 .tab[aria-selected="true"]{color:var(--accent)}
 .tab[aria-selected="true"] i{color:var(--accent)}
-@media(max-width:900px){.tab{border:1px solid var(--line);border-radius:100px;padding:7px 14px}
-  .tab:hover{padding-left:14px}
-  .tab[aria-selected="true"]{border-color:var(--accent)}}
+@media(max-width:960px){.tab{border:1px solid var(--line);border-radius:100px;padding:7px 14px}
+  .tab:hover{padding-left:14px}.tab[aria-selected="true"]{border-color:var(--accent)}}
 
 .stage{padding:clamp(28px,4vw,52px) 0 clamp(60px,9vw,110px);padding-left:clamp(20px,4vw,56px);min-width:0}
-@media(max-width:900px){.stage{padding-left:0}}
-.panel{display:none;animation:fade .45s cubic-bezier(.2,.8,.2,1)}
+@media(max-width:960px){.stage{padding-left:0}}
+.panel{display:none;animation:fade .45s var(--ease)}
 .panel.on{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .p-head{border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:26px}
 .p-head .num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--accent);display:block;margin-bottom:10px}
-.p-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.6rem,3.6vw,2.6rem);letter-spacing:-.02em;margin:0 0 10px;line-height:1.05}
-.p-head p{margin:0;color:var(--ink-2);max-width:62ch;font-size:15px}
+.p-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.6rem,3.6vw,2.6rem);letter-spacing:-.02em;margin:0 0 10px;line-height:1.1}
+.p-head p{margin:0;color:var(--ink-2);max-width:64ch;font-size:15px}
 
-/* fields */
+/* field */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
 .f{margin-bottom:18px}
 .f label,.lgd{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
-textarea,input[type=text],input[type=number],select{width:100%;background:var(--paper-2);border:1px solid var(--line);color:var(--ink);
-  font-family:var(--mono);font-size:14px;padding:12px 14px;border-radius:0;resize:vertical}
-textarea{min-height:128px;line-height:1.55}
+textarea,input[type=text],input[type=password],input[type=number],select{width:100%;background:var(--paper-2);
+  border:1px solid var(--line);color:var(--ink);font-family:var(--mono);font-size:14px;padding:12px 14px;border-radius:0;resize:vertical}
+textarea{min-height:124px;line-height:1.55}
 textarea:focus,input:focus,select:focus{outline:none;border-color:var(--accent)}
 input[type=range]{width:100%;accent-color:var(--accent)}
 .rowf{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:6px}
 .rowf .v{font-family:var(--mono);font-size:13px;color:var(--accent)}
-.checks{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--ink-2)}
-.checks label{display:inline-flex;align-items:center;gap:7px;cursor:pointer;margin:0;font-size:11.5px;letter-spacing:.06em;text-transform:none;color:var(--ink-2)}
+.checks{display:flex;gap:16px;flex-wrap:wrap}
+.checks label{display:inline-flex;align-items:center;gap:7px;cursor:pointer;margin:0;font-family:var(--mono);
+  font-size:11.5px;letter-spacing:.05em;text-transform:none;color:var(--ink-2)}
 .checks input{accent-color:var(--accent);width:15px;height:15px}
 .acts{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 20px}
 .btn{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--ink);
-  background:transparent;color:var(--ink);padding:11px 18px;cursor:pointer;transition:background .28s,color .28s,border-color .28s}
+  background:transparent;color:var(--ink);padding:11px 18px;cursor:pointer;transition:background .28s,color .28s,border-color .28s,opacity .2s}
 .btn:hover{background:var(--ink);color:var(--paper)}
 .btn.solid{background:var(--ink);color:var(--paper)}
 .btn.solid:hover{background:var(--accent);border-color:var(--accent);color:#fff}
 .btn.ghost{border-color:var(--line);color:var(--ink-2)}
 .btn.ghost:hover{border-color:var(--ink);color:var(--paper)}
+.btn[disabled]{opacity:.45;cursor:progress}
 
 .out{border:1px dashed var(--line);background:var(--paper-2);padding:15px;font-family:var(--mono);font-size:13.5px;
   line-height:1.7;word-break:break-all;white-space:pre-wrap;min-height:58px;color:var(--ink)}
 .out.acc{color:var(--accent)}
-.out.err{color:#c2400f;border-color:#c2400f}
-[data-theme="dark"] .out.err{color:#ff6b35;border-color:#ff6b35}
-.outhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.out.err{color:var(--bad);border-color:var(--bad)}
+.out.good{color:var(--ok);border-color:var(--ok)}
+.outhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
 .outhead span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
 .mini{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;background:none;border:0;
   color:var(--ink-3);cursor:pointer;padding:4px 0;transition:color .25s}
 .mini:hover{color:var(--accent)}
 .note{font-size:13px;color:var(--ink-3);margin-top:14px}
+.note code{font-family:var(--mono);font-size:12px}
 .meter{height:3px;background:var(--line);margin-top:12px;overflow:hidden}
-.meter i{display:block;height:100%;width:0;background:var(--accent);transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.meter i{display:block;height:100%;width:0;background:var(--accent);transition:width .45s var(--ease)}
 .brute{max-height:270px;overflow:auto;border:1px solid var(--line);margin-top:8px}
 .brute div{display:flex;gap:14px;padding:7px 13px;font-family:var(--mono);font-size:12.5px;border-bottom:1px solid var(--line)}
 .brute div:last-child{border-bottom:0}
@@ -160,13 +171,44 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .hashrow:last-child{border-bottom:0}
 .hashrow b{color:var(--ink-3);font-weight:400;letter-spacing:.08em}
 
-footer{padding:30px 0 40px}
+/* berkas */
+.drop{border:1px dashed var(--line);background:var(--paper-2);padding:clamp(26px,5vw,48px);text-align:center;
+  cursor:pointer;transition:border-color .3s,background .3s}
+.drop:hover,.drop.hot{border-color:var(--accent);background:var(--paper)}
+.drop b{display:block;font-family:var(--serif);font-weight:400;font-size:1.35rem;letter-spacing:-.01em;margin-bottom:6px}
+.drop span{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.fmeta{display:flex;gap:22px;flex-wrap:wrap;margin:18px 0;font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
+.fmeta b{color:var(--ink);font-weight:400}
+
+/* frekuensi */
+.bars{display:flex;align-items:flex-end;gap:3px;height:190px;border-bottom:1px solid var(--line);padding-top:10px}
+.bars div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
+.bars i{display:block;width:100%;background:var(--accent);opacity:.75;transition:height .5s var(--ease);min-height:1px}
+.bars div.hi i{opacity:1}
+.bars u{font-family:var(--mono);font-size:9.5px;text-decoration:none;color:var(--ink-3);margin-top:6px}
+.bars div.hi u{color:var(--accent)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:18px;margin-top:22px;
+  border-top:1px solid var(--line);padding-top:18px}
+.stats b{display:block;font-family:var(--serif);font-size:1.7rem;font-weight:400;line-height:1.1;letter-spacing:-.02em}
+.stats span{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+
+/* kunci */
+.keybox{border:1px solid var(--line);padding:16px;font-family:var(--mono);font-size:12px;word-break:break-all;
+  color:var(--ink-2);max-height:150px;overflow:auto;background:var(--paper-2)}
+.verdict{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;letter-spacing:.13em;
+  text-transform:uppercase;border:1px solid var(--line);padding:9px 16px;margin-top:4px}
+.verdict.ok{border-color:var(--ok);color:var(--ok)}
+.verdict.no{border-color:var(--bad);color:var(--bad)}
+
+footer{padding:30px 0 0}
 .foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--ink-3)}
+.bigmark{font-family:var(--serif);font-weight:400;font-size:clamp(3.2rem,15.2vw,15rem);line-height:.82;
+  letter-spacing:-.045em;color:var(--ink);opacity:.09;margin:clamp(30px,5vw,56px) 0 -.12em;padding-inline:var(--pad);
+  white-space:nowrap;overflow:hidden;user-select:none}
 #toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);opacity:0;pointer-events:none;
   background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:11px;letter-spacing:.1em;
-  text-transform:uppercase;padding:12px 20px;z-index:90;transition:transform .45s cubic-bezier(.22,.78,.24,1),opacity .3s ease}
+  text-transform:uppercase;padding:12px 20px;z-index:90;transition:transform .45s var(--ease),opacity .3s ease}
 #toast.on{transform:translate(-50%,0);opacity:1}
-
 </style>
 </head>
 <body>
@@ -193,25 +235,39 @@ footer{padding:30px 0 40px}
   <div class="wrap top">
     <div class="crumb mono"><a href="/">Beranda</a><span aria-hidden="true">/</span><span>Lab</span></div>
     <h1>Ruang <em>percobaan</em></h1>
-    <p>Delapan perkakas untuk mengubah, menyandikan, dan meringkas teks. Semuanya dihitung di perangkat Anda dengan JavaScript murni dan Web Crypto API — tidak ada permintaan jaringan, tidak ada yang disimpan.</p>
+    <p>Tiga belas perkakas, dari sandi geser abad pertama sampai enkripsi AES-GCM dan tanda tangan digital ECDSA. Semuanya dihitung di perangkat Anda lewat JavaScript murni dan Web Crypto API — tidak ada permintaan jaringan, tidak ada yang disimpan, tidak ada pustaka pihak ketiga.</p>
     <div class="badges">
       <span class="badge">Tanpa server</span><span class="badge">Tanpa pustaka</span>
-      <span class="badge">Web Crypto API</span><span class="badge">Untuk belajar</span>
+      <span class="badge">Web Crypto API</span><span class="badge">13 perkakas</span><span class="badge">Untuk belajar</span>
     </div>
+    <div class="warn mono" id="warn">Web Crypto tidak aktif di konteks ini. Perkakas hash, HMAC, AES, dan tanda tangan memerlukan koneksi HTTPS — buka halaman ini lewat https://studioworks.my.id/lab/</div>
   </div>
 
   <div class="wrap shell">
     <div class="side">
-      <span class="lbl mono">Perkakas</span>
-      <div class="tabs" role="tablist" aria-orientation="vertical" aria-label="Daftar perkakas">
-        <button class="tab" role="tab" id="t-caesar" aria-controls="p-caesar" aria-selected="true" data-k="caesar"><i>01</i>Caesar</button>
-        <button class="tab" role="tab" id="t-rot13"  aria-controls="p-rot13"  aria-selected="false" data-k="rot13"><i>02</i>ROT13</button>
-        <button class="tab" role="tab" id="t-base64" aria-controls="p-base64" aria-selected="false" data-k="base64"><i>03</i>Base64</button>
-        <button class="tab" role="tab" id="t-url"    aria-controls="p-url"    aria-selected="false" data-k="url"><i>04</i>URL Encode</button>
-        <button class="tab" role="tab" id="t-hash"   aria-controls="p-hash"   aria-selected="false" data-k="hash"><i>05</i>Hash SHA</button>
-        <button class="tab" role="tab" id="t-xor"    aria-controls="p-xor"    aria-selected="false" data-k="xor"><i>06</i>XOR</button>
-        <button class="tab" role="tab" id="t-bin"    aria-controls="p-bin"    aria-selected="false" data-k="bin"><i>07</i>Biner &amp; Hex</button>
-        <button class="tab" role="tab" id="t-pass"   aria-controls="p-pass"   aria-selected="false" data-k="pass"><i>08</i>Sandi Acak</button>
+      <div class="rail">
+        <span class="grp">Klasik</span>
+        <div class="tl" role="tablist" aria-orientation="vertical" aria-label="Perkakas klasik">
+          <button class="tab" role="tab" id="t-caesar" aria-controls="p-caesar" aria-selected="true" data-k="caesar"><i>01</i>Caesar</button>
+          <button class="tab" role="tab" id="t-rot13" aria-controls="p-rot13" aria-selected="false" data-k="rot13"><i>02</i>ROT13</button>
+          <button class="tab" role="tab" id="t-xor" aria-controls="p-xor" aria-selected="false" data-k="xor"><i>03</i>XOR</button>
+          <button class="tab" role="tab" id="t-freq" aria-controls="p-freq" aria-selected="false" data-k="freq"><i>04</i>Frekuensi</button>
+        </div>
+        <span class="grp">Pengodean</span>
+        <div class="tl" role="tablist" aria-orientation="vertical" aria-label="Perkakas pengodean">
+          <button class="tab" role="tab" id="t-base64" aria-controls="p-base64" aria-selected="false" data-k="base64"><i>05</i>Base64</button>
+          <button class="tab" role="tab" id="t-url" aria-controls="p-url" aria-selected="false" data-k="url"><i>06</i>URL Encode</button>
+          <button class="tab" role="tab" id="t-bin" aria-controls="p-bin" aria-selected="false" data-k="bin"><i>07</i>Biner &amp; Hex</button>
+        </div>
+        <span class="grp">Modern</span>
+        <div class="tl" role="tablist" aria-orientation="vertical" aria-label="Perkakas modern">
+          <button class="tab" role="tab" id="t-hash" aria-controls="p-hash" aria-selected="false" data-k="hash"><i>08</i>Hash SHA</button>
+          <button class="tab" role="tab" id="t-file" aria-controls="p-file" aria-selected="false" data-k="file"><i>09</i>Hash Berkas</button>
+          <button class="tab" role="tab" id="t-hmac" aria-controls="p-hmac" aria-selected="false" data-k="hmac"><i>10</i>HMAC</button>
+          <button class="tab" role="tab" id="t-aes" aria-controls="p-aes" aria-selected="false" data-k="aes"><i>11</i>AES-GCM</button>
+          <button class="tab" role="tab" id="t-sign" aria-controls="p-sign" aria-selected="false" data-k="sign"><i>12</i>Tanda Tangan</button>
+          <button class="tab" role="tab" id="t-pass" aria-controls="p-pass" aria-selected="false" data-k="pass"><i>13</i>Sandi Acak</button>
+        </div>
       </div>
     </div>
 
@@ -219,10 +275,10 @@ footer{padding:30px 0 40px}
 
       <!-- 01 CAESAR -->
       <section class="panel on" id="p-caesar" role="tabpanel" aria-labelledby="t-caesar" tabindex="0">
-        <div class="p-head"><span class="num">01 / Substitusi</span><h2>Caesar cipher</h2>
+        <div class="p-head"><span class="num">01 / Klasik</span><h2>Caesar cipher</h2>
           <p>Menggeser setiap huruf sejauh <em>n</em> posisi dalam alfabet. Sandi tertua yang tercatat dipakai Julius Caesar, dan paling mudah dipecahkan: cukup coba 25 kemungkinan.</p></div>
         <div class="f"><label for="cz-in">Teks</label>
-          <textarea id="cz-in" spellcheck="false" placeholder="Ketik di sini…">Studioworks Lab</textarea></div>
+          <textarea id="cz-in" spellcheck="false">Studioworks Lab</textarea></div>
         <div class="f">
           <div class="rowf"><label for="cz-shift" style="margin:0">Pergeseran</label><span class="v" id="cz-val">3</span></div>
           <input type="range" id="cz-shift" min="0" max="25" value="3">
@@ -239,20 +295,58 @@ footer{padding:30px 0 40px}
 
       <!-- 02 ROT13 -->
       <section class="panel" id="p-rot13" role="tabpanel" aria-labelledby="t-rot13" tabindex="0">
-        <div class="p-head"><span class="num">02 / Substitusi</span><h2>ROT13</h2>
+        <div class="p-head"><span class="num">02 / Klasik</span><h2>ROT13</h2>
           <p>Caesar dengan pergeseran tetap 13. Karena alfabet Latin punya 26 huruf, proses menyandikan dan membuka sandinya identik — dipakai di forum lama untuk menyembunyikan spoiler, bukan untuk keamanan.</p></div>
         <div class="grid2">
           <div class="f"><label for="r-in">Masukan</label><textarea id="r-in" spellcheck="false">Hello Studioworks</textarea></div>
-          <div class="f"><label for="r-out-l">Keluaran</label>
-            <div class="outhead" style="margin-bottom:8px"><span id="r-out-l">ROT13</span><button class="mini" data-copy="r-out" type="button">Salin</button></div>
+          <div class="f"><span class="lgd">Keluaran</span>
+            <div class="outhead"><span>ROT13</span><button class="mini" data-copy="r-out" type="button">Salin</button></div>
             <div class="out acc" id="r-out" aria-live="polite"></div></div>
         </div>
         <p class="note">Jalankan dua kali untuk kembali ke teks semula.</p>
       </section>
 
-      <!-- 03 BASE64 -->
+      <!-- 03 XOR -->
+      <section class="panel" id="p-xor" role="tabpanel" aria-labelledby="t-xor" tabindex="0">
+        <div class="p-head"><span class="num">03 / Klasik</span><h2>XOR cipher</h2>
+          <p>Setiap byte teks di-XOR dengan byte kunci yang diulang. Operasi yang sama dipakai untuk membuka sandinya. Kalau kuncinya sepanjang pesan dan benar-benar acak, ini menjadi one-time pad; kalau pendek dan berulang, mudah dianalisis.</p></div>
+        <div class="grid2">
+          <div class="f"><label for="x-in">Teks / hex</label><textarea id="x-in" spellcheck="false">rahasia kecil</textarea></div>
+          <div class="f"><label for="x-key">Kunci</label><input type="text" id="x-key" value="studio" spellcheck="false" autocomplete="off">
+            <p class="note">Hasil sandi ditampilkan sebagai heksadesimal agar tetap bisa disalin sebagai teks biasa.</p></div>
+        </div>
+        <div class="acts">
+          <button class="btn solid" id="x-enc" type="button">Sandikan → hex</button>
+          <button class="btn" id="x-dec" type="button">Hex → teks</button>
+        </div>
+        <div class="outhead"><span>Hasil</span><button class="mini" data-copy="x-out" type="button">Salin</button></div>
+        <div class="out acc" id="x-out" aria-live="polite"></div>
+      </section>
+
+      <!-- 04 FREKUENSI -->
+      <section class="panel" id="p-freq" role="tabpanel" aria-labelledby="t-freq" tabindex="0">
+        <div class="p-head"><span class="num">04 / Klasik</span><h2>Analisis frekuensi</h2>
+          <p>Sandi substitusi seperti Caesar tidak mengubah <em>seberapa sering</em> tiap huruf muncul — hanya menukar labelnya. Dengan menghitung sebaran huruf pada teks tersandi, pola bahasa aslinya masih terlihat, dan kunci bisa ditebak tanpa mencoba satu per satu.</p></div>
+        <div class="f"><label for="q-in">Teks yang dianalisis</label>
+          <textarea id="q-in" spellcheck="false" style="min-height:104px">Vwxglrzrunv phpedqjxq dqwdupxnd zhe bdqj fhsdw gdq udsl</textarea></div>
+        <div class="bars" id="q-bars" role="img" aria-label="Diagram batang sebaran huruf"></div>
+        <div class="stats">
+          <div><b id="q-total">0</b><span>Huruf dihitung</span></div>
+          <div><b id="q-top">—</b><span>Paling sering</span></div>
+          <div><b id="q-ic">0.000</b><span>Indeks kebetulan</span></div>
+          <div><b id="q-guess">—</b><span>Tebakan geseran</span></div>
+        </div>
+        <div class="acts" style="margin-top:22px">
+          <button class="btn solid" id="q-apply" type="button">Buka dengan tebakan teratas</button>
+        </div>
+        <div class="outhead"><span>Hasil pembukaan</span><button class="mini" data-copy="q-out" type="button">Salin</button></div>
+        <div class="out acc" id="q-out" aria-live="polite">—</div>
+        <p class="note">Tebakan dihitung dengan mencocokkan sebaran huruf terhadap frekuensi rata-rata bahasa Inggris (perkiraan umum), jadi paling akurat untuk teks Inggris yang cukup panjang. Indeks kebetulan sekitar 0,066 menandakan teks bahasa alami; mendekati 0,038 menandakan teks acak atau sandi polialfabet.</p>
+      </section>
+
+      <!-- 05 BASE64 -->
       <section class="panel" id="p-base64" role="tabpanel" aria-labelledby="t-base64" tabindex="0">
-        <div class="p-head"><span class="num">03 / Pengodean</span><h2>Base64</h2>
+        <div class="p-head"><span class="num">05 / Pengodean</span><h2>Base64</h2>
           <p>Mengubah data biner menjadi 64 karakter ASCII yang aman dikirim lewat teks — dipakai di data URI, lampiran surel, dan token. Ini pengodean, bukan enkripsi: siapa pun bisa membalikkannya.</p></div>
         <div class="f"><label for="b-in">Masukan</label><textarea id="b-in" spellcheck="false">Studioworks — lab kriptografi</textarea></div>
         <div class="acts">
@@ -265,9 +359,9 @@ footer{padding:30px 0 40px}
         <p class="note">Mendukung karakter non-ASCII lewat UTF-8 (TextEncoder / TextDecoder).</p>
       </section>
 
-      <!-- 04 URL -->
+      <!-- 06 URL -->
       <section class="panel" id="p-url" role="tabpanel" aria-labelledby="t-url" tabindex="0">
-        <div class="p-head"><span class="num">04 / Pengodean</span><h2>URL encode</h2>
+        <div class="p-head"><span class="num">06 / Pengodean</span><h2>URL encode</h2>
           <p>Mengganti karakter yang tidak aman di alamat web menjadi bentuk persen, misalnya spasi jadi <code>%20</code>. Berguna saat menyusun parameter kueri atau tautan <code>mailto:</code> dengan subjek panjang.</p></div>
         <div class="f"><label for="u-in">Masukan</label><textarea id="u-in" spellcheck="false">https://studioworks.my.id/?q=halo dunia&amp;lang=id</textarea></div>
         <div class="acts">
@@ -280,42 +374,9 @@ footer{padding:30px 0 40px}
         <p class="note">“Encode komponen” menyandikan juga <code>&amp; ? / :</code> — pakai ini untuk isi parameter, bukan untuk URL utuh.</p>
       </section>
 
-      <!-- 05 HASH -->
-      <section class="panel" id="p-hash" role="tabpanel" aria-labelledby="t-hash" tabindex="0">
-        <div class="p-head"><span class="num">05 / Ringkasan</span><h2>Hash SHA</h2>
-          <p>Fungsi hash memampatkan masukan apa pun menjadi sidik jari dengan panjang tetap dan satu arah. Ubah satu huruf saja, seluruh hasilnya berubah total — dipakai untuk verifikasi berkas dan tanda tangan digital.</p></div>
-        <div class="f"><label for="h-in">Masukan</label><textarea id="h-in" spellcheck="false">Studioworks</textarea></div>
-        <div class="acts"><button class="btn solid" id="h-run" type="button">Hitung hash</button>
-          <button class="btn ghost" id="h-clear" type="button">Bersihkan</button></div>
-        <div id="h-out" aria-live="polite">
-          <div class="hashrow"><b>SHA-1</b><span id="h-1">—</span></div>
-          <div class="hashrow"><b>SHA-256</b><span id="h-256">—</span></div>
-          <div class="hashrow"><b>SHA-384</b><span id="h-384">—</span></div>
-          <div class="hashrow"><b>SHA-512</b><span id="h-512">—</span></div>
-        </div>
-        <p class="note">SHA-1 ditampilkan untuk perbandingan saja — sudah dianggap tidak aman sejak tabrakan praktis ditemukan pada 2017. Perlu koneksi HTTPS agar Web Crypto aktif.</p>
-      </section>
-
-      <!-- 06 XOR -->
-      <section class="panel" id="p-xor" role="tabpanel" aria-labelledby="t-xor" tabindex="0">
-        <div class="p-head"><span class="num">06 / Simetris</span><h2>XOR cipher</h2>
-          <p>Setiap byte teks di-XOR dengan byte kunci yang diulang. Operasi yang sama dipakai untuk membuka sandinya. Kalau kuncinya sepanjang pesan dan benar-benar acak, ini menjadi one-time pad; kalau pendek dan berulang, mudah dianalisis.</p></div>
-        <div class="grid2">
-          <div class="f"><label for="x-in">Teks / hex</label><textarea id="x-in" spellcheck="false">rahasia kecil</textarea></div>
-          <div class="f"><label for="x-key">Kunci</label><input type="text" id="x-key" value="studio" spellcheck="false" autocomplete="off">
-            <p class="note" style="margin-top:10px">Hasil sandi ditampilkan sebagai heksadesimal agar tetap bisa disalin sebagai teks.</p></div>
-        </div>
-        <div class="acts">
-          <button class="btn solid" id="x-enc" type="button">Sandikan → hex</button>
-          <button class="btn" id="x-dec" type="button">Hex → teks</button>
-        </div>
-        <div class="outhead"><span>Hasil</span><button class="mini" data-copy="x-out" type="button">Salin</button></div>
-        <div class="out acc" id="x-out" aria-live="polite"></div>
-      </section>
-
       <!-- 07 BINER -->
       <section class="panel" id="p-bin" role="tabpanel" aria-labelledby="t-bin" tabindex="0">
-        <div class="p-head"><span class="num">07 / Konversi</span><h2>Biner &amp; heksadesimal</h2>
+        <div class="p-head"><span class="num">07 / Pengodean</span><h2>Biner &amp; heksadesimal</h2>
           <p>Melihat teks sebagaimana mesin menyimpannya: deretan byte UTF-8 dalam basis dua atau basis enam belas. Berguna untuk memahami kenapa satu emoji bisa memakan empat byte.</p></div>
         <div class="f"><label for="n-in">Masukan</label><textarea id="n-in" spellcheck="false">Rafly</textarea></div>
         <div class="acts">
@@ -329,10 +390,110 @@ footer{padding:30px 0 40px}
         <p class="note" id="n-stat">—</p>
       </section>
 
-      <!-- 08 PASSWORD -->
+      <!-- 08 HASH -->
+      <section class="panel" id="p-hash" role="tabpanel" aria-labelledby="t-hash" tabindex="0">
+        <div class="p-head"><span class="num">08 / Modern</span><h2>Hash SHA</h2>
+          <p>Fungsi hash memampatkan masukan apa pun menjadi sidik jari dengan panjang tetap dan satu arah. Ubah satu huruf saja, seluruh hasilnya berubah total — dipakai untuk verifikasi berkas dan tanda tangan digital.</p></div>
+        <div class="f"><label for="h-in">Masukan</label><textarea id="h-in" spellcheck="false">Studioworks</textarea></div>
+        <div class="acts"><button class="btn solid" id="h-run" type="button">Hitung hash</button>
+          <button class="btn ghost" id="h-clear" type="button">Bersihkan</button></div>
+        <div id="h-out" aria-live="polite">
+          <div class="hashrow"><b>SHA-1</b><span id="h-1">—</span></div>
+          <div class="hashrow"><b>SHA-256</b><span id="h-256">—</span></div>
+          <div class="hashrow"><b>SHA-384</b><span id="h-384">—</span></div>
+          <div class="hashrow"><b>SHA-512</b><span id="h-512">—</span></div>
+        </div>
+        <p class="note">SHA-1 ditampilkan untuk perbandingan saja — sudah dianggap tidak aman sejak tabrakan praktis ditemukan pada 2017.</p>
+      </section>
+
+      <!-- 09 HASH BERKAS -->
+      <section class="panel" id="p-file" role="tabpanel" aria-labelledby="t-file" tabindex="0">
+        <div class="p-head"><span class="num">09 / Modern</span><h2>Hash berkas</h2>
+          <p>Kasus pakai hash yang paling sering ditemui: memastikan berkas yang Anda unduh benar-benar sama dengan yang diterbitkan pembuatnya. Tempelkan nilai rujukan dari situs penerbit, lalu bandingkan.</p></div>
+        <div class="drop" id="fd" tabindex="0" role="button" aria-label="Pilih atau jatuhkan berkas">
+          <b>Jatuhkan berkas di sini</b><span>atau klik untuk memilih · berkas tidak diunggah ke mana pun</span>
+        </div>
+        <input type="file" id="fi" class="sr-only">
+        <div class="fmeta" id="f-meta" hidden><span>Nama <b id="f-name">—</b></span><span>Ukuran <b id="f-size">—</b></span><span>Tipe <b id="f-type">—</b></span></div>
+        <div id="f-res" hidden>
+          <div class="hashrow"><b>SHA-256</b><span id="f-256">—</span></div>
+          <div class="hashrow"><b>SHA-512</b><span id="f-512">—</span></div>
+          <div class="f" style="margin-top:22px"><label for="f-cmp">Bandingkan dengan nilai rujukan</label>
+            <input type="text" id="f-cmp" placeholder="tempel SHA-256 dari situs penerbit" spellcheck="false" autocomplete="off"></div>
+          <div id="f-verdict" class="verdict" hidden></div>
+        </div>
+        <p class="note">Berkas dibaca langsung dari disk oleh peramban dan tidak pernah dikirim keluar. Berkas sangat besar akan memakan memori karena dibaca sekaligus.</p>
+      </section>
+
+      <!-- 10 HMAC -->
+      <section class="panel" id="p-hmac" role="tabpanel" aria-labelledby="t-hmac" tabindex="0">
+        <div class="p-head"><span class="num">10 / Modern</span><h2>HMAC</h2>
+          <p>Hash biasa membuktikan bahwa data tidak berubah, tetapi siapa pun bisa menghitung ulang hash-nya. HMAC menambahkan kunci rahasia ke dalam perhitungan, sehingga hasilnya sekaligus membuktikan bahwa pesan berasal dari pihak yang memegang kunci itu. Inilah yang dipakai webhook untuk memverifikasi pengirim.</p></div>
+        <div class="grid2">
+          <div class="f"><label for="m-msg">Pesan</label><textarea id="m-msg" spellcheck="false">transaksi:1200000</textarea></div>
+          <div>
+            <div class="f"><label for="m-key">Kunci rahasia</label><input type="text" id="m-key" value="kunci-bersama" spellcheck="false" autocomplete="off"></div>
+            <div class="f"><label for="m-alg">Algoritma hash</label>
+              <select id="m-alg"><option>SHA-256</option><option>SHA-384</option><option>SHA-512</option><option>SHA-1</option></select></div>
+          </div>
+        </div>
+        <div class="acts"><button class="btn solid" id="m-run" type="button">Hitung HMAC</button></div>
+        <div class="outhead"><span>Tanda pengenal pesan</span><button class="mini" data-copy="m-out" type="button">Salin</button></div>
+        <div class="out acc" id="m-out" aria-live="polite">—</div>
+        <div class="f" style="margin-top:22px"><label for="m-cmp">Verifikasi nilai yang diterima</label>
+          <input type="text" id="m-cmp" placeholder="tempel HMAC yang ingin diperiksa" spellcheck="false" autocomplete="off"></div>
+        <div id="m-verdict" class="verdict" hidden></div>
+        <p class="note">Perbandingan dilakukan tanpa berhenti di byte pertama yang berbeda, meniru praktik <em>constant-time comparison</em> agar waktu proses tidak membocorkan seberapa banyak karakter yang sudah cocok.</p>
+      </section>
+
+      <!-- 11 AES -->
+      <section class="panel" id="p-aes" role="tabpanel" aria-labelledby="t-aes" tabindex="0">
+        <div class="p-head"><span class="num">11 / Modern</span><h2>AES-GCM dengan kata sandi</h2>
+          <p>Satu-satunya perkakas di Lab ini yang enkripsinya sungguhan. Kata sandi Anda diregangkan menjadi kunci 256 bit lewat PBKDF2 dengan garam acak dan ratusan ribu iterasi, lalu pesan dienkripsi dengan AES-GCM yang sekaligus mendeteksi perubahan sekecil apa pun pada sandi-teks.</p></div>
+        <div class="grid2">
+          <div class="f"><label for="a-in">Pesan atau sandi-teks</label><textarea id="a-in" spellcheck="false">Rapat dipindah ke hari Jumat pukul sembilan.</textarea></div>
+          <div>
+            <div class="f"><label for="a-pass">Kata sandi</label><input type="password" id="a-pass" value="rahasia-kuliah" autocomplete="new-password"></div>
+            <div class="f">
+              <div class="rowf"><label for="a-iter" style="margin:0">Iterasi PBKDF2</label><span class="v" id="a-iter-v">250.000</span></div>
+              <input type="range" id="a-iter" min="50000" max="600000" step="50000" value="250000">
+            </div>
+            <label class="checks" style="margin-top:4px"><input type="checkbox" id="a-show"> tampilkan kata sandi</label>
+          </div>
+        </div>
+        <div class="acts">
+          <button class="btn solid" id="a-enc" type="button">Enkripsi</button>
+          <button class="btn" id="a-dec" type="button">Dekripsi</button>
+          <button class="btn ghost" id="a-swap" type="button">Pindah hasil ke masukan</button>
+        </div>
+        <div class="outhead"><span>Hasil</span><button class="mini" data-copy="a-out" type="button">Salin</button></div>
+        <div class="out acc" id="a-out" aria-live="polite">—</div>
+        <p class="note" id="a-info">Sandi-teks dikemas sebagai Base64 berisi penanda versi, jumlah iterasi, garam 16 byte, IV 12 byte, lalu data terenkripsi — sehingga cukup kata sandi yang perlu diingat, sisanya sudah menyatu di dalam hasilnya.</p>
+        <p class="note">Iterasi tinggi membuat penebakan kata sandi jauh lebih mahal bagi penyerang, tetapi juga menambah waktu proses di perangkat Anda sendiri — biasanya satu sampai dua detik.</p>
+      </section>
+
+      <!-- 12 TANDA TANGAN -->
+      <section class="panel" id="p-sign" role="tabpanel" aria-labelledby="t-sign" tabindex="0">
+        <div class="p-head"><span class="num">12 / Modern</span><h2>Tanda tangan digital ECDSA</h2>
+          <p>Kriptografi kunci publik dalam satu layar. Kunci privat menandatangani pesan, kunci publik memverifikasinya, dan kunci publik boleh disebarkan bebas. Coba ubah satu huruf pada pesan setelah ditandatangani, lalu verifikasi lagi — hasilnya langsung ditolak.</p></div>
+        <div class="acts"><button class="btn solid" id="s-gen" type="button">Bangkitkan pasangan kunci</button></div>
+        <div class="f"><span class="lgd">Kunci publik (format SPKI, Base64)</span>
+          <div class="keybox" id="s-pub">Belum ada kunci. Tekan tombol di atas.</div></div>
+        <div class="f"><label for="s-msg">Pesan</label><textarea id="s-msg" spellcheck="false" style="min-height:92px">Saya menyetujui berita acara ini.</textarea></div>
+        <div class="acts">
+          <button class="btn solid" id="s-sign" type="button">Tanda tangani</button>
+          <button class="btn" id="s-ver" type="button">Verifikasi</button>
+        </div>
+        <div class="outhead"><span>Tanda tangan (Base64)</span><button class="mini" data-copy="s-sig" type="button">Salin</button></div>
+        <div class="out acc" id="s-sig" aria-live="polite">—</div>
+        <div id="s-verdict" class="verdict" hidden></div>
+        <p class="note">Kurva yang dipakai P-256 dengan pencerna SHA-256. Kunci privat hanya berada di memori tab ini dan hilang begitu halaman ditutup atau dimuat ulang.</p>
+      </section>
+
+      <!-- 13 SANDI -->
       <section class="panel" id="p-pass" role="tabpanel" aria-labelledby="t-pass" tabindex="0">
-        <div class="p-head"><span class="num">08 / Utilitas</span><h2>Pembangkit sandi</h2>
-          <p>Menghasilkan sandi acak memakai <code>crypto.getRandomValues()</code> — sumber acak kriptografis bawaan browser, bukan <code>Math.random()</code>. Entropi dihitung dari panjang dikali logaritma dua ukuran himpunan karakter.</p></div>
+        <div class="p-head"><span class="num">13 / Modern</span><h2>Pembangkit sandi</h2>
+          <p>Menghasilkan sandi acak memakai <code>crypto.getRandomValues()</code> — sumber acak kriptografis bawaan peramban, bukan <code>Math.random()</code>. Entropi dihitung dari panjang dikali logaritma dua ukuran himpunan karakter.</p></div>
         <div class="f">
           <div class="rowf"><label for="w-len" style="margin:0">Panjang</label><span class="v" id="w-len-v">20</span></div>
           <input type="range" id="w-len" min="8" max="64" value="20">
@@ -364,6 +525,7 @@ footer{padding:30px 0 40px}
     <span>Semua perhitungan berjalan di peramban Anda.</span>
     <a href="/">Kembali ke beranda ↖</a>
   </div>
+  <div class="bigmark" aria-hidden="true">LAB</div>
 </footer>
 
 <div id="toast" role="status" aria-live="polite">Tersalin</div>
@@ -371,10 +533,13 @@ footer{padding:30px 0 40px}
 <script>
 (function () {
   "use strict";
-  var $ = function (s) { return document.querySelector(s); };
-  var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
+  var $ = function (s, c) { return (c || document).querySelector(s); };
+  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+  var enc = new TextEncoder(), dec = new TextDecoder();
+  var SC = !!(window.crypto && crypto.subtle);
 
   $("#yr").textContent = new Date().getFullYear();
+  if (!SC) $("#warn").classList.add("on");
 
   /* tema */
   var root = document.documentElement, icon = $("#ic");
@@ -393,7 +558,7 @@ footer{padding:30px 0 40px}
   var toast = $("#toast"), tt = null;
   function flash(m) { toast.textContent = m; toast.classList.add("on"); clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove("on"); }, 1700); }
   function copy(text) {
-    if (!text) { flash("Belum ada hasil"); return; }
+    if (!text || text === "—") { flash("Belum ada hasil"); return; }
     if (navigator.clipboard && isSecureContext) {
       navigator.clipboard.writeText(text).then(function () { flash("Tersalin"); }, function () { flash("Gagal menyalin"); });
     } else {
@@ -408,10 +573,20 @@ footer{padding:30px 0 40px}
   $$("[data-copy]").forEach(function (b) {
     b.addEventListener("click", function () { var el = document.getElementById(b.getAttribute("data-copy")); copy(el ? el.textContent.trim() : ""); });
   });
-  function say(el, msg, bad) {
+  function say(el, msg, bad, good) {
     el.textContent = msg;
     el.classList.toggle("err", !!bad);
-    el.classList.toggle("acc", !bad);
+    el.classList.toggle("good", !!good);
+    el.classList.toggle("acc", !bad && !good);
+  }
+  function verdict(el, ok, msg) {
+    el.hidden = false; el.textContent = msg;
+    el.classList.toggle("ok", ok); el.classList.toggle("no", !ok);
+  }
+  function busy(btn, on, label) {
+    btn.disabled = on;
+    if (on) { btn.dataset.lbl = btn.textContent; btn.textContent = label || "Memproses…"; }
+    else if (btn.dataset.lbl) { btn.textContent = btn.dataset.lbl; }
   }
 
   /* tab */
@@ -420,8 +595,7 @@ footer{padding:30px 0 40px}
     tabs.forEach(function (t) {
       var on = t.getAttribute("data-k") === key;
       t.setAttribute("aria-selected", on ? "true" : "false");
-      var p = document.getElementById(t.getAttribute("aria-controls"));
-      p.classList.toggle("on", on);
+      document.getElementById(t.getAttribute("aria-controls")).classList.toggle("on", on);
       if (on && focus) t.focus();
     });
     if (history.replaceState) history.replaceState(null, "", "#" + key);
@@ -429,44 +603,55 @@ footer{padding:30px 0 40px}
   tabs.forEach(function (t, i) {
     t.addEventListener("click", function () { open(t.getAttribute("data-k")); });
     t.addEventListener("keydown", function (e) {
-      var d = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1 : (e.key === "ArrowUp" || e.key === "ArrowLeft" ? -1 : 0);
+      var d = (e.key === "ArrowDown" || e.key === "ArrowRight") ? 1 : (e.key === "ArrowUp" || e.key === "ArrowLeft") ? -1 : 0;
       if (!d) return;
       e.preventDefault();
-      var n = tabs[(i + d + tabs.length) % tabs.length];
-      open(n.getAttribute("data-k"), true);
+      open(tabs[(i + d + tabs.length) % tabs.length].getAttribute("data-k"), true);
     });
   });
   var start = (location.hash || "").replace("#", "");
   if (start && document.getElementById("p-" + start)) open(start);
 
   /* util byte */
-  var enc = new TextEncoder(), dec = new TextDecoder();
-  function toHex(bytes) {
+  function hex(bytes, spaced) {
     var s = "";
-    for (var i = 0; i < bytes.length; i++) s += ("0" + bytes[i].toString(16)).slice(-2) + (i < bytes.length - 1 ? " " : "");
+    for (var i = 0; i < bytes.length; i++) s += ("0" + bytes[i].toString(16)).slice(-2) + (spaced && i < bytes.length - 1 ? " " : "");
     return s;
   }
-  function fromHex(str) {
-    var clean = str.replace(/0x/gi, "").replace(/[^0-9a-f]/gi, "");
-    if (clean.length % 2) throw new Error("Jumlah digit hex harus genap.");
-    var out = new Uint8Array(clean.length / 2);
-    for (var i = 0; i < out.length; i++) out[i] = parseInt(clean.substr(i * 2, 2), 16);
-    return out;
+  function unhex(str) {
+    var c = str.replace(/0x/gi, "").replace(/[^0-9a-f]/gi, "");
+    if (c.length % 2) throw new Error("Jumlah digit hex harus genap.");
+    var o = new Uint8Array(c.length / 2);
+    for (var i = 0; i < o.length; i++) o[i] = parseInt(c.substr(i * 2, 2), 16);
+    return o;
   }
-
-  /* 01 caesar */
-  var czIn = $("#cz-in"), czSh = $("#cz-shift"), czVal = $("#cz-val"), czOut = $("#cz-out"), czList = $("#cz-list");
+  function b64(bytes) {
+    var s = "";
+    for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+    return btoa(s);
+  }
+  function unb64(str) {
+    var bin = atob(str.replace(/\s+/g, ""));
+    var o = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) o[i] = bin.charCodeAt(i);
+    return o;
+  }
+  function slowEqual(a, b) {
+    if (a.length !== b.length) return false;
+    var diff = 0;
+    for (var i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+    return diff === 0;
+  }
   function caesar(s, n) {
     return s.replace(/[a-z]/gi, function (c) {
       var b = c <= "Z" ? 65 : 97;
       return String.fromCharCode(((c.charCodeAt(0) - b + n) % 26 + 26) % 26 + b);
     });
   }
-  function czRun(dir) {
-    var n = parseInt(czSh.value, 10) * (dir || 1);
-    czList.hidden = true;
-    say(czOut, caesar(czIn.value, n) || "—");
-  }
+
+  /* 01 caesar */
+  var czIn = $("#cz-in"), czSh = $("#cz-shift"), czVal = $("#cz-val"), czOut = $("#cz-out"), czList = $("#cz-list");
+  function czRun(dir) { czList.hidden = true; say(czOut, caesar(czIn.value, parseInt(czSh.value, 10) * (dir || 1)) || "—"); }
   czSh.addEventListener("input", function () { czVal.textContent = czSh.value; czRun(1); });
   czIn.addEventListener("input", function () { czRun(1); });
   $("#cz-enc").addEventListener("click", function () { czRun(1); });
@@ -488,73 +673,90 @@ footer{padding:30px 0 40px}
   function rot13() { say(rOut, caesar(rIn.value, 13) || "—"); }
   rIn.addEventListener("input", rot13); rot13();
 
-  /* 03 base64 */
+  /* 03 xor */
+  var xIn = $("#x-in"), xKey = $("#x-key"), xOut = $("#x-out");
+  function xorBytes(d, k) { var o = new Uint8Array(d.length); for (var i = 0; i < d.length; i++) o[i] = d[i] ^ k[i % k.length]; return o; }
+  $("#x-enc").addEventListener("click", function () {
+    var k = enc.encode(xKey.value);
+    if (!k.length) { say(xOut, "Kunci tidak boleh kosong.", true); return; }
+    say(xOut, hex(xorBytes(enc.encode(xIn.value), k), true) || "—");
+  });
+  $("#x-dec").addEventListener("click", function () {
+    var k = enc.encode(xKey.value);
+    if (!k.length) { say(xOut, "Kunci tidak boleh kosong.", true); return; }
+    try { say(xOut, dec.decode(xorBytes(unhex(xIn.value), k)) || "—"); }
+    catch (e) { say(xOut, "Masukan harus berupa hex. " + e.message, true); }
+  });
+
+  /* 04 frekuensi */
+  var qIn = $("#q-in"), qBars = $("#q-bars"), qOut = $("#q-out");
+  var ENG = [8.2,1.5,2.8,4.3,12.7,2.2,2.0,6.1,7.0,0.15,0.77,4.0,2.4,6.7,7.5,1.9,0.095,6.0,6.3,9.1,2.8,0.98,2.4,0.15,2.0,0.074];
+  var cells = [];
+  (function buildBars() {
+    for (var i = 0; i < 26; i++) {
+      var d = document.createElement("div");
+      var bar = document.createElement("i");
+      var lab = document.createElement("u");
+      lab.textContent = String.fromCharCode(97 + i);
+      d.appendChild(bar); d.appendChild(lab);
+      qBars.appendChild(d);
+      cells.push({ box: d, bar: bar });
+    }
+  })();
+  var bestShift = 0;
+  function analyse() {
+    var counts = new Array(26).fill(0), total = 0, s = qIn.value.toLowerCase();
+    for (var i = 0; i < s.length; i++) {
+      var c = s.charCodeAt(i) - 97;
+      if (c >= 0 && c < 26) { counts[c]++; total++; }
+    }
+    var max = Math.max.apply(null, counts) || 1;
+    var topIdx = counts.indexOf(max);
+    for (var j = 0; j < 26; j++) {
+      cells[j].bar.style.height = (total ? (counts[j] / max) * 100 : 0) + "%";
+      cells[j].box.classList.toggle("hi", total > 0 && counts[j] === max);
+    }
+    $("#q-total").textContent = total;
+    $("#q-top").textContent = total ? String.fromCharCode(97 + topIdx).toUpperCase() : "—";
+    var ic = 0;
+    if (total > 1) {
+      for (var k = 0; k < 26; k++) ic += counts[k] * (counts[k] - 1);
+      ic = ic / (total * (total - 1));
+    }
+    $("#q-ic").textContent = ic.toFixed(3);
+    var best = 0, bestChi = Infinity;
+    for (var sh = 0; sh < 26; sh++) {
+      var chi = 0;
+      for (var m = 0; m < 26; m++) {
+        var obs = counts[(m + sh) % 26];
+        var exp = total * ENG[m] / 100;
+        if (exp > 0) chi += Math.pow(obs - exp, 2) / exp;
+      }
+      if (chi < bestChi) { bestChi = chi; best = sh; }
+    }
+    bestShift = best;
+    $("#q-guess").textContent = total ? "+" + best : "—";
+  }
+  qIn.addEventListener("input", analyse); analyse();
+  $("#q-apply").addEventListener("click", function () { say(qOut, caesar(qIn.value, -bestShift) || "—"); });
+
+  /* 05 base64 */
   var bIn = $("#b-in"), bOut = $("#b-out");
   $("#b-enc").addEventListener("click", function () {
-    try {
-      var by = enc.encode(bIn.value), s = "";
-      for (var i = 0; i < by.length; i++) s += String.fromCharCode(by[i]);
-      say(bOut, btoa(s) || "—");
-    } catch (e) { say(bOut, "Gagal mengodekan: " + e.message, true); }
+    try { say(bOut, b64(enc.encode(bIn.value)) || "—"); } catch (e) { say(bOut, "Gagal mengodekan.", true); }
   });
   $("#b-dec").addEventListener("click", function () {
-    try {
-      var bin = atob(bIn.value.replace(/\s+/g, ""));
-      var by = new Uint8Array(bin.length);
-      for (var i = 0; i < bin.length; i++) by[i] = bin.charCodeAt(i);
-      say(bOut, dec.decode(by) || "—");
-    } catch (e) { say(bOut, "Bukan Base64 yang sah.", true); }
+    try { say(bOut, dec.decode(unb64(bIn.value)) || "—"); } catch (e) { say(bOut, "Bukan Base64 yang sah.", true); }
   });
   $("#b-swap").addEventListener("click", function () { bIn.value = bOut.textContent; bIn.focus(); });
 
-  /* 04 url */
+  /* 06 url */
   var uIn = $("#u-in"), uOut = $("#u-out");
   $("#u-enc").addEventListener("click", function () { try { say(uOut, encodeURI(uIn.value)); } catch (e) { say(uOut, "Masukan tidak sah.", true); } });
   $("#u-comp").addEventListener("click", function () { try { say(uOut, encodeURIComponent(uIn.value)); } catch (e) { say(uOut, "Masukan tidak sah.", true); } });
   $("#u-dec").addEventListener("click", function () { try { say(uOut, decodeURIComponent(uIn.value)); } catch (e) { say(uOut, "Urutan persen tidak sah.", true); } });
 
-  /* 05 hash */
-  var hIn = $("#h-in");
-  function hashAll() {
-    if (!(window.crypto && crypto.subtle)) {
-      ["h-1", "h-256", "h-384", "h-512"].forEach(function (id) { document.getElementById(id).textContent = "Web Crypto tidak tersedia (butuh HTTPS)."; });
-      return;
-    }
-    [["SHA-1", "h-1"], ["SHA-256", "h-256"], ["SHA-384", "h-384"], ["SHA-512", "h-512"]].forEach(function (p) {
-      crypto.subtle.digest(p[0], enc.encode(hIn.value)).then(function (buf) {
-        var a = new Uint8Array(buf), s = "";
-        for (var i = 0; i < a.length; i++) s += ("0" + a[i].toString(16)).slice(-2);
-        document.getElementById(p[1]).textContent = s;
-      }).catch(function () { document.getElementById(p[1]).textContent = "Gagal menghitung."; });
-    });
-  }
-  $("#h-run").addEventListener("click", hashAll);
-  $("#h-clear").addEventListener("click", function () {
-    hIn.value = "";
-    ["h-1", "h-256", "h-384", "h-512"].forEach(function (id) { document.getElementById(id).textContent = "—"; });
-  });
-  hashAll();
-
-  /* 06 xor */
-  var xIn = $("#x-in"), xKey = $("#x-key"), xOut = $("#x-out");
-  function xorBytes(data, key) {
-    var out = new Uint8Array(data.length);
-    for (var i = 0; i < data.length; i++) out[i] = data[i] ^ key[i % key.length];
-    return out;
-  }
-  $("#x-enc").addEventListener("click", function () {
-    var k = enc.encode(xKey.value);
-    if (!k.length) { say(xOut, "Kunci tidak boleh kosong.", true); return; }
-    say(xOut, toHex(xorBytes(enc.encode(xIn.value), k)) || "—");
-  });
-  $("#x-dec").addEventListener("click", function () {
-    var k = enc.encode(xKey.value);
-    if (!k.length) { say(xOut, "Kunci tidak boleh kosong.", true); return; }
-    try { say(xOut, dec.decode(xorBytes(fromHex(xIn.value), k)) || "—"); }
-    catch (e) { say(xOut, "Masukan harus berupa hex. " + e.message, true); }
-  });
-
-  /* 07 biner & hex */
+  /* 07 biner */
   var nIn = $("#n-in"), nOut = $("#n-out"), nStat = $("#n-stat");
   function stat(by) { nStat.textContent = by.length + " byte · " + (by.length * 8) + " bit · " + Array.from(nIn.value).length + " karakter"; }
   $("#n-bin").addEventListener("click", function () {
@@ -562,26 +764,216 @@ footer{padding:30px 0 40px}
     by.forEach(function (b) { a.push(("00000000" + b.toString(2)).slice(-8)); });
     say(nOut, a.join(" ") || "—"); stat(by);
   });
-  $("#n-hex").addEventListener("click", function () {
-    var by = enc.encode(nIn.value); say(nOut, toHex(by) || "—"); stat(by);
-  });
+  $("#n-hex").addEventListener("click", function () { var by = enc.encode(nIn.value); say(nOut, hex(by, true) || "—"); stat(by); });
   $("#n-rbin").addEventListener("click", function () {
-    var parts = nIn.value.trim().split(/\s+/).filter(Boolean);
-    if (!parts.length || !parts.every(function (p) { return /^[01]{1,8}$/.test(p); })) { say(nOut, "Masukkan deret biner 8 bit dipisah spasi.", true); return; }
-    var by = new Uint8Array(parts.map(function (p) { return parseInt(p, 2); }));
+    var p = nIn.value.trim().split(/\s+/).filter(Boolean);
+    if (!p.length || !p.every(function (x) { return /^[01]{1,8}$/.test(x); })) { say(nOut, "Masukkan deret biner 8 bit dipisah spasi.", true); return; }
+    var by = new Uint8Array(p.map(function (x) { return parseInt(x, 2); }));
     say(nOut, dec.decode(by)); nStat.textContent = by.length + " byte dibaca";
   });
   $("#n-rhex").addEventListener("click", function () {
-    try { var by = fromHex(nIn.value); say(nOut, dec.decode(by)); nStat.textContent = by.length + " byte dibaca"; }
+    try { var by = unhex(nIn.value); say(nOut, dec.decode(by)); nStat.textContent = by.length + " byte dibaca"; }
     catch (e) { say(nOut, e.message, true); }
   });
 
-  /* 08 sandi */
-  var wLen = $("#w-len"), wLenV = $("#w-len-v"), wOut = $("#w-out"), wEnt = $("#w-ent"), wBar = $("#w-bar");
-  wLen.addEventListener("input", function () { wLenV.textContent = wLen.value; });
+  /* 08 hash teks */
+  var hIn = $("#h-in");
+  function digestHex(alg, data) {
+    return crypto.subtle.digest(alg, data).then(function (buf) { return hex(new Uint8Array(buf)); });
+  }
+  function hashAll() {
+    if (!SC) { ["h-1","h-256","h-384","h-512"].forEach(function (id) { $("#" + id).textContent = "Butuh HTTPS."; }); return; }
+    [["SHA-1","h-1"],["SHA-256","h-256"],["SHA-384","h-384"],["SHA-512","h-512"]].forEach(function (p) {
+      digestHex(p[0], enc.encode(hIn.value)).then(function (s) { $("#" + p[1]).textContent = s; })
+        .catch(function () { $("#" + p[1]).textContent = "Gagal menghitung."; });
+    });
+  }
+  $("#h-run").addEventListener("click", hashAll);
+  $("#h-clear").addEventListener("click", function () {
+    hIn.value = ""; ["h-1","h-256","h-384","h-512"].forEach(function (id) { $("#" + id).textContent = "—"; });
+  });
+  hashAll();
+
+  /* 09 hash berkas */
+  var fd = $("#fd"), fi = $("#fi"), fRes = $("#f-res"), fMeta = $("#f-meta"), fCmp = $("#f-cmp"), fVer = $("#f-verdict");
+  function human(n) {
+    if (n < 1024) return n + " B";
+    if (n < 1048576) return (n / 1024).toFixed(1) + " KB";
+    if (n < 1073741824) return (n / 1048576).toFixed(2) + " MB";
+    return (n / 1073741824).toFixed(2) + " GB";
+  }
+  function readFile(file) {
+    if (file.arrayBuffer) return file.arrayBuffer();
+    return new Promise(function (res, rej) {
+      var fr = new FileReader();
+      fr.onload = function () { res(fr.result); };
+      fr.onerror = function () { rej(new Error("Gagal membaca berkas.")); };
+      fr.readAsArrayBuffer(file);
+    });
+  }
+  function handleFile(file) {
+    if (!file) return;
+    if (!SC) { flash("Butuh HTTPS"); return; }
+    $("#f-name").textContent = file.name;
+    $("#f-size").textContent = human(file.size);
+    $("#f-type").textContent = file.type || "tidak diketahui";
+    fMeta.hidden = false; fRes.hidden = false; fVer.hidden = true;
+    $("#f-256").textContent = "menghitung…"; $("#f-512").textContent = "menghitung…";
+    readFile(file).then(function (buf) {
+      return Promise.all([digestHex("SHA-256", buf), digestHex("SHA-512", buf)]);
+    }).then(function (r) {
+      $("#f-256").textContent = r[0]; $("#f-512").textContent = r[1];
+      compareFile();
+    }).catch(function (e) {
+      $("#f-256").textContent = "Gagal: " + e.message; $("#f-512").textContent = "—";
+    });
+  }
+  function compareFile() {
+    var want = fCmp.value.trim().toLowerCase().replace(/\s+/g, "");
+    var got = $("#f-256").textContent.trim();
+    if (!want || !/^[0-9a-f]{64}$/.test(got)) { fVer.hidden = true; return; }
+    var ok = slowEqual(want, got);
+    verdict(fVer, ok, ok ? "Cocok — berkas utuh" : "Tidak cocok — berkas berbeda");
+  }
+  fd.addEventListener("click", function () { fi.click(); });
+  fd.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fi.click(); } });
+  fi.addEventListener("change", function () { handleFile(fi.files[0]); });
+  ["dragenter","dragover"].forEach(function (ev) {
+    fd.addEventListener(ev, function (e) { e.preventDefault(); fd.classList.add("hot"); });
+  });
+  ["dragleave","drop"].forEach(function (ev) {
+    fd.addEventListener(ev, function (e) { e.preventDefault(); fd.classList.remove("hot"); });
+  });
+  fd.addEventListener("drop", function (e) {
+    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+  });
+  fCmp.addEventListener("input", compareFile);
+
+  /* 10 hmac */
+  var mOut = $("#m-out"), mCmp = $("#m-cmp"), mVer = $("#m-verdict");
+  function hmac() {
+    if (!SC) { say(mOut, "Web Crypto tidak aktif — butuh HTTPS.", true); return Promise.resolve(); }
+    var alg = $("#m-alg").value;
+    var secret = $("#m-key").value;
+    if (!secret) { say(mOut, "Kunci rahasia tidak boleh kosong.", true); return Promise.resolve(); }
+    return crypto.subtle.importKey("raw", enc.encode(secret), { name: "HMAC", hash: alg }, false, ["sign"])
+      .then(function (k) { return crypto.subtle.sign("HMAC", k, enc.encode($("#m-msg").value)); })
+      .then(function (sig) { say(mOut, hex(new Uint8Array(sig))); checkHmac(); })
+      .catch(function (e) { say(mOut, "Gagal: " + e.message, true); });
+  }
+  function checkHmac() {
+    var want = mCmp.value.trim().toLowerCase().replace(/\s+/g, "");
+    var got = mOut.textContent.trim();
+    if (!want || !/^[0-9a-f]+$/.test(got)) { mVer.hidden = true; return; }
+    var ok = slowEqual(want, got);
+    verdict(mVer, ok, ok ? "Sah — pesan otentik" : "Tidak sah — kunci atau pesan berbeda");
+  }
+  $("#m-run").addEventListener("click", function () { var b = this; busy(b, true); hmac().then(function () { busy(b, false); }); });
+  mCmp.addEventListener("input", checkHmac);
+  ["#m-msg","#m-key","#m-alg"].forEach(function (s) { $(s).addEventListener("input", function () { mVer.hidden = true; }); });
+
+  /* 11 aes-gcm */
+  var aIn = $("#a-in"), aOut = $("#a-out"), aIter = $("#a-iter"), aIterV = $("#a-iter-v"), aPass = $("#a-pass");
+  aIter.addEventListener("input", function () { aIterV.textContent = Number(aIter.value).toLocaleString("id-ID"); });
+  $("#a-show").addEventListener("change", function () { aPass.type = this.checked ? "text" : "password"; });
+  function deriveKey(pass, salt, iter, use) {
+    return crypto.subtle.importKey("raw", enc.encode(pass), "PBKDF2", false, ["deriveKey"])
+      .then(function (km) {
+        return crypto.subtle.deriveKey(
+          { name: "PBKDF2", salt: salt, iterations: iter, hash: "SHA-256" },
+          km, { name: "AES-GCM", length: 256 }, false, [use]);
+      });
+  }
+  $("#a-enc").addEventListener("click", function () {
+    var btn = this;
+    if (!SC) { say(aOut, "Web Crypto tidak aktif — butuh HTTPS.", true); return; }
+    if (!aPass.value) { say(aOut, "Kata sandi tidak boleh kosong.", true); return; }
+    var iter = parseInt(aIter.value, 10);
+    var salt = crypto.getRandomValues(new Uint8Array(16));
+    var iv = crypto.getRandomValues(new Uint8Array(12));
+    busy(btn, true, "Mengenkripsi…");
+    deriveKey(aPass.value, salt, iter, "encrypt").then(function (key) {
+      return crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, key, enc.encode(aIn.value));
+    }).then(function (ct) {
+      var body = new Uint8Array(ct);
+      var pack = new Uint8Array(1 + 4 + 16 + 12 + body.length);
+      pack[0] = 1;
+      pack[1] = (iter >>> 24) & 255; pack[2] = (iter >>> 16) & 255; pack[3] = (iter >>> 8) & 255; pack[4] = iter & 255;
+      pack.set(salt, 5); pack.set(iv, 21); pack.set(body, 33);
+      say(aOut, b64(pack));
+      $("#a-info").textContent = "Terenkripsi: " + iter.toLocaleString("id-ID") + " iterasi PBKDF2, garam 16 byte, IV 12 byte, total paket " + pack.length + " byte.";
+      busy(btn, false);
+    }).catch(function (e) { say(aOut, "Gagal: " + e.message, true); busy(btn, false); });
+  });
+  $("#a-dec").addEventListener("click", function () {
+    var btn = this;
+    if (!SC) { say(aOut, "Web Crypto tidak aktif — butuh HTTPS.", true); return; }
+    var pack;
+    try { pack = unb64(aIn.value); } catch (e) { say(aOut, "Masukan bukan Base64 yang sah.", true); return; }
+    if (pack.length < 34 || pack[0] !== 1) { say(aOut, "Paket tidak dikenali. Tempelkan hasil enkripsi dari perkakas ini.", true); return; }
+    var iter = (pack[1] << 24 | pack[2] << 16 | pack[3] << 8 | pack[4]) >>> 0;
+    var salt = pack.slice(5, 21), iv = pack.slice(21, 33), body = pack.slice(33);
+    busy(btn, true, "Mendekripsi…");
+    deriveKey(aPass.value, salt, iter, "decrypt").then(function (key) {
+      return crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, body);
+    }).then(function (pt) {
+      say(aOut, dec.decode(pt) || "—", false, true);
+      $("#a-info").textContent = "Berhasil didekripsi dengan " + iter.toLocaleString("id-ID") + " iterasi PBKDF2 yang terbaca dari paket.";
+      busy(btn, false);
+    }).catch(function () {
+      say(aOut, "Gagal membuka. Kata sandi salah, atau sandi-teks sudah diubah — AES-GCM menolak data yang tidak utuh.", true);
+      busy(btn, false);
+    });
+  });
+  $("#a-swap").addEventListener("click", function () { aIn.value = aOut.textContent; aIn.focus(); });
+
+  /* 12 ecdsa */
+  var pair = null, sSig = $("#s-sig"), sVer = $("#s-verdict");
+  $("#s-gen").addEventListener("click", function () {
+    var btn = this;
+    if (!SC) { $("#s-pub").textContent = "Web Crypto tidak aktif — butuh HTTPS."; return; }
+    busy(btn, true, "Membangkitkan…");
+    crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-256" }, true, ["sign", "verify"])
+      .then(function (kp) {
+        pair = kp;
+        return crypto.subtle.exportKey("spki", kp.publicKey);
+      })
+      .then(function (raw) {
+        $("#s-pub").textContent = b64(new Uint8Array(raw));
+        say(sSig, "—"); sVer.hidden = true;
+        flash("Pasangan kunci dibuat");
+        busy(btn, false);
+      })
+      .catch(function (e) { $("#s-pub").textContent = "Gagal: " + e.message; busy(btn, false); });
+  });
+  $("#s-sign").addEventListener("click", function () {
+    var btn = this;
+    if (!pair) { say(sSig, "Bangkitkan pasangan kunci terlebih dahulu.", true); return; }
+    busy(btn, true, "Menandatangani…");
+    crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, pair.privateKey, enc.encode($("#s-msg").value))
+      .then(function (sig) { say(sSig, b64(new Uint8Array(sig))); sVer.hidden = true; busy(btn, false); })
+      .catch(function (e) { say(sSig, "Gagal: " + e.message, true); busy(btn, false); });
+  });
+  $("#s-ver").addEventListener("click", function () {
+    var btn = this;
+    if (!pair) { say(sSig, "Bangkitkan pasangan kunci terlebih dahulu.", true); return; }
+    var raw;
+    try { raw = unb64(sSig.textContent.trim()); } catch (e) { verdict(sVer, false, "Belum ada tanda tangan"); return; }
+    busy(btn, true, "Memverifikasi…");
+    crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, pair.publicKey, raw, enc.encode($("#s-msg").value))
+      .then(function (ok) {
+        verdict(sVer, ok, ok ? "Sah — pesan belum diubah" : "Ditolak — pesan tidak cocok dengan tanda tangan");
+        busy(btn, false);
+      })
+      .catch(function () { verdict(sVer, false, "Ditolak — tanda tangan tidak terbaca"); busy(btn, false); });
+  });
+
+  /* 13 sandi */
+  var wLen = $("#w-len"), wOut = $("#w-out"), wEnt = $("#w-ent"), wBar = $("#w-bar");
+  wLen.addEventListener("input", function () { $("#w-len-v").textContent = wLen.value; });
   function pool() {
-    var low = "abcdefghijkmnopqrstuvwxyz", up = "ABCDEFGHJKLMNPQRSTUVWXYZ", num = "23456789";
-    if (!$("#w-amb").checked) { low = "abcdefghijklmnopqrstuvwxyz"; up = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; num = "0123456789"; }
+    var low = "abcdefghijklmnopqrstuvwxyz", up = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", num = "0123456789";
+    if ($("#w-amb").checked) { low = "abcdefghijkmnopqrstuvwxyz"; up = "ABCDEFGHJKLMNPQRSTUVWXYZ"; num = "23456789"; }
     var s = "";
     if ($("#w-low").checked) s += low;
     if ($("#w-up").checked) s += up;
