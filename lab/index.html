@@ -3,22 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Studioworks — Muhammad Rafly, Web Developer</title>
-<meta name="description" content="Studioworks: studio kecil yang merancang dan membangun antarmuka web yang cepat, rapi, dan bisa dipakai. Dikerjakan oleh Muhammad Rafly, mahasiswa Sistem Informasi Universitas Budi Luhur.">
+<title>Lab — Studioworks</title>
+<meta name="description" content="Tiga belas perkakas kriptografi dan konversi teks yang berjalan sepenuhnya di browser. Tidak ada data yang dikirim ke server.">
 <meta name="author" content="Muhammad Rafly">
 <meta name="theme-color" content="#eeebe4" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0d0d0c" media="(prefers-color-scheme: dark)">
-<link rel="canonical" href="https://studioworks.my.id/">
+<link rel="canonical" href="https://studioworks.my.id/lab/">
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Studioworks — Muhammad Rafly, Web Developer">
-<meta property="og:description" content="Studio kecil yang merancang dan membangun antarmuka web yang cepat, rapi, dan bisa dipakai.">
-<meta property="og:url" content="https://studioworks.my.id/">
-<meta property="og:image" content="https://studioworks.my.id/assets/images/social-preview.png">
-<meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Person","name":"Muhammad Rafly","url":"https://studioworks.my.id/","email":"mailto:rexha4u@gmail.com","jobTitle":"Web Developer","alumniOf":{"@type":"CollegeOrUniversity","name":"Universitas Budi Luhur"},"knowsAbout":["HTML","CSS","JavaScript","Next.js","Kriptografi"],"brand":{"@type":"Brand","name":"Studioworks"}}
-</script>
+<meta property="og:title" content="Lab — Studioworks">
+<meta property="og:description" content="Tiga belas perkakas kriptografi dan konversi teks yang berjalan sepenuhnya di browser.">
+<meta property="og:url" content="https://studioworks.my.id/lab/">
 <script>
   (function () {
     try {
@@ -32,6 +27,7 @@
 :root{
   --paper:#eeebe4; --paper-2:#e5e1d8; --ink:#16150f; --ink-2:#4a473d; --ink-3:#7a7668;
   --line:#c9c4b6; --accent:#c2400f; --accent-soft:rgba(194,64,15,.09);
+  --ok:#2f7d4f; --bad:#b3341a;
   --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
   --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
@@ -40,6 +36,7 @@
 [data-theme="dark"]{
   --paper:#0b0b0a; --paper-2:#121211; --ink:#f3f0e8; --ink-2:#b3ad9f; --ink-3:#7e796c;
   --line:#26251f; --accent:#ff6b35; --accent-soft:rgba(255,107,53,.10);
+  --ok:#5fbf86; --bad:#ff6b5a;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
@@ -47,20 +44,11 @@ body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);l
   overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .5s ease,color .5s ease}
 body::before{content:"";position:fixed;inset:0;z-index:999;pointer-events:none;opacity:.03;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E")}
-img,svg,canvas{display:block;max-width:100%}
 a{color:inherit}
 ::selection{background:var(--accent);color:#fff}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-
 .wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
 .mono{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
-section{scroll-margin-top:76px}
-.sec-head{display:flex;flex-wrap:wrap;gap:clamp(12px,3vw,48px);align-items:baseline;
-  padding:clamp(56px,9vw,120px) 0 clamp(24px,4vw,44px)}
-.sec-head .idx{color:var(--accent);flex:0 0 auto;min-width:96px}
-.sec-head h2{font-family:var(--serif);font-weight:400;letter-spacing:-.035em;line-height:1;
-  font-size:clamp(2rem,5.4vw,4rem);margin:0;flex:1 1 320px}
-.sec-head p{color:var(--ink-2);margin:0;flex:1 1 300px;max-width:46ch;font-size:.97rem}
 
 /* NAV */
 .nav{position:sticky;top:0;z-index:80;background:color-mix(in srgb,var(--paper) 84%,transparent);
@@ -76,8 +64,8 @@ section{scroll-margin-top:76px}
   text-decoration:none;color:var(--ink-2);padding:6px 0;position:relative;transition:color .25s}
 .nav ul a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;
   background:var(--accent);transition:right .35s var(--ease)}
-.nav ul a:hover{color:var(--ink)}
-.nav ul a:hover::after{right:0}
+.nav ul a:hover,.nav ul a.here{color:var(--ink)}
+.nav ul a.here::after,.nav ul a:hover::after{right:0}
 .tgl{width:34px;height:34px;border:1px solid var(--line);background:transparent;color:var(--ink);
   cursor:pointer;display:grid;place-items:center;border-radius:50%;flex:0 0 auto;
   transition:border-color .25s,transform .35s var(--ease)}
@@ -85,220 +73,104 @@ section{scroll-margin-top:76px}
 .tgl svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5}
 [data-theme="dark"] .tgl .sun{display:none}
 [data-theme="light"] .tgl .moon{display:none}
-@media(max-width:900px){.nav ul{display:none}}
+@media(max-width:820px){.nav ul{display:none}}
 
-/* HERO */
-.hero{padding:clamp(28px,5vw,58px) 0 0}
-.status{display:flex;flex-wrap:wrap;gap:clamp(14px,3vw,34px);align-items:center;
-  color:var(--ink-3);padding-bottom:clamp(22px,4vw,44px)}
-h1{font-family:var(--serif);font-weight:400;margin:0;letter-spacing:-.04em;line-height:1.06;
-  font-size:clamp(1.75rem,7vw,5.8rem)}
-h1 em{font-style:italic;color:var(--accent)}
-.h1-line{display:block;overflow:hidden;padding:.06em .08em .14em;margin:0 -.08em -.14em}
-.h1-line>span{display:block;transform:translateY(110%);transition:transform 1s var(--ease)}
-.ready .h1-line>span{transform:translateY(0)}
-.h1-line:nth-child(2)>span{transition-delay:.09s}
-.sc{white-space:pre-wrap}
-.hero-foot{display:flex;flex-wrap:wrap;gap:clamp(22px,5vw,72px);align-items:flex-end;
-  padding:clamp(28px,5vw,58px) 0 clamp(24px,4vw,44px)}
-.hero-foot p{margin:0;max-width:52ch;color:var(--ink-2);flex:1 1 380px}
-.hero-foot strong{color:var(--ink);font-weight:600}
-.scroll-cue{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink-3);display:flex;align-items:center;gap:9px;white-space:nowrap;text-decoration:none}
-.scroll-cue span{display:inline-block;width:38px;height:1px;background:var(--line);position:relative;overflow:hidden}
-.scroll-cue span::after{content:"";position:absolute;inset:0;background:var(--accent);
-  transform:translateX(-100%);animation:sweep 2.6s var(--ease) infinite}
-@keyframes sweep{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+/* HEAD */
+.head{padding:clamp(34px,6vw,72px) 0 clamp(24px,4vw,44px)}
+.head .idx{color:var(--accent)}
+.head h1{font-family:var(--serif);font-weight:400;letter-spacing:-.04em;line-height:1.04;
+  font-size:clamp(2rem,6vw,4.4rem);margin:14px 0 18px}
+.head h1 em{font-style:italic;color:var(--accent)}
+.head p{color:var(--ink-2);max-width:60ch;margin:0}
+.badges{display:flex;flex-wrap:wrap;gap:7px;margin-top:22px}
+.badge{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid var(--line);padding:5px 10px;color:var(--ink-3)}
 
-/* MEDAN PARTIKEL */
-.field{position:relative;height:clamp(300px,46vw,560px);border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);overflow:hidden;touch-action:pan-y;cursor:crosshair}
-#field{width:100%;height:100%}
-.field-ui{position:absolute;inset:auto 0 0 0;display:flex;justify-content:space-between;
-  align-items:flex-end;gap:14px;padding:clamp(12px,2vw,20px) var(--pad);pointer-events:none;flex-wrap:wrap}
-.field-ui .mono{color:var(--ink-3)}
-.shapes{display:flex;gap:7px;pointer-events:auto;flex-wrap:wrap}
-.shapes button{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;
-  background:color-mix(in srgb,var(--paper) 72%,transparent);border:1px solid var(--line);
-  color:var(--ink-3);padding:7px 13px;cursor:pointer;transition:color .3s,border-color .3s}
-.shapes button:hover{color:var(--ink);border-color:var(--ink-3)}
-.shapes button.on{color:var(--accent);border-color:var(--accent)}
-.field-top{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;
-  gap:12px;padding:clamp(12px,2vw,20px) var(--pad);pointer-events:none;color:var(--ink-3)}
-
-/* KERJA */
-.rows{border-top:1px solid var(--line)}
-.row{border-bottom:1px solid var(--line)}
-.row-main{display:grid;grid-template-columns:70px minmax(0,1.5fr) minmax(0,1.4fr) auto;
-  gap:clamp(12px,2.6vw,36px);align-items:center;padding:clamp(20px,3.2vw,34px) 0;transition:opacity .35s ease}
-.rows:hover .row-main{opacity:.4}
-.rows .row:hover .row-main,.rows .row:focus-within .row-main{opacity:1}
-.row-num{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink-3)}
-.row-title{font-family:var(--serif);font-size:clamp(1.4rem,3vw,2.3rem);letter-spacing:-.03em;
-  line-height:1.1;margin:0;transition:transform .45s var(--ease)}
-.row:hover .row-title{transform:translateX(10px)}
-.row-tags{display:flex;flex-wrap:wrap;gap:6px}
-.tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-  border:1px solid var(--line);padding:4px 9px;color:var(--ink-3);white-space:nowrap}
-.row-act{display:flex;align-items:center;gap:clamp(10px,2vw,22px);justify-self:end}
-.row-stat{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;
-  color:var(--ink-3);white-space:nowrap}
-.row-stat.live{color:var(--accent)}
-.go{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-  text-decoration:none;border:1px solid var(--ink);background:transparent;color:var(--ink);
-  padding:10px 16px;cursor:pointer;white-space:nowrap;transition:background .3s,color .3s}
-.go:hover{background:var(--ink);color:var(--paper)}
-.panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
-.row.open .panel{grid-template-rows:1fr}
-.panel>div{overflow:hidden}
-.panel-in{display:grid;grid-template-columns:70px minmax(0,1fr);gap:clamp(12px,2.6vw,36px);
-  padding:0 0 clamp(24px,3.4vw,38px)}
-.panel-body{max-width:64ch;color:var(--ink-2);font-size:.96rem}
-.panel-body p{margin:0 0 12px}
-.panel-body dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:14px;margin:18px 0 0;padding-top:16px;border-top:1px solid var(--line)}
-.panel-body dt{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
-.panel-body dd{margin:4px 0 0;color:var(--ink);font-size:.9rem}
+/* LAYOUT */
+.lab{display:grid;grid-template-columns:230px minmax(0,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);margin-bottom:clamp(50px,8vw,110px)}
+.side{background:var(--paper-2);padding:10px 0}
+.grp{padding:14px 18px 6px}
+.grp span{color:var(--ink-3)}
+.side button{display:block;width:100%;text-align:left;background:transparent;border:0;cursor:pointer;
+  font-family:var(--sans);font-size:.92rem;color:var(--ink-2);padding:10px 18px;position:relative;
+  transition:color .25s,background .25s}
+.side button::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--accent);
+  transform:scaleY(0);transition:transform .3s var(--ease)}
+.side button:hover{color:var(--ink)}
+.side button.on{color:var(--accent);background:var(--accent-soft)}
+.side button.on::before{transform:scaleY(1)}
+.pane{background:var(--paper-2);padding:clamp(20px,3.2vw,38px);min-height:520px}
+.tool{display:none}
+.tool.on{display:block;animation:fadein .45s var(--ease)}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.tool h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.4rem,3vw,2rem);
+  letter-spacing:-.03em;margin:0 0 8px}
+.tool .lead{color:var(--ink-2);font-size:.93rem;margin:0 0 22px;max-width:70ch}
 @media(max-width:860px){
-  .row-main{grid-template-columns:44px 1fr;row-gap:12px}
-  .row-tags,.row-act{grid-column:2}
-  .row-act{justify-self:start}
-  .panel-in{grid-template-columns:44px 1fr}
-  .row:hover .row-title{transform:none}
-  .rows:hover .row-main{opacity:1}
+  .lab{grid-template-columns:1fr}
+  .side{display:flex;flex-wrap:wrap;gap:4px;padding:12px}
+  .grp{width:100%;padding:8px 6px 2px}
+  .side button{width:auto;border:1px solid var(--line);padding:8px 13px;font-size:.82rem}
+  .side button::before{display:none}
+  .pane{min-height:0}
 }
 
-/* METODE */
-.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-  border-top:1px solid var(--line);border-left:1px solid var(--line)}
-.step{border-right:1px solid var(--line);border-bottom:1px solid var(--line);
-  padding:clamp(24px,3vw,38px);position:relative;overflow:hidden}
-.step::after{content:"";position:absolute;inset:0;background:var(--accent-soft);
-  transform:scaleY(0);transform-origin:bottom;transition:transform .5s var(--ease)}
-.step:hover::after{transform:scaleY(1)}
-.step>*{position:relative;z-index:1}
-.step .n{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--accent)}
-.step h3{font-family:var(--serif);font-weight:400;font-size:1.4rem;letter-spacing:-.02em;margin:14px 0 10px}
-.step p{margin:0;color:var(--ink-2);font-size:.93rem}
+/* FIELDS */
+.f{margin-bottom:16px}
+.f label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-3);display:flex;justify-content:space-between;gap:10px;margin-bottom:7px}
+.f input[type=text],.f input[type=password],.f input[type=number],.f textarea,.f select{
+  width:100%;font-family:var(--mono);font-size:.9rem;color:var(--ink);background:var(--paper);
+  border:1px solid var(--line);padding:11px 12px;line-height:1.6}
+.f textarea{min-height:110px;resize:vertical}
+.f input:focus,.f textarea:focus,.f select:focus{outline:none;border-color:var(--accent)}
+.f input[type=range]{width:100%;accent-color:var(--accent)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 18px}
+.b{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  background:transparent;border:1px solid var(--line);color:var(--ink-2);padding:10px 16px;cursor:pointer;
+  transition:border-color .25s,color .25s,background .25s}
+.b:hover{border-color:var(--accent);color:var(--accent)}
+.b.solid{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.b.solid:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.out{font-family:var(--mono);font-size:.88rem;word-break:break-all;white-space:pre-wrap;
+  background:var(--paper);border:1px solid var(--line);padding:12px;min-height:46px;color:var(--accent);
+  transition:border-color .3s}
+.out.ok{border-color:var(--ok);color:var(--ok)}
+.out.bad{border-color:var(--bad);color:var(--bad)}
+.hint{color:var(--ink-3);font-size:.84rem;margin:10px 0 0}
+.rowset{display:grid;gap:10px}
+.hrow{display:grid;grid-template-columns:90px minmax(0,1fr);gap:12px;align-items:start;
+  border-top:1px solid var(--line);padding-top:10px}
+.hrow b{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:400;padding-top:3px}
+.hrow code{font-family:var(--mono);font-size:.82rem;word-break:break-all;color:var(--ink)}
+.drop{border:1px dashed var(--line);padding:30px 18px;text-align:center;color:var(--ink-3);
+  cursor:pointer;transition:border-color .3s,background .3s}
+.drop.hot{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.bars{display:grid;grid-template-columns:repeat(26,1fr);gap:3px;align-items:end;height:150px;margin-top:8px}
+.bars div{background:var(--line);position:relative;transition:height .5s var(--ease),background .3s}
+.bars div.top{background:var(--accent)}
+.blab{display:grid;grid-template-columns:repeat(26,1fr);gap:3px;margin-top:6px}
+.blab span{font-family:var(--mono);font-size:9px;text-align:center;color:var(--ink-3)}
+.meter{height:2px;background:var(--line);margin-top:10px;position:relative;overflow:hidden}
+.meter i{position:absolute;inset:0 auto 0 0;width:0;background:var(--accent);transition:width .4s var(--ease)}
 
-/* LAB + BIN */
-.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));
-  gap:clamp(24px,4vw,64px);align-items:start;padding-bottom:clamp(40px,7vw,90px)}
-.split p{color:var(--ink-2);margin:0 0 16px}
-.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;
-  letter-spacing:.13em;text-transform:uppercase;text-decoration:none;border:1px solid var(--ink);
-  padding:14px 22px;color:var(--ink);background:transparent;cursor:pointer;margin:8px 8px 0 0;
-  transition:background .3s,color .3s,border-color .3s}
-.btn:hover{background:var(--ink);color:var(--paper)}
-.btn.solid{background:var(--ink);color:var(--paper)}
-.btn.solid:hover{background:var(--accent);border-color:var(--accent);color:#fff}
-.demo{border:1px solid var(--line);background:var(--paper-2)}
-.demo-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;
-  padding:12px 16px;border-bottom:1px solid var(--line);color:var(--ink-3)}
-.demo-body{padding:18px 16px}
-.fld{margin-bottom:14px}
-.fld label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--ink-3);display:flex;justify-content:space-between;margin-bottom:7px}
-.fld input[type=text]{width:100%;font-family:var(--mono);font-size:.9rem;color:var(--ink);
-  background:var(--paper);border:1px solid var(--line);padding:11px 12px}
-.fld input[type=text]:focus{outline:none;border-color:var(--accent)}
-.fld input[type=range]{width:100%;accent-color:var(--accent)}
-.out{font-family:var(--mono);font-size:.9rem;word-break:break-all;background:var(--paper);
-  border:1px solid var(--line);padding:11px 12px;min-height:42px;color:var(--accent)}
-.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
-.chip{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-  border:1px solid var(--line);padding:5px 10px;color:var(--ink-3)}
-.bin-note{border-left:2px solid var(--accent);padding-left:16px;margin:20px 0 0;color:var(--ink-2);font-size:.92rem}
-
-/* MESIN */
-.eng{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-  gap:1px;background:var(--line);border:1px solid var(--line)}
-.eng>div{background:var(--paper-2);padding:clamp(18px,2.6vw,30px)}
-.eng h3{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink-3);margin:0 0 14px;font-weight:400}
-.eng textarea{width:100%;min-height:120px;resize:vertical;font-family:var(--mono);font-size:.9rem;
-  line-height:1.6;color:var(--ink);background:var(--paper);border:1px solid var(--line);padding:13px}
-.eng textarea:focus{outline:none;border-color:var(--accent)}
-.eng-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:14px}
-.eng-row .mono{color:var(--ink-3)}
-.mini{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-  background:transparent;border:1px solid var(--line);color:var(--ink-2);padding:8px 14px;cursor:pointer;
-  transition:border-color .25s,color .25s}
-.mini:hover{border-color:var(--accent);color:var(--accent)}
-.cipher{font-family:var(--mono);font-size:.78rem;line-height:1.85;word-break:break-all;
-  color:var(--ink-3);margin-top:18px;max-height:132px;overflow:hidden}
-.cipher i{font-style:normal;transition:color .6s ease}
-.cipher i.hot{color:var(--accent)}
-.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;
-  margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
-.kv dt{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
-.kv dd{margin:6px 0 0;font-family:var(--mono);font-size:.82rem;color:var(--ink);word-break:break-all}
-.proof{color:var(--accent)}
-.bloom-wrap{position:relative;aspect-ratio:1;max-width:380px;margin:0 auto}
-#bloom{width:100%;height:100%}
-.av{display:flex;align-items:baseline;gap:12px;margin-top:18px}
-.av b{font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,4vw,2.8rem);
-  line-height:1;letter-spacing:-.03em;color:var(--accent)}
-.av span{font-size:.86rem;color:var(--ink-2)}
-.avbar{height:2px;background:var(--line);margin-top:12px;position:relative;overflow:hidden}
-.avbar i{position:absolute;inset:0 auto 0 0;width:0;background:var(--accent);transition:width .6s var(--ease)}
-.eng-note{color:var(--ink-2);font-size:.88rem;margin:16px 0 0}
-
-/* TENTANG */
-.about{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:clamp(24px,4vw,64px);padding-bottom:clamp(36px,6vw,72px)}
-.about p{color:var(--ink-2);margin:0 0 16px;max-width:60ch}
-.counts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
-  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-  padding:clamp(20px,3vw,32px) 0;margin:clamp(20px,3vw,32px) 0}
-.count b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,4.4vw,3rem);
-  line-height:1;letter-spacing:-.03em}
-.count span{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;
-  color:var(--ink-3);display:block;margin-top:9px}
-.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
-  border-top:1px solid var(--line);border-left:1px solid var(--line);margin:0}
-.meta div{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 18px}
-.meta dt{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
-.meta dd{margin:7px 0 0;font-size:.93rem}
-
-/* KONTAK */
-.contact{padding-bottom:clamp(50px,8vw,110px)}
-.mailrow{display:flex;flex-wrap:wrap;gap:14px;align-items:center;
-  border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(22px,4vw,40px) 0}
-.mail{font-family:var(--serif);font-size:clamp(1.25rem,4vw,2.6rem);letter-spacing:-.03em;
-  text-decoration:none;margin-right:auto;word-break:break-all;transition:color .3s}
-.mail:hover{color:var(--accent)}
-
-/* FOOTER */
-footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidden}
-.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:20px;padding:clamp(30px,5vw,54px) 0 clamp(24px,4vw,40px);margin:0}
-.fgrid dt{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
-.fgrid dd{margin:8px 0 0;font-family:var(--mono);font-size:11px;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--ink)}
-.fgrid a{text-decoration:none}
-.fgrid a:hover{color:var(--accent)}
+footer{border-top:1px solid var(--line);background:var(--paper-2)}
 .fbar{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;
-  border-top:1px solid var(--line);padding:18px 0;color:var(--ink-3)}
+  padding:22px 0;color:var(--ink-3)}
 .fbar a{text-decoration:none}
 .fbar a:hover{color:var(--accent)}
-.wordmark{width:100%;height:auto;display:block;color:var(--ink);opacity:.06;padding-bottom:6px}
-.wordmark text{font-family:var(--serif);fill:currentColor}
-@media(max-width:620px){.fbar .mid{order:3;width:100%}}
 
 #toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);opacity:0;pointer-events:none;
   background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:11px;letter-spacing:.1em;
   text-transform:uppercase;padding:12px 20px;z-index:90;
   transition:transform .45s cubic-bezier(.22,.78,.24,1),opacity .3s ease}
 #toast.on{transform:translate(-50%,0);opacity:1}
-
-.rv{opacity:0;transform:translateY(22px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
-.rv.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
-  .rv{opacity:1;transform:none}
-  .h1-line>span{transform:none}
 }
 </style>
 </head>
@@ -306,15 +178,14 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
 
 <nav class="nav">
   <div class="wrap nav-in">
-    <a class="brand" href="#top"><i></i><b>Studioworks</b></a>
+    <a class="brand" href="/"><i></i><b>Studioworks</b></a>
     <ul>
-      <li><a href="#kerja">Kerja</a></li>
-      <li><a href="#metode">Pendekatan</a></li>
-      <li><a href="/lab/">Lab</a></li>
+      <li><a href="/#kerja">Kerja</a></li>
+      <li><a href="/#metode">Pendekatan</a></li>
+      <li><a href="/lab/" class="here">Lab</a></li>
       <li><a href="/bin/">Bin</a></li>
-      <li><a href="#mesin">Mesin</a></li>
-      <li><a href="#tentang">Tentang</a></li>
-      <li><a href="#kontak">Kontak</a></li>
+      <li><a href="/#mesin">Mesin</a></li>
+      <li><a href="/#kontak">Kontak</a></li>
     </ul>
     <button class="tgl" id="themeBtn" type="button" aria-label="Ganti tema terang atau gelap">
       <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
@@ -323,339 +194,247 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
   </div>
 </nav>
 
-<main id="top">
-
-  <header class="hero">
-    <div class="wrap">
-      <div class="status mono">
-        <span>Muhammad Rafly — Web Developer</span>
-        <span>Jakarta <b id="clock">--.--</b></span>
-      </div>
-      <h1>
-        <span class="h1-line"><span><span class="sc">Antarmuka yang </span><em class="sc">tenang</em><span class="sc">,</span></span></span>
-        <span class="h1-line"><span><span class="sc">cepat, dan bisa dipakai.</span></span></span>
-      </h1>
-      <div class="hero-foot">
-        <p>Studioworks adalah studio satu orang. Saya membangun web dari nol — <strong>HTML, CSS, JavaScript</strong> — tanpa framework berat, tanpa dependensi yang tidak perlu. Fokusnya sederhana: halaman yang ringan, terbaca mesin pencari, dan nyaman dipakai siapa pun.</p>
-        <a class="scroll-cue" href="#kerja">Gulir untuk melihat kerja <span></span></a>
-      </div>
-    </div>
-
-    <div class="field" id="fieldWrap">
-      <canvas id="field" role="img" aria-label="Medan partikel yang mengalir dan berkumpul membentuk kata Studioworks, gambar gembok, dan tulisan AES-256-GCM."></canvas>
-      <div class="field-top mono">
-        <span id="fMeta">—</span>
-        <span>gerakkan kursor · klik untuk ubah</span>
-      </div>
-      <div class="field-ui">
-        <span class="mono" id="fState">terurai</span>
-        <div class="shapes" id="fShapes">
-          <button type="button" class="on">Wordmark</button>
-          <button type="button">Gembok</button>
-          <button type="button">AES-256-GCM</button>
-        </div>
-      </div>
+<main class="wrap">
+  <header class="head">
+    <span class="idx mono">Studioworks / Lab</span>
+    <h1>Tiga belas perkakas, <em>nol</em> server.</h1>
+    <p>Semua perhitungan di halaman ini dijalankan oleh peramban Anda. Teks dan berkas yang Anda masukkan tidak pernah dikirim ke mana pun — buka panel Network untuk membuktikannya sendiri.</p>
+    <div class="badges">
+      <span class="badge">Web Crypto API</span>
+      <span class="badge">Tanpa dependensi</span>
+      <span class="badge">Satu berkas HTML</span>
+      <span class="badge">Tautan langsung per perkakas</span>
     </div>
   </header>
 
-  <section id="kerja">
-    <div class="wrap">
-      <div class="sec-head rv">
-        <span class="idx mono">01 / Indeks</span>
-        <h2 class="sc">Kerja terpilih</h2>
-        <p>Enam entri. Status ditulis apa adanya — yang live bisa dibuka sekarang, yang konsep punya catatan prosesnya.</p>
-      </div>
+  <div class="lab">
+    <aside class="side" role="tablist" aria-label="Daftar perkakas">
+      <div class="grp"><span class="mono">Klasik</span></div>
+      <button type="button" data-t="caesar" class="on">Sandi Caesar</button>
+      <button type="button" data-t="rot13">ROT13</button>
+      <button type="button" data-t="xor">XOR bertingkat</button>
+      <button type="button" data-t="freq">Analisis frekuensi</button>
+      <div class="grp"><span class="mono">Pengodean</span></div>
+      <button type="button" data-t="b64">Base64</button>
+      <button type="button" data-t="url">URL encode</button>
+      <button type="button" data-t="binhex">Biner &amp; heksa</button>
+      <button type="button" data-t="pass">Pembangkit sandi</button>
+      <div class="grp"><span class="mono">Modern</span></div>
+      <button type="button" data-t="sha">Hash SHA</button>
+      <button type="button" data-t="aes">AES-GCM berkata sandi</button>
+      <button type="button" data-t="sign">Tanda tangan ECDSA</button>
+      <button type="button" data-t="hmac">HMAC</button>
+      <button type="button" data-t="file">Hash berkas</button>
+    </aside>
 
-      <div class="rows rv">
-        <article class="row">
-          <div class="row-main">
-            <span class="row-num">001</span>
-            <h3 class="row-title">JexCrypt</h3>
-            <div class="row-tags"><span class="tag">Next.js</span><span class="tag">Web Crypto</span><span class="tag">Edukasi</span></div>
-            <div class="row-act">
-              <span class="row-stat live">Live · 2025</span>
-              <a class="go" href="https://jexcrypt.vercel.app/" target="_blank" rel="noopener">Buka ↗</a>
-            </div>
-          </div>
-        </article>
+    <div class="pane">
 
-        <article class="row">
-          <div class="row-main">
-            <span class="row-num">002</span>
-            <h3 class="row-title">Studioworks Lab</h3>
-            <div class="row-tags"><span class="tag">Vanilla JS</span><span class="tag">Tooling</span><span class="tag">No-build</span></div>
-            <div class="row-act">
-              <span class="row-stat live">Live · 2026</span>
-              <a class="go" href="/lab/">Buka ↗</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="row">
-          <div class="row-main">
-            <span class="row-num">003</span>
-            <h3 class="row-title">Studioworks Bin</h3>
-            <div class="row-tags"><span class="tag">Zero-knowledge</span><span class="tag">AES-GCM</span><span class="tag">Tanpa server</span></div>
-            <div class="row-act">
-              <span class="row-stat live">Live · 2026</span>
-              <a class="go" href="/bin/">Buka ↗</a>
-            </div>
-          </div>
-        </article>
-
-        <article class="row">
-          <div class="row-main">
-            <span class="row-num">004</span>
-            <h3 class="row-title">Arsip Nusantara</h3>
-            <div class="row-tags"><span class="tag">Arsip Digital</span><span class="tag">Tipografi</span><span class="tag">Riset</span></div>
-            <div class="row-act">
-              <span class="row-stat">Konsep · 2025</span>
-              <button class="go" type="button" data-toggle aria-expanded="false">Detail</button>
-            </div>
-          </div>
-          <div class="panel"><div><div class="panel-in"><span></span><div class="panel-body">
-            <p>Latihan menata koleksi arsip dalam jumlah besar tanpa membuat pembacanya lelah. Persoalan utamanya bukan gaya, tapi hierarki: bagaimana satu halaman bisa memuat ribuan entri dan tetap mudah disisir.</p>
-            <p>Yang saya kerjakan sejauh ini adalah struktur konten, skala tipografi, dan pola penelusuran. Belum ada data asli, jadi statusnya masih konsep — dan saya menuliskannya apa adanya.</p>
-            <dl>
-              <dt>Peran</dt><dd>Riset &amp; desain antarmuka</dd>
-              <dt>Fokus</dt><dd>Hierarki &amp; keterbacaan</dd>
-              <dt>Tahap</dt><dd>Wireframe dan skala tipografi</dd>
-            </dl>
-          </div></div></div></div>
-        </article>
-
-        <article class="row">
-          <div class="row-main">
-            <span class="row-num">005</span>
-            <h3 class="row-title">Pasar Pagi</h3>
-            <div class="row-tags"><span class="tag">UI Study</span><span class="tag">Mobile-first</span><span class="tag">UMKM</span></div>
-            <div class="row-act">
-              <span class="row-stat">Studi kasus · 2025</span>
-              <button class="go" type="button" data-toggle aria-expanded="false">Detail</button>
-            </div>
-          </div>
-          <div class="panel"><div><div class="panel-in"><span></span><div class="panel-body">
-            <p>Studi kasus untuk pedagang kecil yang pelanggannya membuka web lewat ponsel murah dan jaringan seadanya. Asumsi awalnya dibalik: desain dimulai dari layar sempit dan koneksi lambat, bukan dari layar desktop.</p>
-            <p>Keputusan terbesarnya adalah memangkas gambar besar dan mengandalkan teks serta tata letak. Halaman jadi ringan, dan alur pesan barang bisa selesai dalam tiga ketukan.</p>
-            <dl>
-              <dt>Peran</dt><dd>Desain &amp; prototipe</dd>
-              <dt>Fokus</dt><dd>Performa di jaringan lambat</dd>
-              <dt>Tahap</dt><dd>Prototipe teruji, belum dirilis</dd>
-            </dl>
-          </div></div></div></div>
-        </article>
-
-        <article class="row">
-          <div class="row-main">
-            <span class="row-num">006</span>
-            <h3 class="row-title">Kirim</h3>
-            <div class="row-tags"><span class="tag">Landing</span><span class="tag">Motion</span><span class="tag">Konsep</span></div>
-            <div class="row-act">
-              <span class="row-stat">Dalam pengerjaan · 2026</span>
-              <button class="go" type="button" data-toggle aria-expanded="false">Detail</button>
-            </div>
-          </div>
-          <div class="panel"><div><div class="panel-in"><span></span><div class="panel-body">
-            <p>Halaman pendaratan untuk layanan pengiriman fiktif, dipakai sebagai latihan gerak: kapan animasi membantu pemahaman, kapan ia cuma menambah beban.</p>
-            <p>Aturan yang saya pegang di sini: setiap gerakan harus menjelaskan sesuatu — arah, urutan, atau perubahan keadaan. Semua transisi dimatikan otomatis saat pengguna menyalakan <em>reduced motion</em> di sistemnya.</p>
-            <dl>
-              <dt>Peran</dt><dd>Desain &amp; front-end</dd>
-              <dt>Fokus</dt><dd>Gerak yang punya alasan</dd>
-              <dt>Tahap</dt><dd>Sedang dikerjakan</dd>
-            </dl>
-          </div></div></div></div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section id="metode">
-    <div class="wrap">
-      <div class="sec-head rv">
-        <span class="idx mono">02 / Metode</span>
-        <h2 class="sc">Cara saya bekerja</h2>
-        <p>Empat tahap, tanpa drama. Setiap tahap punya keluaran yang bisa dilihat klien.</p>
-      </div>
-      <div class="steps rv">
-        <div class="step"><span class="n">01</span><h3>Dengar &amp; petakan</h3><p>Apa yang mau dicapai, siapa yang pakai, apa batasannya. Keluaran: ringkasan kebutuhan satu halaman.</p></div>
-        <div class="step"><span class="n">02</span><h3>Struktur dulu</h3><p>Konten dan hierarki disusun sebelum warna. Wireframe kasar lebih murah daripada revisi besar.</p></div>
-        <div class="step"><span class="n">03</span><h3>Bangun ramping</h3><p>HTML semantik, CSS modern, JavaScript seperlunya. Tanpa dependensi yang tidak dipakai.</p></div>
-        <div class="step"><span class="n">04</span><h3>Uji &amp; serahkan</h3><p>Cek performa, kontras, keyboard, dan mesin pencari. Lalu deploy plus catatan pemeliharaan.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="lab">
-    <div class="wrap">
-      <div class="sec-head rv">
-        <span class="idx mono">03 / Lab</span>
-        <h2 class="sc">Ruang percobaan</h2>
-        <p>Perkakas kecil yang saya tulis sendiri. Semuanya jalan di browser — tidak ada data yang dikirim ke server.</p>
-      </div>
-      <div class="split rv">
-        <div>
-          <p>Lab berisi tiga belas perkakas konversi dan kriptografi: Caesar, ROT13, Base64, URL encode, hash SHA, XOR, biner/heksa, pembangkit sandi, sampai AES-GCM berkata sandi, tanda tangan digital, hash berkas, HMAC, dan analisis frekuensi huruf.</p>
-          <p>Cicipi versi mini di sebelah — ketik sesuatu, lalu geser pergeserannya.</p>
-          <div class="chips">
-            <span class="chip">Klasik</span><span class="chip">Pengodean</span><span class="chip">Modern</span><span class="chip">Web Crypto API</span>
-          </div>
-          <a class="btn solid" href="/lab/">Masuk ke Lab lengkap</a>
+      <!-- 1 CAESAR -->
+      <section class="tool on" id="t-caesar">
+        <h2>Sandi Caesar</h2>
+        <p class="lead">Menggeser tiap huruf sejauh n posisi. Sandi tertua yang masih diajarkan — dan yang paling cepat dipatahkan, karena kuncinya hanya 25 kemungkinan.</p>
+        <div class="f"><label for="caIn">Teks</label><textarea id="caIn" spellcheck="false">Rahasia kecil.</textarea></div>
+        <div class="f"><label for="caSh">Pergeseran <b id="caShV">3</b></label><input id="caSh" type="range" min="1" max="25" value="3"></div>
+        <div class="acts">
+          <button class="b solid" type="button" id="caEnc">Geser maju</button>
+          <button class="b" type="button" id="caDec">Geser mundur</button>
+          <button class="b" type="button" data-copy="caOut">Salin</button>
         </div>
-        <div class="demo">
-          <div class="demo-bar"><span class="mono">caesar.js</span><span class="mono">lokal</span></div>
-          <div class="demo-body">
-            <div class="fld">
-              <label for="cIn">Teks</label>
-              <input id="cIn" type="text" value="studioworks" autocomplete="off" spellcheck="false">
-            </div>
-            <div class="fld">
-              <label for="cSh">Pergeseran <b id="cShVal">3</b></label>
-              <input id="cSh" type="range" min="1" max="25" value="3">
-            </div>
-            <div class="out" id="cOut">vwxglrzrunv</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+        <div class="out" id="caOut">—</div>
+        <p class="hint">Karena ruang kuncinya sangat kecil, seluruh 25 kemungkinan bisa dicoba manusia dalam hitungan menit. Lihat tab Analisis frekuensi untuk memecahkannya tanpa tahu kuncinya.</p>
+      </section>
 
-  <section id="bin">
-    <div class="wrap">
-      <div class="sec-head rv">
-        <span class="idx mono">04 / Bin</span>
-        <h2 class="sc">Catatan sekali pakai</h2>
-        <p>Tempel teks, dapat tautan. Isinya dienkripsi di browser dan kuncinya tidak pernah meninggalkan alamat tautan itu sendiri.</p>
-      </div>
-      <div class="split rv">
-        <div>
-          <p>Bin bekerja tanpa basis data. Teks dienkripsi dengan <strong>AES-GCM</strong> di perangkat Anda, hasilnya ditaruh di belakang tanda pagar pada tautan — bagian yang menurut spesifikasi URL memang tidak pernah dikirim ke server.</p>
-          <p>Server hanya menyerahkan berkas HTML sekali di awal. Setelah itu tidak ada lagi percakapan dengan server: catatan bisa diberi kata sandi, diberi tanggal kedaluwarsa, dan dibuka dalam tampilan mentah untuk disalin cepat.</p>
-          <p class="bin-note">Karena tidak ada server yang menyimpan, tidak ada pula yang bisa diminta menyerahkan isinya. Konsekuensinya jujur: kalau tautannya hilang, catatannya hilang.</p>
-          <a class="btn solid" href="/bin/">Buat catatan</a>
-          <a class="btn" href="#mesin">Lihat mesinnya</a>
+      <!-- 2 ROT13 -->
+      <section class="tool" id="t-rot13">
+        <h2>ROT13</h2>
+        <p class="lead">Caesar dengan pergeseran tepat 13. Karena alfabet punya 26 huruf, proses enkripsi dan dekripsinya identik — terapkan dua kali dan teksnya kembali seperti semula.</p>
+        <div class="f"><label for="roIn">Teks</label><textarea id="roIn" spellcheck="false">Studioworks</textarea></div>
+        <div class="acts"><button class="b" type="button" data-copy="roOut">Salin hasil</button></div>
+        <div class="out" id="roOut">—</div>
+        <p class="hint">ROT13 bukan pengamanan. Pemakaian aslinya di forum lama adalah menyembunyikan spoiler, bukan merahasiakan data.</p>
+      </section>
+
+      <!-- 3 XOR -->
+      <section class="tool" id="t-xor">
+        <h2>XOR bertingkat</h2>
+        <p class="lead">Tiap bait teks di-XOR dengan bait kunci yang berulang. Operasi yang sama dipakai untuk membuka — dasar dari banyak sandi modern, meski sendirian ia lemah.</p>
+        <div class="f"><label for="xoIn">Teks biasa</label><textarea id="xoIn" spellcheck="false">Kunci yang pendek mudah ditebak.</textarea></div>
+        <div class="f"><label for="xoKey">Kunci</label><input id="xoKey" type="text" value="budiluhur" spellcheck="false"></div>
+        <div class="acts">
+          <button class="b solid" type="button" id="xoEnc">Ke heksadesimal</button>
+          <button class="b" type="button" id="xoDec">Heksa kembali ke teks</button>
+          <button class="b" type="button" data-copy="xoOut">Salin</button>
         </div>
-        <div class="demo">
-          <div class="demo-bar"><span class="mono">anatomi tautan</span><span class="mono">tanpa server</span></div>
-          <div class="demo-body">
-            <div class="fld">
-              <label>Dikirim ke server</label>
-              <div class="out" style="color:var(--ink-2)">studioworks.my.id/bin/</div>
-            </div>
-            <div class="fld">
-              <label>Tidak pernah dikirim</label>
-              <div class="out">#v1.aG9sYS4uLmVuY3J5cHRlZA</div>
-            </div>
-            <div class="chips">
-              <span class="chip">Anonim</span><span class="chip">Kedaluwarsa</span><span class="chip">Kata sandi</span><span class="chip">Raw</span>
+        <div class="out" id="xoOut">—</div>
+        <p class="hint">Kalau kunci lebih pendek dari pesan, polanya berulang dan bisa dianalisis. Kunci sepanjang pesan dan dipakai sekali saja adalah satu-satunya versi yang terbukti tak terpecahkan.</p>
+      </section>
+
+      <!-- 4 FREKUENSI -->
+      <section class="tool" id="t-freq">
+        <h2>Analisis frekuensi</h2>
+        <p class="lead">Menghitung sebaran huruf lalu mencocokkannya dengan frekuensi huruf bahasa Indonesia untuk menebak pergeseran Caesar — tanpa tahu kuncinya.</p>
+        <div class="f"><label for="frIn">Teks tersandi</label><textarea id="frIn" spellcheck="false">Udkdvld nhflo.</textarea></div>
+        <div class="bars" id="frBars" aria-hidden="true"></div>
+        <div class="blab" id="frLab" aria-hidden="true"></div>
+        <div class="out" id="frOut" style="margin-top:18px">—</div>
+        <p class="hint">Tebakan makin akurat seiring panjang teks. Untuk kalimat pendek hasilnya sering meleset, karena satu dua huruf bisa mengacaukan seluruh sebaran.</p>
+      </section>
+
+      <!-- 5 BASE64 -->
+      <section class="tool" id="t-b64">
+        <h2>Base64</h2>
+        <p class="lead">Mengubah data biner jadi 64 karakter aman-teks. Ini pengodean, bukan enkripsi — siapa pun bisa membalikkannya tanpa kunci.</p>
+        <div class="f"><label for="b6In">Masukan</label><textarea id="b6In" spellcheck="false">Halo, Universitas Budi Luhur.</textarea></div>
+        <div class="acts">
+          <button class="b solid" type="button" id="b6Enc">Encode</button>
+          <button class="b" type="button" id="b6Dec">Decode</button>
+          <button class="b" type="button" data-copy="b6Out">Salin</button>
+        </div>
+        <div class="out" id="b6Out">—</div>
+        <p class="hint">Aman untuk karakter non-Latin: teks dikonversi ke UTF-8 dulu, jadi huruf beraksen dan emoji tidak rusak.</p>
+      </section>
+
+      <!-- 6 URL -->
+      <section class="tool" id="t-url">
+        <h2>URL encode</h2>
+        <p class="lead">Menyandikan karakter yang tidak boleh muncul mentah di dalam alamat web, seperti spasi, tanda tanya, dan ampersand.</p>
+        <div class="f"><label for="urIn">Masukan</label><textarea id="urIn" spellcheck="false">cari?kata=sistem informasi&amp;kampus=budi luhur</textarea></div>
+        <div class="acts">
+          <button class="b solid" type="button" id="urEnc">Encode</button>
+          <button class="b" type="button" id="urDec">Decode</button>
+          <button class="b" type="button" data-copy="urOut">Salin</button>
+        </div>
+        <div class="out" id="urOut">—</div>
+        <p class="hint">Dipakai <code>encodeURIComponent</code>, yang juga menyandikan <code>&amp;</code> dan <code>=</code> — cocok untuk isi parameter, bukan untuk alamat utuh.</p>
+      </section>
+
+      <!-- 7 BINHEX -->
+      <section class="tool" id="t-binhex">
+        <h2>Biner &amp; heksadesimal</h2>
+        <p class="lead">Melihat teks apa adanya di tingkat bait: sebagai angka basis dua, basis enam belas, dan basis sepuluh.</p>
+        <div class="f"><label for="bhIn">Teks</label><textarea id="bhIn" spellcheck="false">Rafly</textarea></div>
+        <div class="rowset">
+          <div class="hrow"><b>Biner</b><code id="bhBin">—</code></div>
+          <div class="hrow"><b>Heksa</b><code id="bhHex">—</code></div>
+          <div class="hrow"><b>Desimal</b><code id="bhDec">—</code></div>
+          <div class="hrow"><b>Ukuran</b><code id="bhLen">—</code></div>
+        </div>
+        <p class="hint">Huruf non-ASCII memakan lebih dari satu bait dalam UTF-8 — coba ketik huruf beraksen dan perhatikan jumlah baitnya bertambah.</p>
+      </section>
+
+      <!-- 8 PASSWORD -->
+      <section class="tool" id="t-pass">
+        <h2>Pembangkit sandi</h2>
+        <p class="lead">Karakter diambil dari <code>crypto.getRandomValues</code>, sumber acak kriptografis bawaan peramban — bukan <code>Math.random</code> yang bisa ditebak.</p>
+        <div class="two">
+          <div class="f"><label for="paLen">Panjang <b id="paLenV">20</b></label><input id="paLen" type="range" min="8" max="64" value="20"></div>
+          <div class="f"><label>Himpunan karakter</label>
+            <div style="display:flex;flex-wrap:wrap;gap:14px;padding-top:4px">
+              <label class="mono" style="display:flex;gap:6px;align-items:center;text-transform:none;letter-spacing:0;font-size:.85rem;color:var(--ink-2)"><input type="checkbox" id="paU" checked> A-Z</label>
+              <label class="mono" style="display:flex;gap:6px;align-items:center;text-transform:none;letter-spacing:0;font-size:.85rem;color:var(--ink-2)"><input type="checkbox" id="paL" checked> a-z</label>
+              <label class="mono" style="display:flex;gap:6px;align-items:center;text-transform:none;letter-spacing:0;font-size:.85rem;color:var(--ink-2)"><input type="checkbox" id="paN" checked> 0-9</label>
+              <label class="mono" style="display:flex;gap:6px;align-items:center;text-transform:none;letter-spacing:0;font-size:.85rem;color:var(--ink-2)"><input type="checkbox" id="paS" checked> simbol</label>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="mesin">
-    <div class="wrap">
-      <div class="sec-head rv">
-        <span class="idx mono">05 / Mesin</span>
-        <h2 class="sc">Kripto yang benar-benar jalan</h2>
-        <p>Bukan animasi tiruan. Tiap ketikan dienkripsi ulang dengan AES-256-GCM dan dicacah SHA-256 lewat Web Crypto bawaan peramban.</p>
-      </div>
-
-      <div class="eng rv">
-        <div>
-          <h3>Masukan</h3>
-          <textarea id="engIn" spellcheck="false" aria-label="Teks yang akan dienkripsi">Rahasia kecil untuk penguji sidang.</textarea>
-          <div class="eng-row">
-            <span class="mono" id="engLen">—</span>
-            <button class="mini" type="button" id="engKey">Kunci baru</button>
-          </div>
-          <div class="cipher" id="engCipher" aria-hidden="true"></div>
-          <dl class="kv">
-            <div><dt>IV acak</dt><dd id="engIv">—</dd></div>
-            <div><dt>Uji balik</dt><dd class="proof" id="engProof">—</dd></div>
-          </dl>
-          <p class="eng-note">IV dibangkitkan ulang setiap kali, jadi teks yang sama pun menghasilkan sandi yang sama sekali berbeda. Enam belas bait terakhir adalah tag autentikasi: ubah satu bait, dekripsi ditolak, bukan salah hasil.</p>
+        <div class="acts">
+          <button class="b solid" type="button" id="paGen">Bangkitkan</button>
+          <button class="b" type="button" data-copy="paOut">Salin</button>
         </div>
+        <div class="out" id="paOut">—</div>
+        <div class="meter"><i id="paBar"></i></div>
+        <p class="hint" id="paNote">—</p>
+      </section>
 
-        <div>
-          <h3>SHA-256 · sidik jari</h3>
-          <div class="bloom-wrap">
-            <canvas id="bloom" role="img" aria-label="Visualisasi radial dari nilai hash SHA-256 teks yang diketik."></canvas>
-          </div>
-          <div class="av"><b id="avNum">0</b><span>dari 256 bit berubah dibanding ketikan sebelumnya</span></div>
-          <div class="avbar"><i id="avBar"></i></div>
-          <p class="eng-note">Bentuk itu digambar langsung dari 256 bit hash. Ubah satu huruf, sekitar separuh bit terbalik dan siluetnya berganti total — sifat yang membuat hash tidak bisa ditelusuri mundur.</p>
+      <!-- 9 SHA -->
+      <section class="tool" id="t-sha">
+        <h2>Hash SHA</h2>
+        <p class="lead">Sidik jari satu arah. Masukan sepanjang apa pun menghasilkan keluaran dengan panjang tetap, dan tidak ada cara praktis menelusurinya mundur.</p>
+        <div class="f"><label for="shIn">Masukan</label><textarea id="shIn" spellcheck="false">Studioworks</textarea></div>
+        <div class="rowset">
+          <div class="hrow"><b>SHA-1</b><code id="sh1">—</code></div>
+          <div class="hrow"><b>SHA-256</b><code id="sh256">—</code></div>
+          <div class="hrow"><b>SHA-384</b><code id="sh384">—</code></div>
+          <div class="hrow"><b>SHA-512</b><code id="sh512">—</code></div>
         </div>
-      </div>
-    </div>
-  </section>
+        <p class="hint">SHA-1 disertakan untuk perbandingan saja. Tabrakannya sudah dibuktikan secara praktis, jadi jangan dipakai untuk apa pun yang berkaitan dengan keamanan.</p>
+      </section>
 
-  <section id="tentang">
-    <div class="wrap">
-      <div class="sec-head rv">
-        <span class="idx mono">06 / Profil</span>
-        <h2 class="sc">Tentang</h2>
-        <p>Saya Muhammad Rafly, mahasiswa Sistem Informasi di Universitas Budi Luhur. Siang kuliah, malam menulis kode dan membongkar cara kerja web.</p>
-      </div>
-      <div class="about rv">
-        <div>
-          <p>Studioworks lahir dari kebiasaan itu: mengerjakan halaman kecil sampai benar-benar beres — bukan cuma terlihat bagus di tangkapan layar, tapi juga cepat dibuka di jaringan lambat dan tetap bisa dipakai lewat keyboard.</p>
-          <p>Kuliah saya banyak membahas analisis sistem dan basis data, dan itu yang saya bawa ke pekerjaan antarmuka: memetakan kebutuhan dulu, baru menggambar. Sisanya saya pelajari sendiri — HTML, CSS, dan JavaScript murni, plus Next.js untuk proyek yang butuh routing. Keamanan dan kriptografi jadi minat khusus, dan itu sebabnya ada Lab dan Bin di situs ini.</p>
-          <div class="counts">
-            <div class="count"><b data-to="6">0</b><span>Proyek dikerjakan</span></div>
-            <div class="count"><b data-to="13">0</b><span>Perkakas di Lab</span></div>
-            <div class="count"><b data-to="0">0</b><span>Dependensi runtime</span></div>
-          </div>
+      <!-- 10 AES -->
+      <section class="tool" id="t-aes">
+        <h2>AES-GCM berkata sandi</h2>
+        <p class="lead">Enkripsi sungguhan. Kunci 256-bit diturunkan dari kata sandi Anda lewat PBKDF2, lalu dipakai oleh AES-GCM yang sekaligus menjamin keutuhan data.</p>
+        <div class="f"><label for="aeIn">Teks</label><textarea id="aeIn" spellcheck="false">Nilai sidang jangan bocor.</textarea></div>
+        <div class="f"><label for="aePw">Kata sandi</label><input id="aePw" type="password" value="budiluhur2026"></div>
+        <div class="acts">
+          <button class="b solid" type="button" id="aeEnc">Enkripsi</button>
+          <button class="b" type="button" id="aeDec">Dekripsi</button>
+          <button class="b" type="button" id="aeMove">Pindah hasil ke masukan</button>
+          <button class="b" type="button" data-copy="aeOut">Salin</button>
         </div>
-        <dl class="meta">
-          <div><dt>Peran</dt><dd>Front-end Developer</dd></div>
-          <div><dt>Kampus</dt><dd>Universitas Budi Luhur</dd></div>
-          <div><dt>Program studi</dt><dd>S1 Sistem Informasi</dd></div>
-          <div><dt>Basis</dt><dd>Jakarta (GMT+7)</dd></div>
-          <div><dt>Bahasa</dt><dd>Indonesia, Inggris</dd></div>
-          <div><dt>Stack</dt><dd>HTML, CSS, JS, Next.js</dd></div>
-          <div><dt>Fokus</dt><dd>Performa, aksesibilitas</dd></div>
-          <div><dt>Status</dt><dd>Terbuka untuk proyek</dd></div>
-        </dl>
-      </div>
-    </div>
-  </section>
+        <div class="out" id="aeOut">—</div>
+        <p class="hint">Keluarannya berisi garam, IV, dan sandi sekaligus. Ubah satu huruf pada hasil enkripsi lalu coba dekripsi — GCM akan menolak, bukan mengeluarkan teks yang salah.</p>
+      </section>
 
-  <section id="kontak" class="contact">
-    <div class="wrap">
-      <div class="sec-head rv">
-        <span class="idx mono">07 / Kontak</span>
-        <h2 class="sc">Mari bicara</h2>
-        <p>Tidak ada formulir di sini — cukup kirim surel, biasanya saya balas dalam 24 jam.</p>
-      </div>
-      <div class="mailrow rv">
-        <a class="mail" href="mailto:rexha4u@gmail.com">rexha4u@gmail.com</a>
-        <button class="btn" type="button" id="copyMail">Salin alamat</button>
-        <a class="btn solid" href="mailto:rexha4u@gmail.com?subject=Proyek%20lewat%20Studioworks">Kirim surel</a>
-      </div>
-    </div>
-  </section>
+      <!-- 11 SIGN -->
+      <section class="tool" id="t-sign">
+        <h2>Tanda tangan ECDSA</h2>
+        <p class="lead">Membuktikan siapa penulis pesan tanpa menyembunyikan isinya. Kunci privat menandatangani, kunci publik memverifikasi.</p>
+        <div class="acts"><button class="b solid" type="button" id="sgKey">Bangkitkan pasangan kunci</button></div>
+        <div class="f"><label>Kunci publik (P-256, heksa)</label><div class="out" id="sgPub" style="color:var(--ink-2)">belum dibangkitkan</div></div>
+        <div class="f"><label for="sgMsg">Pesan</label><textarea id="sgMsg" spellcheck="false">Saya Muhammad Rafly, dan ini karya saya.</textarea></div>
+        <div class="acts">
+          <button class="b" type="button" id="sgSign">Tandatangani</button>
+          <button class="b" type="button" id="sgVer">Verifikasi</button>
+          <button class="b" type="button" data-copy="sgSig">Salin tanda tangan</button>
+        </div>
+        <div class="f"><label for="sgSig">Tanda tangan</label><textarea id="sgSig" spellcheck="false"></textarea></div>
+        <div class="out" id="sgOut">—</div>
+        <p class="hint">Ubah satu kata pada pesan setelah menandatangani, lalu verifikasi lagi — hasilnya pasti ditolak. Itulah gunanya tanda tangan digital.</p>
+      </section>
 
+      <!-- 12 HMAC -->
+      <section class="tool" id="t-hmac">
+        <h2>HMAC</h2>
+        <p class="lead">Kode otentikasi pesan berbasis kunci rahasia bersama. Menjawab pertanyaan: apakah pesan ini benar dari pihak yang tahu kuncinya, dan belum diubah?</p>
+        <div class="f"><label for="hmIn">Pesan</label><textarea id="hmIn" spellcheck="false">transfer=1000000</textarea></div>
+        <div class="f"><label for="hmKey">Kunci rahasia</label><input id="hmKey" type="text" value="kunci-bersama" spellcheck="false"></div>
+        <div class="acts">
+          <button class="b solid" type="button" id="hmGen">Hitung HMAC-SHA256</button>
+          <button class="b" type="button" id="hmVer">Verifikasi nilai di bawah</button>
+          <button class="b" type="button" data-copy="hmSig">Salin</button>
+        </div>
+        <div class="f"><label for="hmSig">Nilai HMAC</label><input id="hmSig" type="text" spellcheck="false"></div>
+        <div class="out" id="hmOut">—</div>
+        <p class="hint">Perbandingan di sini memakai pola waktu-tetap sederhana. JavaScript tidak menjamin waktu eksekusi benar-benar tetap, jadi untuk sistem nyata lakukan verifikasi di sisi peladen.</p>
+      </section>
+
+      <!-- 13 FILE -->
+      <section class="tool" id="t-file">
+        <h2>Hash berkas</h2>
+        <p class="lead">Seret berkas apa pun ke kotak di bawah. Berkas dibaca langsung dari disk oleh peramban — tidak diunggah ke mana pun.</p>
+        <div class="drop" id="fiDrop" tabindex="0" role="button">Seret berkas ke sini, atau klik untuk memilih</div>
+        <input type="file" id="fiPick" hidden>
+        <div class="rowset" style="margin-top:18px">
+          <div class="hrow"><b>Nama</b><code id="fiName">—</code></div>
+          <div class="hrow"><b>Ukuran</b><code id="fiSize">—</code></div>
+          <div class="hrow"><b>SHA-256</b><code id="fiHash">—</code></div>
+        </div>
+        <div class="f" style="margin-top:20px"><label for="fiCmp">Bandingkan dengan nilai rujukan</label><input id="fiCmp" type="text" placeholder="tempel SHA-256 dari penyedia berkas" spellcheck="false"></div>
+        <div class="out" id="fiOut">—</div>
+        <p class="hint">Inilah cara memastikan berkas unduhan tidak rusak atau disusupi: cocokkan hash yang Anda hitung sendiri dengan yang diumumkan penerbitnya.</p>
+      </section>
+
+    </div>
+  </div>
 </main>
 
 <footer>
-  <div class="wrap">
-    <dl class="fgrid">
-      <div><dt>Respons</dt><dd>±24 jam kerja</dd></div>
-      <div><dt>Zona waktu</dt><dd>GMT+7 Jakarta</dd></div>
-      <div><dt>Kode</dt><dd><a href="https://github.com/sirjexen" target="_blank" rel="noopener">github.com/sirjexen</a></dd></div>
-      <div><dt>Domain</dt><dd>studioworks.my.id</dd></div>
-    </dl>
-    <div class="fbar mono">
-      <span>© <span id="yr">2026</span> Studioworks — Muhammad Rafly</span>
-      <span class="mid">Ditulis tangan. Tanpa framework. Dihosting di GitHub Pages.</span>
-      <a href="#top">Kembali ke atas ↑</a>
-    </div>
+  <div class="wrap fbar mono">
+    <span>© <span id="yr">2026</span> Studioworks — Muhammad Rafly</span>
+    <span>Semua perhitungan lokal. Tidak ada data yang dikirim.</span>
+    <a href="/">Kembali ke beranda ↖</a>
   </div>
-  <svg class="wordmark" viewBox="0 0 1200 190" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Studioworks">
-    <text x="600" y="152" text-anchor="middle" font-size="185" textLength="1150" lengthAdjust="spacingAndGlyphs">STUDIOWORKS</text>
-  </svg>
 </footer>
 
 <div id="toast" role="status" aria-live="polite">Tersalin</div>
@@ -664,443 +443,354 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
 (function () {
   "use strict";
   var d = document, W = window;
-  var reduce = false;
-  try { reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
-  var themeHooks = [];
+  var subtle = W.crypto && W.crypto.subtle;
+  var enc = new TextEncoder(), decd = new TextDecoder();
 
-  function cssv(n) { return getComputedStyle(d.documentElement).getPropertyValue(n).trim(); }
-  function toRgb(h) {
-    h = h.replace("#", "");
-    if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
-    var n = parseInt(h, 16);
-    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-  }
-
-  /* ---------- tema ---------- */
+  /* tema */
   d.getElementById("themeBtn").addEventListener("click", function () {
-    var now = d.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    d.documentElement.setAttribute("data-theme", now);
-    try { localStorage.setItem("sw-theme", now); } catch (e) {}
-    themeHooks.forEach(function (f) { f(); });
+    var n = d.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    d.documentElement.setAttribute("data-theme", n);
+    try { localStorage.setItem("sw-theme", n); } catch (e) {}
   });
-
-  /* ---------- jam & tahun ---------- */
-  function tick() {
-    var s = new Intl.DateTimeFormat("id-ID", { timeZone:"Asia/Jakarta", hour:"2-digit", minute:"2-digit", hour12:false }).format(new Date());
-    d.getElementById("clock").textContent = s.replace(":", ".");
-  }
-  tick(); setInterval(tick, 20000);
   d.getElementById("yr").textContent = new Date().getFullYear();
 
-  /* ---------- scramble teks ---------- */
-  var GLYPH = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%&$@/*<>";
-  d.querySelectorAll(".sc").forEach(function (el) { el.setAttribute("data-txt", el.textContent); });
-  function scramble(el, dur) {
-    var fin = el.getAttribute("data-txt") || el.textContent, len = fin.length, t0 = 0;
-    if (reduce) { el.textContent = fin; return; }
-    function step(now) {
-      if (!t0) t0 = now;
-      var p = Math.min((now - t0) / dur, 1), rev = p * len * 1.25, out = "";
-      for (var i = 0; i < len; i++) {
-        var c = fin.charAt(i);
-        if (c === " " || c === "\n") { out += c; }
-        else if (i < rev) { out += c; }
-        else { out += GLYPH.charAt((Math.random() * GLYPH.length) | 0); }
-      }
-      el.textContent = out;
-      if (p < 1) requestAnimationFrame(step); else el.textContent = fin;
-    }
-    requestAnimationFrame(step);
-  }
-  requestAnimationFrame(function () {
-    d.body.classList.add("ready");
-    var hs = d.querySelectorAll("h1 .sc");
-    hs.forEach(function (el, i) { setTimeout(function () { scramble(el, 900); }, 260 + i * 90); });
-  });
-
-  /* ---------- reveal ---------- */
-  var rv = d.querySelectorAll(".rv");
-  if ("IntersectionObserver" in W) {
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        e.target.classList.add("in");
-        var h = e.target.querySelector(".sc");
-        if (h) scramble(h, 650);
-        io.unobserve(e.target);
-      });
-    }, { rootMargin:"0px 0px -8% 0px", threshold:.12 });
-    rv.forEach(function (el) { io.observe(el); });
-  } else { rv.forEach(function (el) { el.classList.add("in"); }); }
-
-  /* ---------- penghitung ---------- */
-  var counters = d.querySelectorAll(".count b");
-  function runCount(el) {
-    var to = parseInt(el.getAttribute("data-to"), 10) || 0, t0 = null, dur = 1100;
-    if (to === 0) { el.textContent = "0"; return; }
-    function step(ts) {
-      if (!t0) t0 = ts;
-      var p = Math.min((ts - t0) / dur, 1);
-      el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
-      if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-  if ("IntersectionObserver" in W) {
-    var io2 = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { runCount(e.target); io2.unobserve(e.target); } });
-    }, { threshold:.5 });
-    counters.forEach(function (el) { io2.observe(el); });
-  } else { counters.forEach(runCount); }
-
-  /* ---------- panel proyek ---------- */
-  d.querySelectorAll("[data-toggle]").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var row = btn.closest(".row"), open = row.classList.toggle("open");
-      btn.setAttribute("aria-expanded", open ? "true" : "false");
-      btn.textContent = open ? "Tutup" : "Detail";
-    });
-  });
-
-  /* ---------- caesar mini ---------- */
-  var cIn = d.getElementById("cIn"), cSh = d.getElementById("cSh"),
-      cOut = d.getElementById("cOut"), cShVal = d.getElementById("cShVal");
-  function caesar(t, n) {
-    return t.replace(/[a-z]/gi, function (ch) {
-      var b = ch <= "Z" ? 65 : 97;
-      return String.fromCharCode((ch.charCodeAt(0) - b + n) % 26 + b);
-    });
-  }
-  function drawC() { var n = +cSh.value; cShVal.textContent = n; cOut.textContent = caesar(cIn.value, n) || "—"; }
-  cIn.addEventListener("input", drawC); cSh.addEventListener("input", drawC); drawC();
-
-  /* ============================================================
-     MEDAN PARTIKEL
-     ============================================================ */
-  (function () {
-    var cv = d.getElementById("field");
-    if (!cv || !cv.getContext) return;
-    var ctx = cv.getContext("2d"), wrap = d.getElementById("fieldWrap");
-    var fMeta = d.getElementById("fMeta"), fState = d.getElementById("fState");
-    var btns = d.querySelectorAll("#fShapes button");
-    var w = 0, h = 0, dpr = 1, P = [], pts = [], shape = 0, form = 0, target = 1,
-        phase = 0, raf = 0, running = false, vis = false, tPrev = 0;
-    var mouse = { x:-9999, y:-9999, on:false };
-    var col = {};
-
-    function readCol() {
-      col.paper = toRgb(cssv("--paper"));
-      col.ink = toRgb(cssv("--ink"));
-      col.accent = toRgb(cssv("--accent"));
-    }
-    readCol(); themeHooks.push(readCol);
-
-    /* value noise */
-    var perm = new Uint8Array(512);
-    (function () {
-      var p = [], i, j, t;
-      for (i = 0; i < 256; i++) p[i] = i;
-      for (i = 255; i > 0; i--) { j = (Math.random() * (i + 1)) | 0; t = p[i]; p[i] = p[j]; p[j] = t; }
-      for (i = 0; i < 512; i++) perm[i] = p[i & 255];
-    })();
-    function fade(t) { return t * t * (3 - 2 * t); }
-    function vn(x, y) {
-      var xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
-      var a = perm[(perm[xi & 255] + (yi & 255)) & 511] / 255,
-          b = perm[(perm[(xi + 1) & 255] + (yi & 255)) & 511] / 255,
-          c = perm[(perm[xi & 255] + ((yi + 1) & 255)) & 511] / 255,
-          e = perm[(perm[(xi + 1) & 255] + ((yi + 1) & 255)) & 511] / 255;
-      var u = fade(xf), v = fade(yf);
-      return (a * (1 - u) + b * u) * (1 - v) + (c * (1 - u) + e * u) * v;
-    }
-
-    var off = d.createElement("canvas"), octx = off.getContext("2d");
-    function sample() {
-      var img, list = [], step = w < 620 ? 3 : 4, x, y;
-      try { img = octx.getImageData(0, 0, off.width, off.height).data; } catch (e) { return list; }
-      for (y = 0; y < off.height; y += step) {
-        for (x = 0; x < off.width; x += step) {
-          if (img[(y * off.width + x) * 4 + 3] > 130) list.push({ x:x, y:y });
-        }
-      }
-      return list;
-    }
-    function build(kind) {
-      off.width = Math.max(1, Math.round(w)); off.height = Math.max(1, Math.round(h));
-      octx.clearRect(0, 0, off.width, off.height);
-      octx.fillStyle = "#000";
-      if (kind === 1) {
-        var s = Math.min(w, h) * 0.46, cx = w / 2, cy = h / 2 + s * 0.08;
-        octx.beginPath();
-        octx.rect(cx - s * 0.42, cy - s * 0.18, s * 0.84, s * 0.6);
-        octx.fill();
-        octx.lineWidth = s * 0.13; octx.strokeStyle = "#000";
-        octx.beginPath(); octx.arc(cx, cy - s * 0.2, s * 0.26, Math.PI, 0); octx.stroke();
-      } else {
-        var txt = kind === 0 ? "STUDIOWORKS" : "AES-256-GCM";
-        var size = Math.min(h * 0.44, w * 1.9 / txt.length);
-        octx.font = "700 " + size + "px " + (kind === 0 ? "Georgia,serif" : "ui-monospace,Menlo,monospace");
-        octx.textAlign = "center"; octx.textBaseline = "middle";
-        octx.fillText(txt, w / 2, h / 2);
-      }
-      return sample();
-    }
-    function assign() {
-      if (!pts.length) return;
-      for (var i = 0; i < P.length; i++) {
-        var q = pts[(i * 7919) % pts.length];
-        P[i].tx = q.x + (Math.random() - .5) * 2.5;
-        P[i].ty = q.y + (Math.random() - .5) * 2.5;
-      }
-    }
-    function setShape(i, manual) {
-      shape = i; pts = build(i); assign();
-      target = 1; phase = 0;
-      btns.forEach(function (b, n) { b.classList.toggle("on", n === i); });
-      if (manual && !running) render();
-    }
-    function resize() {
-      var r = wrap.getBoundingClientRect();
-      w = r.width; h = r.height;
-      dpr = Math.min(W.devicePixelRatio || 1, 2);
-      cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      var n = Math.max(500, Math.min(2200, Math.floor(w * h / 780)));
-      P = [];
-      for (var i = 0; i < n; i++) {
-        P.push({ x:Math.random() * w, y:Math.random() * h, vx:0, vy:0, tx:w / 2, ty:h / 2,
-                 a:Math.random() < .17, s:.7 + Math.random() * .9 });
-      }
-      fMeta.textContent = n + " partikel · curl field";
-      pts = build(shape); assign();
-      ctx.fillStyle = "rgb(" + col.paper.join(",") + ")";
-      ctx.fillRect(0, 0, w, h);
-    }
-    function render() {
-      ctx.fillStyle = "rgba(" + col.paper.join(",") + ",.135)";
-      ctx.fillRect(0, 0, w, h);
-      var i, p, inkC = "rgba(" + col.ink.join(",") + ",", accC = "rgba(" + col.accent.join(",") + ",";
-      for (i = 0; i < P.length; i++) {
-        p = P[i];
-        ctx.fillStyle = (p.a ? accC : inkC) + (p.a ? .85 : .5) + ")";
-        ctx.fillRect(p.x, p.y, p.s + (p.a ? .5 : 0), p.s + (p.a ? .5 : 0));
-      }
-    }
-    function tickF(now) {
-      var dt = Math.min(now - (tPrev || now), 50) / 16.7; tPrev = now;
-      form += (target - form) * 0.035 * dt;
-      phase += dt * 16.7;
-      if (phase > (target ? 4200 : 2600)) {
-        phase = 0;
-        if (target) { target = 0; fState.textContent = "terurai"; }
-        else { setShape((shape + 1) % 3); fState.textContent = "terbentuk"; }
-      }
-      var t = now * 0.00007;
-      for (var i = 0; i < P.length; i++) {
-        var p = P[i];
-        var ang = vn(p.x * 0.0021 + t * 3, p.y * 0.0021) * Math.PI * 4;
-        var fr = 1 - form;
-        p.vx += Math.cos(ang) * 0.42 * fr * dt;
-        p.vy += Math.sin(ang) * 0.42 * fr * dt;
-        p.vx += (p.tx - p.x) * 0.014 * form * dt;
-        p.vy += (p.ty - p.y) * 0.014 * form * dt;
-        if (mouse.on) {
-          var dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy;
-          if (d2 < 15000 && d2 > 0.5) {
-            var f = (1 - d2 / 15000) * 2.6 / Math.sqrt(d2);
-            p.vx += dx * f * dt; p.vy += dy * f * dt;
-          }
-        }
-        p.vx *= 0.935; p.vy *= 0.935;
-        p.x += p.vx * dt; p.y += p.vy * dt;
-        if (p.x < -20) p.x = w + 20; else if (p.x > w + 20) p.x = -20;
-        if (p.y < -20) p.y = h + 20; else if (p.y > h + 20) p.y = -20;
-      }
-      render();
-      raf = running ? requestAnimationFrame(tickF) : 0;
-    }
-    function start() { if (running || reduce) return; running = true; tPrev = 0; raf = requestAnimationFrame(tickF); }
-    function stop() { running = false; if (raf) cancelAnimationFrame(raf); raf = 0; }
-
-    wrap.addEventListener("pointermove", function (e) {
-      var r = cv.getBoundingClientRect();
-      mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; mouse.on = true;
-    });
-    wrap.addEventListener("pointerleave", function () { mouse.on = false; mouse.x = -9999; });
-    cv.addEventListener("click", function () { setShape((shape + 1) % 3, true); fState.textContent = "terbentuk"; });
-    btns.forEach(function (b, n) {
-      b.addEventListener("click", function () { setShape(n, true); fState.textContent = "terbentuk"; });
-    });
-
-    if ("ResizeObserver" in W) new ResizeObserver(function () { resize(); render(); }).observe(wrap);
-    else W.addEventListener("resize", function () { resize(); render(); });
-
-    resize();
-    if (reduce) {
-      form = 1;
-      for (var k = 0; k < P.length; k++) { P[k].x = P[k].tx; P[k].y = P[k].ty; }
-      render(); fState.textContent = "animasi dimatikan";
-      return;
-    }
-    if ("IntersectionObserver" in W) {
-      new IntersectionObserver(function (es) {
-        es.forEach(function (e) { vis = e.isIntersecting; if (vis) start(); else stop(); });
-      }, { threshold:.08 }).observe(wrap);
-    } else { vis = true; start(); }
-    d.addEventListener("visibilitychange", function () { if (d.hidden) stop(); else if (vis) start(); });
-    themeHooks.push(function () { ctx.fillStyle = "rgb(" + col.paper.join(",") + ")"; ctx.fillRect(0, 0, w, h); });
-  })();
-
-  /* ============================================================
-     MESIN KRIPTO + SIDIK JARI
-     ============================================================ */
-  (function () {
-    var inEl = d.getElementById("engIn");
-    if (!inEl) return;
-    var cipherEl = d.getElementById("engCipher"), ivEl = d.getElementById("engIv"),
-        proofEl = d.getElementById("engProof"), lenEl = d.getElementById("engLen"),
-        keyBtn = d.getElementById("engKey"), avNum = d.getElementById("avNum"),
-        avBar = d.getElementById("avBar"), bc = d.getElementById("bloom");
-    var subtle = W.crypto && W.crypto.subtle;
-    if (!subtle) { lenEl.textContent = "Web Crypto tidak tersedia"; proofEl.textContent = "butuh HTTPS"; return; }
-    var enc = new TextEncoder(), dec = new TextDecoder();
-    var key = null, prevBits = null, deb = 0, token = 0, hotT = 0;
-
-    /* --- sidik jari radial --- */
-    var bx = bc.getContext("2d"), NP = 64;
-    var cur = new Array(NP).fill(.5), tgt = new Array(NP).fill(.5);
-    var bw = 0, bh = 0, brot = 0, braf = 0, brun = false, bvis = false;
-    var bcol = {};
-    function bread() { bcol.ink = toRgb(cssv("--ink")); bcol.accent = toRgb(cssv("--accent")); bcol.line = toRgb(cssv("--line")); bcol.paper = toRgb(cssv("--paper")); }
-    bread(); themeHooks.push(bread);
-    function bresize() {
-      var r = bc.parentNode.getBoundingClientRect();
-      var dp = Math.min(W.devicePixelRatio || 1, 2);
-      bw = r.width; bh = r.height;
-      bc.width = Math.round(bw * dp); bc.height = Math.round(bh * dp);
-      bx.setTransform(dp, 0, 0, dp, 0, 0);
-    }
-    function bdraw() {
-      var cx = bw / 2, cy = bh / 2, R = Math.min(bw, bh) * 0.40, i, a, r;
-      bx.clearRect(0, 0, bw, bh);
-      bx.save(); bx.translate(cx, cy); bx.rotate(brot);
-      bx.strokeStyle = "rgba(" + bcol.line.join(",") + ",1)"; bx.lineWidth = 1;
-      [0.42, 0.72, 1].forEach(function (k) {
-        bx.beginPath(); bx.arc(0, 0, R * k, 0, Math.PI * 2); bx.stroke();
-      });
-      bx.strokeStyle = "rgba(" + bcol.ink.join(",") + ",.30)"; bx.lineWidth = 1;
-      for (i = 0; i < NP; i += 2) {
-        a = i / NP * Math.PI * 2; r = R * (0.42 + cur[i] * 0.58);
-        bx.beginPath(); bx.moveTo(Math.cos(a) * R * 0.42, Math.sin(a) * R * 0.42);
-        bx.lineTo(Math.cos(a) * r, Math.sin(a) * r); bx.stroke();
-      }
-      bx.beginPath();
-      for (i = 0; i <= NP; i++) {
-        var i0 = i % NP, i1 = (i + 1) % NP;
-        a = i0 / NP * Math.PI * 2;
-        var a1 = (i0 + 1) / NP * Math.PI * 2;
-        var r0 = R * (0.42 + cur[i0] * 0.58), r1 = R * (0.42 + cur[i1] * 0.58);
-        var x0 = Math.cos(a) * r0, y0 = Math.sin(a) * r0;
-        var x1 = Math.cos(a1) * r1, y1 = Math.sin(a1) * r1;
-        if (i === 0) bx.moveTo(x0, y0);
-        bx.quadraticCurveTo(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2);
-      }
-      bx.closePath();
-      bx.fillStyle = "rgba(" + bcol.accent.join(",") + ",.11)"; bx.fill();
-      bx.strokeStyle = "rgba(" + bcol.accent.join(",") + ",1)"; bx.lineWidth = 1.6; bx.stroke();
-      for (i = 0; i < NP; i += 4) {
-        a = i / NP * Math.PI * 2; r = R * (0.42 + cur[i] * 0.58);
-        bx.beginPath(); bx.arc(Math.cos(a) * r, Math.sin(a) * r, 2.1, 0, Math.PI * 2);
-        bx.fillStyle = "rgba(" + bcol.accent.join(",") + ",.95)"; bx.fill();
-      }
-      bx.restore();
-    }
-    function bloop() {
-      var moved = 0;
-      for (var i = 0; i < NP; i++) {
-        var dlt = tgt[i] - cur[i];
-        cur[i] += dlt * 0.09;
-        if (Math.abs(dlt) > 0.002) moved++;
-      }
-      brot += 0.0012;
-      bdraw();
-      braf = brun ? requestAnimationFrame(bloop) : 0;
-    }
-    function bstart() { if (brun || reduce) { bdraw(); return; } brun = true; braf = requestAnimationFrame(bloop); }
-    function bstop() { brun = false; if (braf) cancelAnimationFrame(braf); braf = 0; }
-    if ("ResizeObserver" in W) new ResizeObserver(function () { bresize(); bdraw(); }).observe(bc.parentNode);
-    else W.addEventListener("resize", function () { bresize(); bdraw(); });
-    bresize();
-    if ("IntersectionObserver" in W) {
-      new IntersectionObserver(function (es) {
-        es.forEach(function (e) { bvis = e.isIntersecting; if (bvis) bstart(); else bstop(); });
-      }, { threshold:.15 }).observe(bc);
-    } else { bvis = true; bstart(); }
-    d.addEventListener("visibilitychange", function () { if (d.hidden) bstop(); else if (bvis) bstart(); });
-    themeHooks.push(bdraw);
-
-    /* --- kripto --- */
-    function hex(u8) { var s = "", i; for (i = 0; i < u8.length; i++) s += u8[i].toString(16).padStart(2, "0"); return s; }
-    async function newKey() { key = await subtle.generateKey({ name:"AES-GCM", length:256 }, false, ["encrypt", "decrypt"]); }
-
-    async function run() {
-      var me = ++token, txt = inEl.value, bytes = enc.encode(txt), i;
-
-      var hb = new Uint8Array(await subtle.digest("SHA-256", bytes));
-      if (me !== token) return;
-      var bits = [], p, q;
-      for (p = 0; p < 32; p++) for (q = 7; q >= 0; q--) bits.push((hb[p] >> q) & 1);
-      var diff = 0;
-      if (prevBits) { for (p = 0; p < 256; p++) if (prevBits[p] !== bits[p]) diff++; avNum.textContent = diff; avBar.style.width = (diff / 256 * 100) + "%"; }
-      prevBits = bits;
-      for (i = 0; i < NP; i++) {
-        var nib = i % 2 ? (hb[(i / 2) | 0] & 15) : (hb[(i / 2) | 0] >> 4);
-        tgt[i] = nib / 15;
-      }
-      if (reduce) { for (i = 0; i < NP; i++) cur[i] = tgt[i]; bdraw(); }
-
-      if (!key) await newKey();
-      if (me !== token) return;
-      var iv = crypto.getRandomValues(new Uint8Array(12));
-      var ct = new Uint8Array(await subtle.encrypt({ name:"AES-GCM", iv:iv }, key, bytes));
-      if (me !== token) return;
-      ivEl.textContent = hex(iv);
-      lenEl.textContent = bytes.length + " bait teks → " + ct.length + " bait sandi";
-      var out = "", lim = Math.min(ct.length, 96);
-      for (i = 0; i < lim; i++) out += "<i class='hot'>" + ct[i].toString(16).padStart(2, "0") + "</i> ";
-      if (ct.length > lim) out += "…";
-      cipherEl.innerHTML = out;
-      clearTimeout(hotT);
-      hotT = setTimeout(function () {
-        cipherEl.querySelectorAll("i").forEach(function (n, k) {
-          setTimeout(function () { n.classList.remove("hot"); }, k * 7);
-        });
-      }, 420);
-      try {
-        var back = dec.decode(await subtle.decrypt({ name:"AES-GCM", iv:iv }, key, ct));
-        proofEl.textContent = back === txt ? "✓ dibuka kembali utuh" : "✗ tidak cocok";
-      } catch (e) { proofEl.textContent = "✗ ditolak GCM"; }
-    }
-    inEl.addEventListener("input", function () { clearTimeout(deb); deb = setTimeout(run, 160); });
-    keyBtn.addEventListener("click", function () {
-      newKey().then(function () { prevBits = null; avNum.textContent = "0"; avBar.style.width = "0"; run(); });
-    });
-    newKey().then(run).catch(function () { proofEl.textContent = "✗ gagal membangkitkan kunci"; });
-  })();
-
-  /* ---------- salin surel ---------- */
+  /* toast + salin */
   var toast = d.getElementById("toast"), tT;
-  function ping(m) { toast.textContent = m; toast.classList.add("on"); clearTimeout(tT); tT = setTimeout(function () { toast.classList.remove("on"); }, 1800); }
-  d.getElementById("copyMail").addEventListener("click", function () {
-    var mail = "rexha4u@gmail.com";
+  function ping(m) { toast.textContent = m; toast.classList.add("on"); clearTimeout(tT); tT = setTimeout(function () { toast.classList.remove("on"); }, 1700); }
+  d.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-copy]");
+    if (!b) return;
+    var el = d.getElementById(b.getAttribute("data-copy"));
+    var v = el ? (el.value !== undefined ? el.value : el.textContent) : "";
+    if (!v || v === "—") { ping("Tidak ada isi"); return; }
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(mail).then(function () { ping("Tersalin"); }, function () { ping("Gagal menyalin"); });
+      navigator.clipboard.writeText(v).then(function () { ping("Tersalin"); }, function () { ping("Gagal menyalin"); });
     } else {
-      var ta = d.createElement("textarea");
-      ta.value = mail; d.body.appendChild(ta); ta.select();
-      try { d.execCommand("copy"); ping("Tersalin"); } catch (e) { ping("Gagal menyalin"); }
+      var ta = d.createElement("textarea"); ta.value = v; d.body.appendChild(ta); ta.select();
+      try { d.execCommand("copy"); ping("Tersalin"); } catch (x) { ping("Gagal menyalin"); }
       d.body.removeChild(ta);
     }
   });
+
+  /* tab */
+  var tabs = d.querySelectorAll(".side button"), tools = d.querySelectorAll(".tool");
+  function show(id, push) {
+    var found = false;
+    tools.forEach(function (t) { var on = t.id === "t-" + id; t.classList.toggle("on", on); if (on) found = true; });
+    if (!found) return;
+    tabs.forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-t") === id); });
+    if (push && location.hash !== "#" + id) history.replaceState(null, "", "#" + id);
+  }
+  tabs.forEach(function (b) {
+    b.addEventListener("click", function () { show(b.getAttribute("data-t"), true); });
+  });
+  W.addEventListener("hashchange", function () { show(location.hash.slice(1), false); });
+  if (location.hash.length > 1) show(location.hash.slice(1), false);
+
+  /* util */
+  function hex(u8) { var s = "", i; for (i = 0; i < u8.length; i++) s += u8[i].toString(16).padStart(2, "0"); return s; }
+  function unhex(s) {
+    s = s.replace(/[^0-9a-f]/gi, "");
+    var a = new Uint8Array(s.length >> 1), i;
+    for (i = 0; i < a.length; i++) a[i] = parseInt(s.substr(i * 2, 2), 16);
+    return a;
+  }
+  function b64enc(u8) { var s = "", i; for (i = 0; i < u8.length; i++) s += String.fromCharCode(u8[i]); return btoa(s); }
+  function b64dec(str) {
+    var s = atob(str.trim()), a = new Uint8Array(s.length), i;
+    for (i = 0; i < s.length; i++) a[i] = s.charCodeAt(i);
+    return a;
+  }
+  function state(el, kind) { el.classList.remove("ok", "bad"); if (kind) el.classList.add(kind); }
+  function need() { return !!subtle; }
+  function noCrypto(el) { state(el, "bad"); el.textContent = "Web Crypto tidak tersedia. Buka halaman ini lewat HTTPS."; }
+
+  /* 1 CAESAR */
+  var caIn = d.getElementById("caIn"), caSh = d.getElementById("caSh"),
+      caShV = d.getElementById("caShV"), caOut = d.getElementById("caOut");
+  function caesar(t, n) {
+    n = ((n % 26) + 26) % 26;
+    return t.replace(/[a-z]/gi, function (c) {
+      var b = c <= "Z" ? 65 : 97;
+      return String.fromCharCode((c.charCodeAt(0) - b + n) % 26 + b);
+    });
+  }
+  function caRun(dir) { caOut.textContent = caesar(caIn.value, dir * (+caSh.value)) || "—"; }
+  caSh.addEventListener("input", function () { caShV.textContent = caSh.value; caRun(1); });
+  caIn.addEventListener("input", function () { caRun(1); });
+  d.getElementById("caEnc").addEventListener("click", function () { caRun(1); });
+  d.getElementById("caDec").addEventListener("click", function () { caRun(-1); });
+  caRun(1);
+
+  /* 2 ROT13 */
+  var roIn = d.getElementById("roIn"), roOut = d.getElementById("roOut");
+  function roRun() { roOut.textContent = caesar(roIn.value, 13) || "—"; }
+  roIn.addEventListener("input", roRun); roRun();
+
+  /* 3 XOR */
+  var xoIn = d.getElementById("xoIn"), xoKey = d.getElementById("xoKey"), xoOut = d.getElementById("xoOut");
+  function xorBytes(data, key) {
+    var out = new Uint8Array(data.length), i;
+    for (i = 0; i < data.length; i++) out[i] = data[i] ^ key[i % key.length];
+    return out;
+  }
+  d.getElementById("xoEnc").addEventListener("click", function () {
+    var k = enc.encode(xoKey.value);
+    if (!k.length) { state(xoOut, "bad"); xoOut.textContent = "Kunci tidak boleh kosong."; return; }
+    state(xoOut, null);
+    xoOut.textContent = hex(xorBytes(enc.encode(xoIn.value), k)) || "—";
+  });
+  d.getElementById("xoDec").addEventListener("click", function () {
+    var k = enc.encode(xoKey.value);
+    if (!k.length) { state(xoOut, "bad"); xoOut.textContent = "Kunci tidak boleh kosong."; return; }
+    try {
+      state(xoOut, null);
+      xoOut.textContent = decd.decode(xorBytes(unhex(xoIn.value), k)) || "—";
+    } catch (e) { state(xoOut, "bad"); xoOut.textContent = "Masukan bukan heksadesimal yang sah."; }
+  });
+
+  /* 4 FREKUENSI */
+  var frIn = d.getElementById("frIn"), frBars = d.getElementById("frBars"),
+      frLab = d.getElementById("frLab"), frOut = d.getElementById("frOut");
+  var AB = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  var IDF = [19.4,2.8,1.0,3.7,7.4,0.2,2.7,1.3,8.2,0.4,4.4,3.0,3.1,9.5,2.5,2.2,0.0,4.9,3.7,3.6,3.4,0.4,0.1,0.0,1.1,0.1];
+  var bars = [];
+  (function () {
+    for (var i = 0; i < 26; i++) {
+      var b = d.createElement("div"); b.style.height = "2px"; frBars.appendChild(b); bars.push(b);
+      var s = d.createElement("span"); s.textContent = AB[i].toLowerCase(); frLab.appendChild(s);
+    }
+  })();
+  function frRun() {
+    var t = frIn.value.toUpperCase(), c = new Array(26).fill(0), total = 0, i, k;
+    for (i = 0; i < t.length; i++) { k = t.charCodeAt(i) - 65; if (k >= 0 && k < 26) { c[k]++; total++; } }
+    var max = Math.max.apply(null, c) || 1;
+    for (i = 0; i < 26; i++) {
+      bars[i].style.height = Math.max(2, c[i] / max * 148) + "px";
+      bars[i].classList.toggle("top", c[i] === max && c[i] > 0);
+    }
+    if (total < 6) { state(frOut, null); frOut.textContent = "Teks terlalu pendek untuk dianalisis."; return; }
+    var best = 0, bestScore = Infinity, s, chi, obs, exp;
+    for (s = 0; s < 26; s++) {
+      chi = 0;
+      for (i = 0; i < 26; i++) {
+        obs = c[(i + s) % 26] / total * 100;
+        exp = IDF[i];
+        chi += (obs - exp) * (obs - exp) / (exp || 0.1);
+      }
+      if (chi < bestScore) { bestScore = chi; best = s; }
+    }
+    state(frOut, "ok");
+    frOut.textContent = "Tebakan pergeseran: " + best + "\nHasil dekripsi: " + caesar(frIn.value, -best);
+  }
+  frIn.addEventListener("input", frRun); frRun();
+
+  /* 5 BASE64 */
+  var b6In = d.getElementById("b6In"), b6Out = d.getElementById("b6Out");
+  d.getElementById("b6Enc").addEventListener("click", function () {
+    state(b6Out, null); b6Out.textContent = b64enc(enc.encode(b6In.value)) || "—";
+  });
+  d.getElementById("b6Dec").addEventListener("click", function () {
+    try { state(b6Out, null); b6Out.textContent = decd.decode(b64dec(b6In.value)) || "—"; }
+    catch (e) { state(b6Out, "bad"); b6Out.textContent = "Bukan Base64 yang sah."; }
+  });
+
+  /* 6 URL */
+  var urIn = d.getElementById("urIn"), urOut = d.getElementById("urOut");
+  d.getElementById("urEnc").addEventListener("click", function () {
+    state(urOut, null); urOut.textContent = encodeURIComponent(urIn.value) || "—";
+  });
+  d.getElementById("urDec").addEventListener("click", function () {
+    try { state(urOut, null); urOut.textContent = decodeURIComponent(urIn.value) || "—"; }
+    catch (e) { state(urOut, "bad"); urOut.textContent = "Urutan persen tidak sah."; }
+  });
+
+  /* 7 BINHEX */
+  var bhIn = d.getElementById("bhIn");
+  function bhRun() {
+    var u = enc.encode(bhIn.value), bin = [], hx = [], de = [], i;
+    for (i = 0; i < u.length; i++) { bin.push(u[i].toString(2).padStart(8, "0")); hx.push(u[i].toString(16).padStart(2, "0")); de.push(u[i]); }
+    d.getElementById("bhBin").textContent = bin.join(" ") || "—";
+    d.getElementById("bhHex").textContent = hx.join(" ") || "—";
+    d.getElementById("bhDec").textContent = de.join(" ") || "—";
+    d.getElementById("bhLen").textContent = bhIn.value.length + " karakter · " + u.length + " bait UTF-8";
+  }
+  bhIn.addEventListener("input", bhRun); bhRun();
+
+  /* 8 PASSWORD */
+  var paLen = d.getElementById("paLen"), paLenV = d.getElementById("paLenV"),
+      paOut = d.getElementById("paOut"), paBar = d.getElementById("paBar"), paNote = d.getElementById("paNote");
+  function paGen() {
+    var set = "";
+    if (d.getElementById("paU").checked) set += "ABCDEFGHJKLMNPQRSTUVWXYZ";
+    if (d.getElementById("paL").checked) set += "abcdefghijkmnpqrstuvwxyz";
+    if (d.getElementById("paN").checked) set += "23456789";
+    if (d.getElementById("paS").checked) set += "!@#$%^&*()-_=+[]{}<>?";
+    if (!set) { state(paOut, "bad"); paOut.textContent = "Pilih minimal satu himpunan."; paBar.style.width = "0"; paNote.textContent = "—"; return; }
+    var n = +paLen.value, r = new Uint32Array(n), out = "", i;
+    crypto.getRandomValues(r);
+    for (i = 0; i < n; i++) out += set.charAt(r[i] % set.length);
+    state(paOut, "ok"); paOut.textContent = out;
+    var bitsPer = Math.log(set.length) / Math.log(2), tot = Math.round(bitsPer * n);
+    paBar.style.width = Math.min(100, tot / 128 * 100) + "%";
+    paNote.textContent = "Sekitar " + tot + " bit entropi dari " + set.length + " karakter yang mungkin. Di atas 80 bit sudah sangat kuat untuk kebanyakan keperluan.";
+  }
+  paLen.addEventListener("input", function () { paLenV.textContent = paLen.value; paGen(); });
+  ["paU","paL","paN","paS"].forEach(function (id) { d.getElementById(id).addEventListener("change", paGen); });
+  d.getElementById("paGen").addEventListener("click", paGen);
+  paGen();
+
+  /* 9 SHA */
+  var shIn = d.getElementById("shIn"), shT = 0;
+  async function shRun() {
+    if (!need()) { d.getElementById("sh256").textContent = "Web Crypto tidak tersedia (butuh HTTPS)."; return; }
+    var me = ++shT, data = enc.encode(shIn.value);
+    var algs = [["SHA-1","sh1"],["SHA-256","sh256"],["SHA-384","sh384"],["SHA-512","sh512"]];
+    for (var i = 0; i < algs.length; i++) {
+      try {
+        var h = new Uint8Array(await subtle.digest(algs[i][0], data));
+        if (me !== shT) return;
+        d.getElementById(algs[i][1]).textContent = hex(h);
+      } catch (e) { d.getElementById(algs[i][1]).textContent = "tidak didukung peramban ini"; }
+    }
+  }
+  shIn.addEventListener("input", shRun); shRun();
+
+  /* 10 AES-GCM */
+  var aeOut = d.getElementById("aeOut"), aeIn = d.getElementById("aeIn"), aePw = d.getElementById("aePw");
+  async function deriveKey(pw, salt) {
+    var base = await subtle.importKey("raw", enc.encode(pw), "PBKDF2", false, ["deriveKey"]);
+    return subtle.deriveKey(
+      { name:"PBKDF2", salt:salt, iterations:210000, hash:"SHA-256" },
+      base, { name:"AES-GCM", length:256 }, false, ["encrypt","decrypt"]);
+  }
+  d.getElementById("aeEnc").addEventListener("click", async function () {
+    if (!need()) { noCrypto(aeOut); return; }
+    if (!aePw.value) { state(aeOut, "bad"); aeOut.textContent = "Kata sandi tidak boleh kosong."; return; }
+    state(aeOut, null); aeOut.textContent = "menurunkan kunci…";
+    try {
+      var salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+      var key = await deriveKey(aePw.value, salt);
+      var ct = new Uint8Array(await subtle.encrypt({ name:"AES-GCM", iv:iv }, key, enc.encode(aeIn.value)));
+      var all = new Uint8Array(salt.length + iv.length + ct.length);
+      all.set(salt, 0); all.set(iv, salt.length); all.set(ct, salt.length + iv.length);
+      state(aeOut, "ok"); aeOut.textContent = b64enc(all);
+    } catch (e) { state(aeOut, "bad"); aeOut.textContent = "Gagal mengenkripsi."; }
+  });
+  d.getElementById("aeDec").addEventListener("click", async function () {
+    if (!need()) { noCrypto(aeOut); return; }
+    state(aeOut, null); aeOut.textContent = "menurunkan kunci…";
+    try {
+      var all = b64dec(aeIn.value);
+      if (all.length < 29) throw new Error("pendek");
+      var salt = all.slice(0, 16), iv = all.slice(16, 28), ct = all.slice(28);
+      var key = await deriveKey(aePw.value, salt);
+      var pt = await subtle.decrypt({ name:"AES-GCM", iv:iv }, key, ct);
+      state(aeOut, "ok"); aeOut.textContent = decd.decode(pt);
+    } catch (e) {
+      state(aeOut, "bad");
+      aeOut.textContent = "Ditolak. Kata sandi salah, atau datanya sudah berubah walau satu bait.";
+    }
+  });
+  d.getElementById("aeMove").addEventListener("click", function () {
+    if (aeOut.textContent && aeOut.textContent !== "—") { aeIn.value = aeOut.textContent; ping("Dipindah"); }
+  });
+
+  /* 11 ECDSA */
+  var sgPair = null, sgOut = d.getElementById("sgOut"), sgSig = d.getElementById("sgSig"),
+      sgMsg = d.getElementById("sgMsg"), sgPub = d.getElementById("sgPub");
+  d.getElementById("sgKey").addEventListener("click", async function () {
+    if (!need()) { noCrypto(sgOut); return; }
+    try {
+      sgPair = await subtle.generateKey({ name:"ECDSA", namedCurve:"P-256" }, true, ["sign","verify"]);
+      var raw = new Uint8Array(await subtle.exportKey("raw", sgPair.publicKey));
+      sgPub.textContent = hex(raw);
+      sgSig.value = ""; state(sgOut, null); sgOut.textContent = "Pasangan kunci baru siap. Kunci privat tidak pernah ditampilkan atau disimpan.";
+    } catch (e) { state(sgOut, "bad"); sgOut.textContent = "Peramban ini tidak mendukung ECDSA P-256."; }
+  });
+  d.getElementById("sgSign").addEventListener("click", async function () {
+    if (!sgPair) { state(sgOut, "bad"); sgOut.textContent = "Bangkitkan pasangan kunci dulu."; return; }
+    var sig = new Uint8Array(await subtle.sign({ name:"ECDSA", hash:"SHA-256" }, sgPair.privateKey, enc.encode(sgMsg.value)));
+    sgSig.value = hex(sig);
+    state(sgOut, "ok"); sgOut.textContent = "Ditandatangani. Panjang tanda tangan " + sig.length + " bait.";
+  });
+  d.getElementById("sgVer").addEventListener("click", async function () {
+    if (!sgPair) { state(sgOut, "bad"); sgOut.textContent = "Bangkitkan pasangan kunci dulu."; return; }
+    try {
+      var ok = await subtle.verify({ name:"ECDSA", hash:"SHA-256" }, sgPair.publicKey, unhex(sgSig.value), enc.encode(sgMsg.value));
+      state(sgOut, ok ? "ok" : "bad");
+      sgOut.textContent = ok ? "✓ Sah. Pesan ini benar ditandatangani oleh pemilik kunci privat dan tidak berubah."
+                             : "✗ Tidak sah. Pesan atau tanda tangannya sudah berubah.";
+    } catch (e) { state(sgOut, "bad"); sgOut.textContent = "Tanda tangan tidak terbaca."; }
+  });
+
+  /* 12 HMAC */
+  var hmOut = d.getElementById("hmOut"), hmSig = d.getElementById("hmSig"),
+      hmIn = d.getElementById("hmIn"), hmKey = d.getElementById("hmKey");
+  async function hmac() {
+    var k = await subtle.importKey("raw", enc.encode(hmKey.value), { name:"HMAC", hash:"SHA-256" }, false, ["sign"]);
+    return new Uint8Array(await subtle.sign("HMAC", k, enc.encode(hmIn.value)));
+  }
+  d.getElementById("hmGen").addEventListener("click", async function () {
+    if (!need()) { noCrypto(hmOut); return; }
+    hmSig.value = hex(await hmac());
+    state(hmOut, "ok"); hmOut.textContent = "Dihitung. Simpan nilai ini bersama pesannya.";
+  });
+  d.getElementById("hmVer").addEventListener("click", async function () {
+    if (!need()) { noCrypto(hmOut); return; }
+    var want = hex(await hmac()), got = hmSig.value.trim().toLowerCase(), diff = want.length ^ got.length, i;
+    for (i = 0; i < Math.max(want.length, got.length); i++) {
+      diff |= (want.charCodeAt(i) || 0) ^ (got.charCodeAt(i) || 0);
+    }
+    state(hmOut, diff === 0 ? "ok" : "bad");
+    hmOut.textContent = diff === 0 ? "✓ Cocok. Pesan utuh dan berasal dari pihak yang tahu kuncinya."
+                                   : "✗ Tidak cocok. Pesan atau kuncinya berbeda.";
+  });
+
+  /* 13 FILE HASH */
+  var drop = d.getElementById("fiDrop"), pick = d.getElementById("fiPick"),
+      fiOut = d.getElementById("fiOut"), fiCmp = d.getElementById("fiCmp"), lastHash = "";
+  function fmt(n) {
+    if (n < 1024) return n + " bait";
+    if (n < 1048576) return (n / 1024).toFixed(1) + " KB";
+    return (n / 1048576).toFixed(2) + " MB";
+  }
+  async function doFile(f) {
+    if (!f) return;
+    if (!need()) { noCrypto(fiOut); return; }
+    d.getElementById("fiName").textContent = f.name;
+    d.getElementById("fiSize").textContent = fmt(f.size);
+    d.getElementById("fiHash").textContent = "menghitung…";
+    try {
+      var buf = await f.arrayBuffer();
+      lastHash = hex(new Uint8Array(await subtle.digest("SHA-256", buf)));
+      d.getElementById("fiHash").textContent = lastHash;
+      cmp();
+    } catch (e) { d.getElementById("fiHash").textContent = "gagal membaca berkas"; }
+  }
+  function cmp() {
+    var v = fiCmp.value.trim().toLowerCase();
+    if (!lastHash) { state(fiOut, null); fiOut.textContent = "—"; return; }
+    if (!v) { state(fiOut, null); fiOut.textContent = "Tempel nilai rujukan untuk membandingkan."; return; }
+    var diff = v.length ^ lastHash.length, i;
+    for (i = 0; i < Math.max(v.length, lastHash.length); i++) diff |= (v.charCodeAt(i) || 0) ^ (lastHash.charCodeAt(i) || 0);
+    state(fiOut, diff === 0 ? "ok" : "bad");
+    fiOut.textContent = diff === 0 ? "✓ Cocok. Berkas identik dengan rujukannya." : "✗ Tidak cocok. Berkas berbeda dari rujukan.";
+  }
+  fiCmp.addEventListener("input", cmp);
+  drop.addEventListener("click", function () { pick.click(); });
+  drop.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick.click(); } });
+  pick.addEventListener("change", function () { doFile(pick.files[0]); });
+  ["dragenter","dragover"].forEach(function (n) {
+    drop.addEventListener(n, function (e) { e.preventDefault(); drop.classList.add("hot"); });
+  });
+  ["dragleave","drop"].forEach(function (n) {
+    drop.addEventListener(n, function (e) { e.preventDefault(); drop.classList.remove("hot"); });
+  });
+  drop.addEventListener("drop", function (e) {
+    if (e.dataTransfer && e.dataTransfer.files.length) doFile(e.dataTransfer.files[0]);
+  });
 })();
 </script>
+</body>
+</html>
