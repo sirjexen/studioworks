@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raw — Studioworks Bin</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+<style>
+:root{color-scheme:light dark}
+*{box-sizing:border-box}
+body{margin:0;padding:0;background:#fff;color:#111;
+  font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;font-size:14px;line-height:1.7}
+@media (prefers-color-scheme:dark){body{background:#0c0c0b;color:#e8e5dd}}
+.top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:10px 16px;border-bottom:1px solid #ccc;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+@media (prefers-color-scheme:dark){.top{border-color:#2a2925}}
+.top a,.top button{color:inherit;background:none;border:0;padding:0;cursor:pointer;
+  font:inherit;letter-spacing:inherit;text-transform:inherit;text-decoration:none;opacity:.6}
+.top a:hover,.top button:hover{opacity:1}
+pre{margin:0;padding:18px 16px;white-space:pre-wrap;word-break:break-word}
+#ask{padding:18px 16px}
+input{font:inherit;padding:9px 11px;border:1px solid #999;background:transparent;color:inherit;width:min(320px,100%)}
+@media (prefers-color-scheme:dark){input{border-color:#3a3934}}
+button.go{margin-left:8px;padding:9px 16px;border:1px solid currentColor;background:none;color:inherit;
+  font:inherit;cursor:pointer;opacity:1}
+</style>
+</head>
+<body>
+<div class="top">
+  <span id="meta">memuat…</span>
+  <span><button id="copy" type="button">Salin</button> · <a id="pretty" href="/bin/">Tampilan biasa</a> · <a href="/bin/">Buat baru</a></span>
+</div>
+<div id="ask" hidden>
+  <p>Catatan ini dikunci kata sandi.</p>
+  <input type="password" id="pass" placeholder="kata sandi" autocomplete="current-password">
+  <button class="go" id="unlock" type="button">Buka</button>
+</div>
+<pre id="out"></pre>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var enc = new TextEncoder(), dec = new TextDecoder();
+  var ITER = 250000, state = null;
+
+  function b64uDec(str) {
+    var s = str.replace(/-/g, "+").replace(/_/g, "/");
+    while (s.length % 4) s += "=";
+    var bin = atob(s), o = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) o[i] = bin.charCodeAt(i);
+    return o;
+  }
+  function ungz(bytes) {
+    if (typeof DecompressionStream === "undefined") return Promise.reject(new Error("no-gzip"));
+    var st = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
+    return new Response(st).arrayBuffer().then(function (b) { return new Uint8Array(b); });
+  }
+  function keyFromPass(pass, salt) {
+    return crypto.subtle.importKey("raw", enc.encode(pass), "PBKDF2", false, ["deriveKey"])
+      .then(function (km) {
+        return crypto.subtle.deriveKey({ name: "PBKDF2", salt: salt, iterations: ITER, hash: "SHA-256" },
+          km, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+      });
+  }
+  function when(ts) {
+    try { return new Intl.DateTimeFormat("id-ID", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Jakarta" }).format(new Date(ts)); }
+    catch (e) { return new Date(ts).toISOString(); }
+  }
+  function fail(t) { $("#meta").textContent = t; $("#out").textContent = ""; }
+
+  function open(pack, flags, keyPromise) {
+    var salt = pack.slice(2, 18), iv = pack.slice(18, 30), body = pack.slice(30);
+    return keyPromise.then(function (key) {
+      return crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, body);
+    }).then(function (buf) {
+      var b = new Uint8Array(buf);
+      return (flags & 2) ? ungz(b) : b;
+    }).then(function (b) {
+      var o = JSON.parse(dec.decode(b));
+      if (o.x && Date.now() > o.x) { fail("kedaluwarsa " + when(o.x)); return; }
+      $("#ask").hidden = true;
+      $("#out").textContent = o.t;
+      $("#meta").textContent = o.t.length.toLocaleString("id-ID") + " karakter · dibuat " + when(o.c) +
+        (o.x ? " · sampai " + when(o.x) : "");
+      $("#copy").onclick = function () {
+        if (navigator.clipboard && isSecureContext) navigator.clipboard.writeText(o.t);
+      };
+    });
+  }
+
+  var frag = location.hash.slice(1);
+  $("#pretty").href = "/bin/" + location.hash;
+  if (!frag) { fail("tidak ada catatan di alamat ini"); return; }
+  if (!(window.crypto && crypto.subtle)) { fail("butuh https"); return; }
+
+  var parts = frag.split("."), pack, rawKey = null;
+  try { pack = b64uDec(parts[0]); if (parts[1]) rawKey = b64uDec(parts[1]); }
+  catch (e) { fail("tautan rusak"); return; }
+  if (pack.length < 31 || pack[0] !== 1) { fail("format tidak dikenali"); return; }
+
+  var flags = pack[1];
+  state = { pack: pack, flags: flags };
+
+  if (flags & 1) {
+    $("#ask").hidden = false;
+    $("#meta").textContent = "terkunci";
+    $("#pass").focus();
+    $("#unlock").onclick = function () {
+      open(pack, flags, keyFromPass($("#pass").value, pack.slice(2, 18)))
+        .catch(function () { $("#meta").textContent = "kata sandi salah"; $("#pass").select(); });
+    };
+    $("#pass").addEventListener("keydown", function (e) { if (e.key === "Enter") $("#unlock").click(); });
+  } else if (rawKey) {
+    open(pack, flags, crypto.subtle.importKey("raw", rawKey, { name: "AES-GCM" }, false, ["decrypt"]))
+      .catch(function () { fail("gagal membuka — tautan mungkin terpotong"); });
+  } else {
+    fail("kunci tidak ada di tautan");
+  }
+})();
+</script>
+</body>
+</html>
