@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="light">
+<html lang="id" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,13 +23,12 @@
   (function () {
     try {
       var t = localStorage.getItem("sw-theme");
-      if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      if (!t) t = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", t);
     } catch (e) {}
   })();
 </script>
 <style>
-/* ============ TOKEN ============ */
 :root{
   --paper:#eeebe4; --paper-2:#e5e1d8; --ink:#16150f; --ink-2:#4a473d; --ink-3:#7a7668;
   --line:#c9c4b6; --accent:#c2400f; --accent-soft:rgba(194,64,15,.09);
@@ -39,26 +38,20 @@
   --pad:clamp(20px,5vw,72px); --maxw:1360px; --ease:cubic-bezier(.22,.78,.24,1);
 }
 [data-theme="dark"]{
-  --paper:#0c0c0b; --paper-2:#141413; --ink:#f2efe7; --ink-2:#b3ad9f; --ink-3:#7e796c;
-  --line:#2a2925; --accent:#ff6b35; --accent-soft:rgba(255,107,53,.10);
+  --paper:#0b0b0a; --paper-2:#121211; --ink:#f3f0e8; --ink-2:#b3ad9f; --ink-3:#7e796c;
+  --line:#26251f; --accent:#ff6b35; --accent-soft:rgba(255,107,53,.10);
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{
-  margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
-  line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased;
-  transition:background .4s ease,color .4s ease;
-}
-body::before{
-  content:"";position:fixed;inset:0;z-index:999;pointer-events:none;opacity:.035;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
-}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.65;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .5s ease,color .5s ease}
+body::before{content:"";position:fixed;inset:0;z-index:999;pointer-events:none;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E")}
 img,svg,canvas{display:block;max-width:100%}
 a{color:inherit}
 ::selection{background:var(--accent);color:#fff}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
-/* ============ UTIL ============ */
 .wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
 .mono{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
 section{scroll-margin-top:76px}
@@ -69,16 +62,16 @@ section{scroll-margin-top:76px}
   font-size:clamp(2rem,5.4vw,4rem);margin:0;flex:1 1 320px}
 .sec-head p{color:var(--ink-2);margin:0;flex:1 1 300px;max-width:46ch;font-size:.97rem}
 
-/* ============ NAV ============ */
-.nav{position:sticky;top:0;z-index:80;background:color-mix(in srgb,var(--paper) 86%,transparent);
-  backdrop-filter:saturate(150%) blur(12px);-webkit-backdrop-filter:saturate(150%) blur(12px);
+/* NAV */
+.nav{position:sticky;top:0;z-index:80;background:color-mix(in srgb,var(--paper) 84%,transparent);
+  backdrop-filter:saturate(150%) blur(14px);-webkit-backdrop-filter:saturate(150%) blur(14px);
   border-bottom:1px solid var(--line)}
 .nav-in{display:flex;align-items:center;gap:18px;height:60px}
 .brand{font-family:var(--serif);font-size:1.16rem;letter-spacing:-.02em;text-decoration:none;
   margin-right:auto;display:flex;align-items:center;gap:9px}
 .brand b{font-weight:400}
 .brand i{width:7px;height:7px;background:var(--accent);border-radius:50%;font-style:normal}
-.nav ul{display:flex;gap:clamp(10px,1.6vw,22px);list-style:none;margin:0;padding:0}
+.nav ul{display:flex;gap:clamp(10px,1.8vw,26px);list-style:none;margin:0;padding:0}
 .nav ul a{font-family:var(--mono);font-size:11px;letter-spacing:.11em;text-transform:uppercase;
   text-decoration:none;color:var(--ink-2);padding:6px 0;position:relative;transition:color .25s}
 .nav ul a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;
@@ -87,26 +80,27 @@ section{scroll-margin-top:76px}
 .nav ul a:hover::after{right:0}
 .tgl{width:34px;height:34px;border:1px solid var(--line);background:transparent;color:var(--ink);
   cursor:pointer;display:grid;place-items:center;border-radius:50%;flex:0 0 auto;
-  transition:border-color .25s,transform .25s}
-.tgl:hover{border-color:var(--ink);transform:rotate(18deg)}
+  transition:border-color .25s,transform .35s var(--ease)}
+.tgl:hover{border-color:var(--accent);transform:rotate(90deg)}
 .tgl svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5}
 [data-theme="dark"] .tgl .sun{display:none}
 [data-theme="light"] .tgl .moon{display:none}
 @media(max-width:900px){.nav ul{display:none}}
 
-/* ============ HERO ============ */
-.hero{padding:clamp(30px,6vw,64px) 0 clamp(48px,8vw,96px)}
+/* HERO */
+.hero{padding:clamp(28px,5vw,58px) 0 0}
 .status{display:flex;flex-wrap:wrap;gap:clamp(14px,3vw,34px);align-items:center;
-  color:var(--ink-3);padding-bottom:clamp(26px,5vw,52px)}
+  color:var(--ink-3);padding-bottom:clamp(22px,4vw,44px)}
 h1{font-family:var(--serif);font-weight:400;margin:0;letter-spacing:-.04em;line-height:1.06;
   font-size:clamp(1.75rem,7vw,5.8rem)}
 h1 em{font-style:italic;color:var(--accent)}
 .h1-line{display:block;overflow:hidden;padding:.06em .08em .14em;margin:0 -.08em -.14em}
-.h1-line>span{display:block;transform:translateY(110%);transition:transform 1.05s var(--ease)}
+.h1-line>span{display:block;transform:translateY(110%);transition:transform 1s var(--ease)}
 .ready .h1-line>span{transform:translateY(0)}
-.h1-line:nth-child(2)>span{transition-delay:.1s}
-.hero-foot{display:flex;flex-wrap:wrap;gap:clamp(24px,5vw,72px);align-items:flex-end;
-  padding-top:clamp(34px,6vw,70px)}
+.h1-line:nth-child(2)>span{transition-delay:.09s}
+.sc{white-space:pre-wrap}
+.hero-foot{display:flex;flex-wrap:wrap;gap:clamp(22px,5vw,72px);align-items:flex-end;
+  padding:clamp(28px,5vw,58px) 0 clamp(24px,4vw,44px)}
 .hero-foot p{margin:0;max-width:52ch;color:var(--ink-2);flex:1 1 380px}
 .hero-foot strong{color:var(--ink);font-weight:600}
 .scroll-cue{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
@@ -116,13 +110,28 @@ h1 em{font-style:italic;color:var(--accent)}
   transform:translateX(-100%);animation:sweep 2.6s var(--ease) infinite}
 @keyframes sweep{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
 
-/* ============ KERJA ============ */
+/* MEDAN PARTIKEL */
+.field{position:relative;height:clamp(300px,46vw,560px);border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);overflow:hidden;touch-action:pan-y;cursor:crosshair}
+#field{width:100%;height:100%}
+.field-ui{position:absolute;inset:auto 0 0 0;display:flex;justify-content:space-between;
+  align-items:flex-end;gap:14px;padding:clamp(12px,2vw,20px) var(--pad);pointer-events:none;flex-wrap:wrap}
+.field-ui .mono{color:var(--ink-3)}
+.shapes{display:flex;gap:7px;pointer-events:auto;flex-wrap:wrap}
+.shapes button{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;
+  background:color-mix(in srgb,var(--paper) 72%,transparent);border:1px solid var(--line);
+  color:var(--ink-3);padding:7px 13px;cursor:pointer;transition:color .3s,border-color .3s}
+.shapes button:hover{color:var(--ink);border-color:var(--ink-3)}
+.shapes button.on{color:var(--accent);border-color:var(--accent)}
+.field-top{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;
+  gap:12px;padding:clamp(12px,2vw,20px) var(--pad);pointer-events:none;color:var(--ink-3)}
+
+/* KERJA */
 .rows{border-top:1px solid var(--line)}
 .row{border-bottom:1px solid var(--line)}
 .row-main{display:grid;grid-template-columns:70px minmax(0,1.5fr) minmax(0,1.4fr) auto;
-  gap:clamp(12px,2.6vw,36px);align-items:center;padding:clamp(20px,3.2vw,34px) 0;
-  transition:opacity .35s ease}
-.rows:hover .row-main{opacity:.42}
+  gap:clamp(12px,2.6vw,36px);align-items:center;padding:clamp(20px,3.2vw,34px) 0;transition:opacity .35s ease}
+.rows:hover .row-main{opacity:.4}
 .rows .row:hover .row-main,.rows .row:focus-within .row-main{opacity:1}
 .row-num{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink-3)}
 .row-title{font-family:var(--serif);font-size:clamp(1.4rem,3vw,2.3rem);letter-spacing:-.03em;
@@ -159,20 +168,20 @@ h1 em{font-style:italic;color:var(--accent)}
   .rows:hover .row-main{opacity:1}
 }
 
-/* ============ METODE ============ */
+/* METODE */
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
   border-top:1px solid var(--line);border-left:1px solid var(--line)}
 .step{border-right:1px solid var(--line);border-bottom:1px solid var(--line);
   padding:clamp(24px,3vw,38px);position:relative;overflow:hidden}
 .step::after{content:"";position:absolute;inset:0;background:var(--accent-soft);
-  transform:scaleY(0);transform-origin:bottom;transition:transform .45s var(--ease)}
+  transform:scaleY(0);transform-origin:bottom;transition:transform .5s var(--ease)}
 .step:hover::after{transform:scaleY(1)}
 .step>*{position:relative;z-index:1}
 .step .n{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--accent)}
 .step h3{font-family:var(--serif);font-weight:400;font-size:1.4rem;letter-spacing:-.02em;margin:14px 0 10px}
 .step p{margin:0;color:var(--ink-2);font-size:.93rem}
 
-/* ============ LAB + BIN ============ */
+/* LAB + BIN */
 .split{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));
   gap:clamp(24px,4vw,64px);align-items:start;padding-bottom:clamp(40px,7vw,90px)}
 .split p{color:var(--ink-2);margin:0 0 16px}
@@ -201,50 +210,13 @@ h1 em{font-style:italic;color:var(--accent)}
   border:1px solid var(--line);padding:5px 10px;color:var(--ink-3)}
 .bin-note{border-left:2px solid var(--accent);padding-left:16px;margin:20px 0 0;color:var(--ink-2);font-size:.92rem}
 
-/* ============ TOPOLOGI KANVAS ============ */
-.flow-box{border:1px solid var(--line);background:var(--paper-2)}
-.flow-top{display:flex;justify-content:space-between;align-items:center;gap:12px;
-  padding:12px 16px;border-bottom:1px solid var(--line);color:var(--ink-3);flex-wrap:wrap}
-.flow-tools{display:flex;gap:8px}
-.flow-tools button{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-  background:transparent;border:1px solid var(--line);color:var(--ink-2);padding:6px 12px;cursor:pointer;
-  transition:border-color .25s,color .25s}
-.flow-tools button:hover{border-color:var(--ink);color:var(--ink)}
-.cv-wrap{position:relative;height:clamp(300px,40vw,430px);touch-action:pan-y}
-#netCanvas{width:100%;height:100%;cursor:default}
-.tip{position:absolute;pointer-events:none;opacity:0;transform:translateY(6px);
-  background:var(--ink);color:var(--paper);padding:10px 13px;max-width:250px;z-index:5;
-  transition:opacity .22s ease,transform .22s ease}
-.tip.on{opacity:1;transform:translateY(0)}
-.tip b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--accent);margin-bottom:6px}
-.tip span{font-size:.82rem;line-height:1.5}
-.hint{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
-  padding:10px 16px;border-top:1px solid var(--line);color:var(--ink-3)}
-.flow-bar{height:1px;background:var(--line);position:relative;overflow:hidden}
-.flow-bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--accent);
-  transition:width .45s linear}
-.flow-steps{list-style:none;margin:0;padding:0;display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line);
-  border-top:1px solid var(--line)}
-.flow-steps li{background:var(--paper-2)}
-.flow-steps button{display:block;width:100%;height:100%;text-align:left;background:transparent;
-  border:0;cursor:pointer;padding:18px 16px;color:var(--ink-3);font-family:inherit;
-  transition:background .4s ease}
-.flow-steps button b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
-  color:var(--accent);margin-bottom:9px}
-.flow-steps button strong{display:block;color:var(--ink);font-size:.95rem;margin-bottom:6px}
-.flow-steps button span{display:block;font-size:.86rem;line-height:1.55}
-.flow-steps li.on button{background:var(--accent-soft)}
-.flow-foot{color:var(--ink-2);font-size:.92rem;max-width:70ch;margin:20px 0 0}
-
-/* ============ MESIN KRIPTO ============ */
+/* MESIN */
 .eng{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
   gap:1px;background:var(--line);border:1px solid var(--line)}
-.eng>div{background:var(--paper-2);padding:clamp(18px,2.6vw,28px)}
+.eng>div{background:var(--paper-2);padding:clamp(18px,2.6vw,30px)}
 .eng h3{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--ink-3);margin:0 0 14px;font-weight:400}
-.eng textarea{width:100%;min-height:132px;resize:vertical;font-family:var(--mono);font-size:.9rem;
+.eng textarea{width:100%;min-height:120px;resize:vertical;font-family:var(--mono);font-size:.9rem;
   line-height:1.6;color:var(--ink);background:var(--paper);border:1px solid var(--line);padding:13px}
 .eng textarea:focus{outline:none;border-color:var(--accent)}
 .eng-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:14px}
@@ -253,31 +225,26 @@ h1 em{font-style:italic;color:var(--accent)}
   background:transparent;border:1px solid var(--line);color:var(--ink-2);padding:8px 14px;cursor:pointer;
   transition:border-color .25s,color .25s}
 .mini:hover{border-color:var(--accent);color:var(--accent)}
+.cipher{font-family:var(--mono);font-size:.78rem;line-height:1.85;word-break:break-all;
+  color:var(--ink-3);margin-top:18px;max-height:132px;overflow:hidden}
+.cipher i{font-style:normal;transition:color .6s ease}
+.cipher i.hot{color:var(--accent)}
 .kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;
   margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
 .kv dt{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
 .kv dd{margin:6px 0 0;font-family:var(--mono);font-size:.82rem;color:var(--ink);word-break:break-all}
-.proof{color:var(--accent);font-family:var(--mono);font-size:.82rem}
-.hexgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(30px,1fr));gap:3px;
-  max-height:240px;overflow:hidden}
-.hx{font-family:var(--mono);font-size:10px;text-align:center;padding:5px 0;color:var(--ink-3);
-  border:1px solid var(--line);background:var(--paper);
-  transition:color .5s ease,border-color .5s ease,background .5s ease}
-.hx.hot{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
-.bits{display:grid;grid-template-columns:repeat(32,1fr);gap:2px;margin-top:4px}
-.bt{aspect-ratio:1;background:var(--line);border-radius:1px;transition:background .45s ease}
-.bt.one{background:var(--ink)}
-.bt.flip{background:var(--accent);animation:flipk .6s var(--ease)}
-@keyframes flipk{0%{transform:scale(1.65)}100%{transform:scale(1)}}
+.proof{color:var(--accent)}
+.bloom-wrap{position:relative;aspect-ratio:1;max-width:380px;margin:0 auto}
+#bloom{width:100%;height:100%}
 .av{display:flex;align-items:baseline;gap:12px;margin-top:18px}
 .av b{font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,4vw,2.8rem);
   line-height:1;letter-spacing:-.03em;color:var(--accent)}
 .av span{font-size:.86rem;color:var(--ink-2)}
 .avbar{height:2px;background:var(--line);margin-top:12px;position:relative;overflow:hidden}
-.avbar i{position:absolute;inset:0 auto 0 0;width:0;background:var(--accent);transition:width .5s var(--ease)}
+.avbar i{position:absolute;inset:0 auto 0 0;width:0;background:var(--accent);transition:width .6s var(--ease)}
 .eng-note{color:var(--ink-2);font-size:.88rem;margin:16px 0 0}
 
-/* ============ TENTANG ============ */
+/* TENTANG */
 .about{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
   gap:clamp(24px,4vw,64px);padding-bottom:clamp(36px,6vw,72px)}
 .about p{color:var(--ink-2);margin:0 0 16px;max-width:60ch}
@@ -294,7 +261,7 @@ h1 em{font-style:italic;color:var(--accent)}
 .meta dt{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
 .meta dd{margin:7px 0 0;font-size:.93rem}
 
-/* ============ KONTAK ============ */
+/* KONTAK */
 .contact{padding-bottom:clamp(50px,8vw,110px)}
 .mailrow{display:flex;flex-wrap:wrap;gap:14px;align-items:center;
   border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(22px,4vw,40px) 0}
@@ -302,7 +269,7 @@ h1 em{font-style:italic;color:var(--accent)}
   text-decoration:none;margin-right:auto;word-break:break-all;transition:color .3s}
 .mail:hover{color:var(--accent)}
 
-/* ============ FOOTER ============ */
+/* FOOTER */
 footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidden}
 .fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
   gap:20px;padding:clamp(30px,5vw,54px) 0 clamp(24px,4vw,40px);margin:0}
@@ -315,18 +282,16 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
   border-top:1px solid var(--line);padding:18px 0;color:var(--ink-3)}
 .fbar a{text-decoration:none}
 .fbar a:hover{color:var(--accent)}
-.wordmark{width:100%;height:auto;display:block;color:var(--ink);opacity:.07;padding-bottom:6px}
+.wordmark{width:100%;height:auto;display:block;color:var(--ink);opacity:.06;padding-bottom:6px}
 .wordmark text{font-family:var(--serif);fill:currentColor}
 @media(max-width:620px){.fbar .mid{order:3;width:100%}}
 
-/* ============ TOAST ============ */
 #toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);opacity:0;pointer-events:none;
   background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:11px;letter-spacing:.1em;
   text-transform:uppercase;padding:12px 20px;z-index:90;
   transition:transform .45s cubic-bezier(.22,.78,.24,1),opacity .3s ease}
 #toast.on{transform:translate(-50%,0);opacity:1}
 
-/* ============ REVEAL ============ */
 .rv{opacity:0;transform:translateY(22px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
 .rv.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){
@@ -347,7 +312,6 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
       <li><a href="#metode">Pendekatan</a></li>
       <li><a href="/lab/">Lab</a></li>
       <li><a href="/bin/">Bin</a></li>
-      <li><a href="#alur">Alur</a></li>
       <li><a href="#mesin">Mesin</a></li>
       <li><a href="#tentang">Tentang</a></li>
       <li><a href="#kontak">Kontak</a></li>
@@ -361,7 +325,6 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
 
 <main id="top">
 
-  <!-- HERO -->
   <header class="hero">
     <div class="wrap">
       <div class="status mono">
@@ -369,27 +332,41 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
         <span>Jakarta <b id="clock">--.--</b></span>
       </div>
       <h1>
-        <span class="h1-line"><span>Antarmuka yang <em>tenang</em>,</span></span>
-        <span class="h1-line"><span>cepat, dan bisa dipakai.</span></span>
+        <span class="h1-line"><span><span class="sc">Antarmuka yang </span><em class="sc">tenang</em><span class="sc">,</span></span></span>
+        <span class="h1-line"><span><span class="sc">cepat, dan bisa dipakai.</span></span></span>
       </h1>
       <div class="hero-foot">
         <p>Studioworks adalah studio satu orang. Saya membangun web dari nol — <strong>HTML, CSS, JavaScript</strong> — tanpa framework berat, tanpa dependensi yang tidak perlu. Fokusnya sederhana: halaman yang ringan, terbaca mesin pencari, dan nyaman dipakai siapa pun.</p>
         <a class="scroll-cue" href="#kerja">Gulir untuk melihat kerja <span></span></a>
       </div>
     </div>
+
+    <div class="field" id="fieldWrap">
+      <canvas id="field" role="img" aria-label="Medan partikel yang mengalir dan berkumpul membentuk kata Studioworks, gambar gembok, dan tulisan AES-256-GCM."></canvas>
+      <div class="field-top mono">
+        <span id="fMeta">—</span>
+        <span>gerakkan kursor · klik untuk ubah</span>
+      </div>
+      <div class="field-ui">
+        <span class="mono" id="fState">terurai</span>
+        <div class="shapes" id="fShapes">
+          <button type="button" class="on">Wordmark</button>
+          <button type="button">Gembok</button>
+          <button type="button">AES-256-GCM</button>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <!-- 01 KERJA -->
   <section id="kerja">
     <div class="wrap">
       <div class="sec-head rv">
         <span class="idx mono">01 / Indeks</span>
-        <h2>Kerja terpilih</h2>
+        <h2 class="sc">Kerja terpilih</h2>
         <p>Enam entri. Status ditulis apa adanya — yang live bisa dibuka sekarang, yang konsep punya catatan prosesnya.</p>
       </div>
 
       <div class="rows rv">
-
         <article class="row">
           <div class="row-main">
             <span class="row-num">001</span>
@@ -488,17 +465,15 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
             </dl>
           </div></div></div></div>
         </article>
-
       </div>
     </div>
   </section>
 
-  <!-- 02 METODE -->
   <section id="metode">
     <div class="wrap">
       <div class="sec-head rv">
         <span class="idx mono">02 / Metode</span>
-        <h2>Cara saya bekerja</h2>
+        <h2 class="sc">Cara saya bekerja</h2>
         <p>Empat tahap, tanpa drama. Setiap tahap punya keluaran yang bisa dilihat klien.</p>
       </div>
       <div class="steps rv">
@@ -510,12 +485,11 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
     </div>
   </section>
 
-  <!-- 03 LAB -->
   <section id="lab">
     <div class="wrap">
       <div class="sec-head rv">
         <span class="idx mono">03 / Lab</span>
-        <h2>Ruang percobaan</h2>
+        <h2 class="sc">Ruang percobaan</h2>
         <p>Perkakas kecil yang saya tulis sendiri. Semuanya jalan di browser — tidak ada data yang dikirim ke server.</p>
       </div>
       <div class="split rv">
@@ -545,21 +519,20 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
     </div>
   </section>
 
-  <!-- 04 BIN -->
   <section id="bin">
     <div class="wrap">
       <div class="sec-head rv">
         <span class="idx mono">04 / Bin</span>
-        <h2>Catatan sekali pakai</h2>
+        <h2 class="sc">Catatan sekali pakai</h2>
         <p>Tempel teks, dapat tautan. Isinya dienkripsi di browser dan kuncinya tidak pernah meninggalkan alamat tautan itu sendiri.</p>
       </div>
       <div class="split rv">
         <div>
           <p>Bin bekerja tanpa basis data. Teks dienkripsi dengan <strong>AES-GCM</strong> di perangkat Anda, hasilnya ditaruh di belakang tanda pagar pada tautan — bagian yang menurut spesifikasi URL memang tidak pernah dikirim ke server.</p>
-          <p>Catatan bisa diberi kata sandi tambahan, diberi tanggal kedaluwarsa, dan dibuka dalam tampilan mentah tanpa hiasan apa pun untuk disalin cepat.</p>
+          <p>Server hanya menyerahkan berkas HTML sekali di awal. Setelah itu tidak ada lagi percakapan dengan server: catatan bisa diberi kata sandi, diberi tanggal kedaluwarsa, dan dibuka dalam tampilan mentah untuk disalin cepat.</p>
           <p class="bin-note">Karena tidak ada server yang menyimpan, tidak ada pula yang bisa diminta menyerahkan isinya. Konsekuensinya jujur: kalau tautannya hilang, catatannya hilang.</p>
           <a class="btn solid" href="/bin/">Buat catatan</a>
-          <a class="btn" href="#alur">Lihat alurnya</a>
+          <a class="btn" href="#mesin">Lihat mesinnya</a>
         </div>
         <div class="demo">
           <div class="demo-bar"><span class="mono">anatomi tautan</span><span class="mono">tanpa server</span></div>
@@ -581,54 +554,12 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
     </div>
   </section>
 
-  <!-- 05 ALUR -->
-  <section id="alur">
-    <div class="wrap">
-      <div class="sec-head rv">
-        <span class="idx mono">05 / Alur</span>
-        <h2>Topologi yang bisa Anda sentuh</h2>
-        <p>Empat langkah berjalan sendiri. Seret simpulnya, arahkan kursor untuk keterangan, atau klik untuk melompat.</p>
-      </div>
-
-      <div class="flow-box rv">
-        <div class="flow-top">
-          <span class="mono">topologi.canvas</span>
-          <div class="flow-tools">
-            <button type="button" id="flowReset">Atur ulang</button>
-            <button type="button" id="flowPlay" aria-pressed="false">Jeda</button>
-          </div>
-        </div>
-
-        <div class="cv-wrap" id="cvWrap">
-          <canvas id="netCanvas" role="img"
-            aria-label="Diagram jaringan: peramban mengunduh halaman dari server statis, mengenkripsi teks secara lokal, lalu membagikan tautan langsung ke penerima tanpa isi catatan melewati server."></canvas>
-          <div class="tip" id="tip" aria-hidden="true"><b></b><span></span></div>
-        </div>
-
-        <div class="hint mono">
-          <span>Seret simpul untuk menata ulang</span>
-          <span id="hintStep">Langkah 01 dari 04</span>
-        </div>
-
-        <div class="flow-bar"><i id="flowBar"></i></div>
-
-        <ol class="flow-steps" id="flowSteps">
-          <li class="on"><button type="button"><b>Langkah 01</b><strong>Halaman diunduh</strong><span>Peramban meminta berkas ke server sekali saja. Setelah itu semua perhitungan jalan lokal.</span></button></li>
-          <li><button type="button"><b>Langkah 02</b><strong>Teks dienkripsi</strong><span>Kunci dibangkitkan di perangkat Anda dan dipakai mengunci teks dengan AES-GCM.</span></button></li>
-          <li><button type="button"><b>Langkah 03</b><strong>Tautan dibagikan</strong><span>Hasil kunciannya menumpang di belakang tanda pagar — jalur yang tidak dikirim ke server.</span></button></li>
-          <li><button type="button"><b>Langkah 04</b><strong>Penerima membuka</strong><span>Peramban penerima mengunduh halaman yang sama, lalu membuka kunci sendiri.</span></button></li>
-        </ol>
-      </div>
-    </div>
-  </section>
-
-  <!-- 06 MESIN -->
   <section id="mesin">
     <div class="wrap">
       <div class="sec-head rv">
-        <span class="idx mono">06 / Mesin</span>
-        <h2>Kripto yang benar-benar jalan</h2>
-        <p>Bukan animasi tiruan. Setiap ketikan dienkripsi ulang dengan AES-256-GCM dan dicacah dengan SHA-256 lewat Web Crypto API bawaan peramban.</p>
+        <span class="idx mono">05 / Mesin</span>
+        <h2 class="sc">Kripto yang benar-benar jalan</h2>
+        <p>Bukan animasi tiruan. Tiap ketikan dienkripsi ulang dengan AES-256-GCM dan dicacah SHA-256 lewat Web Crypto bawaan peramban.</p>
       </div>
 
       <div class="eng rv">
@@ -639,39 +570,32 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
             <span class="mono" id="engLen">—</span>
             <button class="mini" type="button" id="engKey">Kunci baru</button>
           </div>
+          <div class="cipher" id="engCipher" aria-hidden="true"></div>
           <dl class="kv">
-            <div><dt>Algoritme</dt><dd>AES-256-GCM</dd></div>
             <div><dt>IV acak</dt><dd id="engIv">—</dd></div>
             <div><dt>Uji balik</dt><dd class="proof" id="engProof">—</dd></div>
           </dl>
-          <p class="eng-note">IV dibangkitkan ulang setiap kali, jadi teks yang sama pun menghasilkan sandi yang berbeda — itu sebabnya seluruh petak di sebelah berkedip tiap ketikan.</p>
+          <p class="eng-note">IV dibangkitkan ulang setiap kali, jadi teks yang sama pun menghasilkan sandi yang sama sekali berbeda. Enam belas bait terakhir adalah tag autentikasi: ubah satu bait, dekripsi ditolak, bukan salah hasil.</p>
         </div>
 
         <div>
-          <h3>Sandi (heksadesimal)</h3>
-          <div class="hexgrid" id="engHex" aria-hidden="true"></div>
-          <p class="eng-note">Enam belas bait terakhir adalah tag autentikasi GCM. Ubah satu bait saja, dekripsi akan ditolak — bukan menghasilkan teks yang salah, tapi gagal sama sekali.</p>
-        </div>
-
-        <div>
-          <h3>SHA-256 · efek longsoran</h3>
-          <div class="bits" id="engBits" aria-hidden="true"></div>
+          <h3>SHA-256 · sidik jari</h3>
+          <div class="bloom-wrap">
+            <canvas id="bloom" role="img" aria-label="Visualisasi radial dari nilai hash SHA-256 teks yang diketik."></canvas>
+          </div>
           <div class="av"><b id="avNum">0</b><span>dari 256 bit berubah dibanding ketikan sebelumnya</span></div>
           <div class="avbar"><i id="avBar"></i></div>
-          <p class="eng-note">Satu huruf saja diubah, sekitar separuh bit hash ikut terbalik. Sifat inilah yang membuat hash tidak bisa ditebak mundur dari hasilnya.</p>
+          <p class="eng-note">Bentuk itu digambar langsung dari 256 bit hash. Ubah satu huruf, sekitar separuh bit terbalik dan siluetnya berganti total — sifat yang membuat hash tidak bisa ditelusuri mundur.</p>
         </div>
       </div>
-
-      <p class="flow-foot rv">Buka panel Network peramban Anda saat memainkan ini. Setelah halaman termuat, tidak ada satu pun permintaan baru ke server — teks yang Anda ketik tidak pernah meninggalkan tab ini.</p>
     </div>
   </section>
 
-  <!-- 07 TENTANG -->
   <section id="tentang">
     <div class="wrap">
       <div class="sec-head rv">
-        <span class="idx mono">07 / Profil</span>
-        <h2>Tentang</h2>
+        <span class="idx mono">06 / Profil</span>
+        <h2 class="sc">Tentang</h2>
         <p>Saya Muhammad Rafly, mahasiswa Sistem Informasi di Universitas Budi Luhur. Siang kuliah, malam menulis kode dan membongkar cara kerja web.</p>
       </div>
       <div class="about rv">
@@ -698,12 +622,11 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
     </div>
   </section>
 
-  <!-- 08 KONTAK -->
   <section id="kontak" class="contact">
     <div class="wrap">
       <div class="sec-head rv">
-        <span class="idx mono">08 / Kontak</span>
-        <h2>Mari bicara</h2>
+        <span class="idx mono">07 / Kontak</span>
+        <h2 class="sc">Mari bicara</h2>
         <p>Tidak ada formulir di sini — cukup kirim surel, biasanya saya balas dalam 24 jam.</p>
       </div>
       <div class="mailrow rv">
@@ -740,39 +663,73 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
 <script>
 (function () {
   "use strict";
-  var d = document;
+  var d = document, W = window;
   var reduce = false;
   try { reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+  var themeHooks = [];
+
+  function cssv(n) { return getComputedStyle(d.documentElement).getPropertyValue(n).trim(); }
+  function toRgb(h) {
+    h = h.replace("#", "");
+    if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    var n = parseInt(h, 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
 
   /* ---------- tema ---------- */
-  var themeBtn = d.getElementById("themeBtn");
-  var themeHooks = [];
-  themeBtn.addEventListener("click", function () {
+  d.getElementById("themeBtn").addEventListener("click", function () {
     var now = d.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
     d.documentElement.setAttribute("data-theme", now);
     try { localStorage.setItem("sw-theme", now); } catch (e) {}
     themeHooks.forEach(function (f) { f(); });
   });
 
-  /* ---------- jam ---------- */
+  /* ---------- jam & tahun ---------- */
   function tick() {
-    var s = new Intl.DateTimeFormat("id-ID", {
-      timeZone: "Asia/Jakarta", hour: "2-digit", minute: "2-digit", hour12: false
-    }).format(new Date());
+    var s = new Intl.DateTimeFormat("id-ID", { timeZone:"Asia/Jakarta", hour:"2-digit", minute:"2-digit", hour12:false }).format(new Date());
     d.getElementById("clock").textContent = s.replace(":", ".");
   }
   tick(); setInterval(tick, 20000);
   d.getElementById("yr").textContent = new Date().getFullYear();
-  requestAnimationFrame(function () { d.body.classList.add("ready"); });
+
+  /* ---------- scramble teks ---------- */
+  var GLYPH = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%&$@/*<>";
+  d.querySelectorAll(".sc").forEach(function (el) { el.setAttribute("data-txt", el.textContent); });
+  function scramble(el, dur) {
+    var fin = el.getAttribute("data-txt") || el.textContent, len = fin.length, t0 = 0;
+    if (reduce) { el.textContent = fin; return; }
+    function step(now) {
+      if (!t0) t0 = now;
+      var p = Math.min((now - t0) / dur, 1), rev = p * len * 1.25, out = "";
+      for (var i = 0; i < len; i++) {
+        var c = fin.charAt(i);
+        if (c === " " || c === "\n") { out += c; }
+        else if (i < rev) { out += c; }
+        else { out += GLYPH.charAt((Math.random() * GLYPH.length) | 0); }
+      }
+      el.textContent = out;
+      if (p < 1) requestAnimationFrame(step); else el.textContent = fin;
+    }
+    requestAnimationFrame(step);
+  }
+  requestAnimationFrame(function () {
+    d.body.classList.add("ready");
+    var hs = d.querySelectorAll("h1 .sc");
+    hs.forEach(function (el, i) { setTimeout(function () { scramble(el, 900); }, 260 + i * 90); });
+  });
 
   /* ---------- reveal ---------- */
   var rv = d.querySelectorAll(".rv");
-  if ("IntersectionObserver" in window) {
+  if ("IntersectionObserver" in W) {
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+        if (!e.isIntersecting) return;
+        e.target.classList.add("in");
+        var h = e.target.querySelector(".sc");
+        if (h) scramble(h, 650);
+        io.unobserve(e.target);
       });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: .12 });
+    }, { rootMargin:"0px 0px -8% 0px", threshold:.12 });
     rv.forEach(function (el) { io.observe(el); });
   } else { rv.forEach(function (el) { el.classList.add("in"); }); }
 
@@ -789,10 +746,10 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
     }
     requestAnimationFrame(step);
   }
-  if ("IntersectionObserver" in window) {
+  if ("IntersectionObserver" in W) {
     var io2 = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { runCount(e.target); io2.unobserve(e.target); } });
-    }, { threshold: .5 });
+    }, { threshold:.5 });
     counters.forEach(function (el) { io2.observe(el); });
   } else { counters.forEach(runCount); }
 
@@ -805,407 +762,302 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
     });
   });
 
-  /* ---------- demo caesar ---------- */
+  /* ---------- caesar mini ---------- */
   var cIn = d.getElementById("cIn"), cSh = d.getElementById("cSh"),
       cOut = d.getElementById("cOut"), cShVal = d.getElementById("cShVal");
-  function caesar(txt, n) {
-    return txt.replace(/[a-z]/gi, function (ch) {
-      var base = ch <= "Z" ? 65 : 97;
-      return String.fromCharCode((ch.charCodeAt(0) - base + n) % 26 + base);
+  function caesar(t, n) {
+    return t.replace(/[a-z]/gi, function (ch) {
+      var b = ch <= "Z" ? 65 : 97;
+      return String.fromCharCode((ch.charCodeAt(0) - b + n) % 26 + b);
     });
   }
-  function drawC() {
-    var n = parseInt(cSh.value, 10);
-    cShVal.textContent = n;
-    cOut.textContent = caesar(cIn.value, n) || "—";
-  }
-  cIn.addEventListener("input", drawC);
-  cSh.addEventListener("input", drawC);
-  drawC();
+  function drawC() { var n = +cSh.value; cShVal.textContent = n; cOut.textContent = caesar(cIn.value, n) || "—"; }
+  cIn.addEventListener("input", drawC); cSh.addEventListener("input", drawC); drawC();
 
   /* ============================================================
-     TOPOLOGI KANVAS
+     MEDAN PARTIKEL
      ============================================================ */
   (function () {
-    var cv = d.getElementById("netCanvas");
+    var cv = d.getElementById("field");
     if (!cv || !cv.getContext) return;
-    var ctx = cv.getContext("2d");
-    var wrap = d.getElementById("cvWrap");
-    var tip = d.getElementById("tip"), tipT = tip.querySelector("b"), tipS = tip.querySelector("span");
-    var bar = d.getElementById("flowBar"), playBtn = d.getElementById("flowPlay"),
-        resetBtn = d.getElementById("flowReset"), hintStep = d.getElementById("hintStep");
-    var items = d.querySelectorAll("#flowSteps li");
+    var ctx = cv.getContext("2d"), wrap = d.getElementById("fieldWrap");
+    var fMeta = d.getElementById("fMeta"), fState = d.getElementById("fState");
+    var btns = d.querySelectorAll("#fShapes button");
+    var w = 0, h = 0, dpr = 1, P = [], pts = [], shape = 0, form = 0, target = 1,
+        phase = 0, raf = 0, running = false, vis = false, tPrev = 0;
+    var mouse = { x:-9999, y:-9999, on:false };
+    var col = {};
 
-    var W = 0, H = 0, dpr = 1;
-    var C = {};
-    function readColors() {
-      var cs = getComputedStyle(d.documentElement);
-      C.ink = cs.getPropertyValue("--ink").trim();
-      C.ink2 = cs.getPropertyValue("--ink-2").trim();
-      C.ink3 = cs.getPropertyValue("--ink-3").trim();
-      C.line = cs.getPropertyValue("--line").trim();
-      C.accent = cs.getPropertyValue("--accent").trim();
-      C.paper = cs.getPropertyValue("--paper").trim();
+    function readCol() {
+      col.paper = toRgb(cssv("--paper"));
+      col.ink = toRgb(cssv("--ink"));
+      col.accent = toRgb(cssv("--accent"));
     }
-    readColors();
-    themeHooks.push(readColors);
+    readCol(); themeHooks.push(readCol);
 
-    var N = [
-      { k:"you",  t:"PERAMBAN ANDA", s:"enkripsi terjadi di sini",
-        info:"Semua perhitungan kriptografi dijalankan tab ini. Kunci dibangkitkan lokal dan tidak pernah dikirim ke mana pun.", step:1 },
-      { k:"srv",  t:"SERVER STATIS", s:"GitHub Pages — hanya berkas",
-        info:"Hanya melayani HTML, CSS, dan JS. Tidak ada basis data, tidak ada isi catatan yang tersimpan atau tercatat.", step:0 },
-      { k:"them", t:"PENERIMA", s:"dekripsi di perangkatnya",
-        info:"Mengunduh halaman yang sama, lalu membuka kunci memakai potongan tautan setelah tanda pagar.", step:3 }
-    ];
-    var pos = {}, drag = null, hover = null, over = null;
+    /* value noise */
+    var perm = new Uint8Array(512);
+    (function () {
+      var p = [], i, j, t;
+      for (i = 0; i < 256; i++) p[i] = i;
+      for (i = 255; i > 0; i--) { j = (Math.random() * (i + 1)) | 0; t = p[i]; p[i] = p[j]; p[j] = t; }
+      for (i = 0; i < 512; i++) perm[i] = p[i & 255];
+    })();
+    function fade(t) { return t * t * (3 - 2 * t); }
+    function vn(x, y) {
+      var xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+      var a = perm[(perm[xi & 255] + (yi & 255)) & 511] / 255,
+          b = perm[(perm[(xi + 1) & 255] + (yi & 255)) & 511] / 255,
+          c = perm[(perm[xi & 255] + ((yi + 1) & 255)) & 511] / 255,
+          e = perm[(perm[(xi + 1) & 255] + ((yi + 1) & 255)) & 511] / 255;
+      var u = fade(xf), v = fade(yf);
+      return (a * (1 - u) + b * u) * (1 - v) + (c * (1 - u) + e * u) * v;
+    }
 
-    function layout(keep) {
-      var nw = Math.max(116, Math.min(200, W * 0.21));
-      N.forEach(function (n) { n.w = nw; n.h = 64; });
-      var base = {
-        you:  { x: W * 0.18, y: H * 0.70 },
-        srv:  { x: W * 0.50, y: H * 0.22 },
-        them: { x: W * 0.82, y: H * 0.70 }
-      };
-      N.forEach(function (n) {
-        if (keep && pos[n.k] && pos[n.k].moved) return;
-        pos[n.k] = { x: base[n.k].x, y: base[n.k].y, moved: false };
-      });
+    var off = d.createElement("canvas"), octx = off.getContext("2d");
+    function sample() {
+      var img, list = [], step = w < 620 ? 3 : 4, x, y;
+      try { img = octx.getImageData(0, 0, off.width, off.height).data; } catch (e) { return list; }
+      for (y = 0; y < off.height; y += step) {
+        for (x = 0; x < off.width; x += step) {
+          if (img[(y * off.width + x) * 4 + 3] > 130) list.push({ x:x, y:y });
+        }
+      }
+      return list;
+    }
+    function build(kind) {
+      off.width = Math.max(1, Math.round(w)); off.height = Math.max(1, Math.round(h));
+      octx.clearRect(0, 0, off.width, off.height);
+      octx.fillStyle = "#000";
+      if (kind === 1) {
+        var s = Math.min(w, h) * 0.46, cx = w / 2, cy = h / 2 + s * 0.08;
+        octx.beginPath();
+        octx.rect(cx - s * 0.42, cy - s * 0.18, s * 0.84, s * 0.6);
+        octx.fill();
+        octx.lineWidth = s * 0.13; octx.strokeStyle = "#000";
+        octx.beginPath(); octx.arc(cx, cy - s * 0.2, s * 0.26, Math.PI, 0); octx.stroke();
+      } else {
+        var txt = kind === 0 ? "STUDIOWORKS" : "AES-256-GCM";
+        var size = Math.min(h * 0.44, w * 1.9 / txt.length);
+        octx.font = "700 " + size + "px " + (kind === 0 ? "Georgia,serif" : "ui-monospace,Menlo,monospace");
+        octx.textAlign = "center"; octx.textBaseline = "middle";
+        octx.fillText(txt, w / 2, h / 2);
+      }
+      return sample();
+    }
+    function assign() {
+      if (!pts.length) return;
+      for (var i = 0; i < P.length; i++) {
+        var q = pts[(i * 7919) % pts.length];
+        P[i].tx = q.x + (Math.random() - .5) * 2.5;
+        P[i].ty = q.y + (Math.random() - .5) * 2.5;
+      }
+    }
+    function setShape(i, manual) {
+      shape = i; pts = build(i); assign();
+      target = 1; phase = 0;
+      btns.forEach(function (b, n) { b.classList.toggle("on", n === i); });
+      if (manual && !running) render();
     }
     function resize() {
       var r = wrap.getBoundingClientRect();
-      W = r.width; H = r.height;
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      w = r.width; h = r.height;
+      dpr = Math.min(W.devicePixelRatio || 1, 2);
+      cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      layout(true);
-    }
-
-    var LINKS = [
-      { k:"req",   a:"you",  b:"srv",  bend:-58, label:"GET / — sekali unduh" },
-      { k:"share", a:"you",  b:"them", bend:96,  label:"#v1.aG9sYS4u — tidak pernah dikirim" },
-      { k:"fetch", a:"srv",  b:"them", bend:58,  label:"GET / — penerima unduh halaman sama" }
-    ];
-    function ctrlOf(l) {
-      var A = pos[l.a], B = pos[l.b];
-      var mx = (A.x + B.x) / 2, my = (A.y + B.y) / 2;
-      var dx = B.x - A.x, dy = B.y - A.y, len = Math.hypot(dx, dy) || 1;
-      return { x: mx + (-dy / len) * l.bend, y: my + (dx / len) * l.bend };
-    }
-    function ptOn(l, t) {
-      var A = pos[l.a], B = pos[l.b], Q = ctrlOf(l), u = 1 - t;
-      return { x: u*u*A.x + 2*u*t*Q.x + t*t*B.x, y: u*u*A.y + 2*u*t*Q.y + t*t*B.y };
-    }
-
-    var CONF = [
-      { nodes:["you","srv"],  links:["req"],   lock:0, plain:0, note:0 },
-      { nodes:["you"],        links:[],        lock:1, plain:0, note:0 },
-      { nodes:["you","them"], links:["share"], lock:1, plain:0, note:1 },
-      { nodes:["them","srv"], links:["fetch"], lock:0, plain:1, note:1 }
-    ];
-    var cur = 0, packets = [], emitters = [], last = 0, raf = 0,
-        running = false, visible = false, paused = false, stepAcc = 0, spin = 0;
-    var STEP_MS = 4200;
-
-    function setStep(i, manual) {
-      cur = i; packets = []; emitters = []; stepAcc = 0;
-      var c = CONF[i];
-      if (c.links.indexOf("req") > -1) {
-        emitters.push({ l:LINKS[0], dir:1, every:340, acc:0, dur:1000 });
-        emitters.push({ l:LINKS[0], dir:-1, every:340, acc:170, dur:1000 });
+      var n = Math.max(500, Math.min(2200, Math.floor(w * h / 780)));
+      P = [];
+      for (var i = 0; i < n; i++) {
+        P.push({ x:Math.random() * w, y:Math.random() * h, vx:0, vy:0, tx:w / 2, ty:h / 2,
+                 a:Math.random() < .17, s:.7 + Math.random() * .9 });
       }
-      if (c.links.indexOf("share") > -1) emitters.push({ l:LINKS[1], dir:1, every:300, acc:0, dur:1500 });
-      if (c.links.indexOf("fetch") > -1) {
-        emitters.push({ l:LINKS[2], dir:-1, every:340, acc:0, dur:1100 });
-        emitters.push({ l:LINKS[2], dir:1, every:340, acc:170, dur:1100 });
-      }
-      bar.style.width = ((i + 1) / CONF.length * 100) + "%";
-      hintStep.textContent = "Langkah 0" + (i + 1) + " dari 04";
-      items.forEach(function (li, n) { li.classList.toggle("on", n === i); });
-      if (manual) render(performance.now());
-    }
-
-    function rr(x, y, w, h, r) {
-      ctx.beginPath();
-      ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-      ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-      ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-      ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.closePath();
-    }
-    function grid() {
-      ctx.save(); ctx.globalAlpha = .5; ctx.fillStyle = C.line;
-      for (var x = 18; x < W; x += 26) for (var y = 18; y < H; y += 26) ctx.fillRect(x, y, 1, 1);
-      ctx.restore();
-    }
-    function drawLink(l) {
-      var on = CONF[cur].links.indexOf(l.k) > -1;
-      var A = pos[l.a], B = pos[l.b], Q = ctrlOf(l);
-      ctx.save();
-      ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.quadraticCurveTo(Q.x, Q.y, B.x, B.y);
-      ctx.lineWidth = on ? 1.8 : 1.2;
-      ctx.strokeStyle = on ? C.accent : C.line;
-      ctx.globalAlpha = on ? 1 : .75;
-      if (!on) ctx.setLineDash([4, 7]);
-      ctx.stroke();
-      ctx.restore();
-      var m = ptOn(l, .5);
-      ctx.save();
-      ctx.font = "11px " + "ui-monospace,SFMono-Regular,Menlo,Consolas,monospace";
-      ctx.textAlign = "center"; ctx.textBaseline = "middle";
-      ctx.fillStyle = on ? C.accent : C.ink3;
-      ctx.globalAlpha = on ? 1 : .5;
-      var tw = ctx.measureText(l.label).width;
-      ctx.fillStyle = C.paper; ctx.globalAlpha = on ? .9 : .7;
-      ctx.fillRect(m.x - tw / 2 - 6, m.y - 9, tw + 12, 18);
-      ctx.globalAlpha = on ? 1 : .55;
-      ctx.fillStyle = on ? C.accent : C.ink3;
-      ctx.fillText(l.label, m.x, m.y);
-      ctx.restore();
-    }
-    function drawNode(n) {
-      var p = pos[n.k], c = CONF[cur], on = c.nodes.indexOf(n.k) > -1;
-      var dim = (hover && hover !== n) ? .55 : 1;
-      var x = p.x - n.w / 2, y = p.y - n.h / 2;
-      ctx.save();
-      ctx.globalAlpha = (on ? 1 : .5) * dim;
-      ctx.fillStyle = C.paper;
-      rr(x, y, n.w, n.h, 2); ctx.fill();
-      ctx.lineWidth = on ? 1.8 : 1.2;
-      ctx.strokeStyle = on ? C.accent : C.line;
-      rr(x, y, n.w, n.h, 2); ctx.stroke();
-      if (on) { ctx.globalAlpha = .1 * dim; ctx.fillStyle = C.accent; rr(x, y, n.w, n.h, 2); ctx.fill(); }
-      ctx.globalAlpha = dim;
-      ctx.textBaseline = "middle"; ctx.textAlign = "left";
-      ctx.font = "10px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace";
-      ctx.fillStyle = on ? C.ink : C.ink2;
-      ctx.fillText(n.t, x + 13, y + 24);
-      ctx.font = "11px -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif";
-      ctx.fillStyle = C.ink3;
-      ctx.fillText(n.s, x + 13, y + 43);
-      ctx.restore();
-
-      if (n.k === "you" && c.lock) {
-        ctx.save();
-        ctx.translate(x + n.w - 22, y + 20);
-        ctx.strokeStyle = C.accent; ctx.lineWidth = 1.6; ctx.globalAlpha = dim;
-        ctx.strokeRect(-7, -3, 14, 11);
-        ctx.beginPath(); ctx.arc(0, -3, 5, Math.PI, 0); ctx.stroke();
-        ctx.restore();
-      }
-      if (n.k === "you" && cur === 1) {
-        ctx.save();
-        ctx.translate(p.x, p.y + n.h / 2 + 26);
-        ctx.rotate(spin);
-        ctx.strokeStyle = C.accent; ctx.lineWidth = 2; ctx.globalAlpha = .9 * dim;
-        ctx.setLineDash([6, 8]);
-        ctx.beginPath(); ctx.arc(0, 0, 15, 0, Math.PI * 2); ctx.stroke();
-        ctx.restore();
-        ctx.save();
-        ctx.font = "10px ui-monospace,Menlo,monospace"; ctx.fillStyle = C.accent;
-        ctx.textAlign = "center"; ctx.globalAlpha = dim;
-        ctx.fillText("AES-GCM", p.x, p.y + n.h / 2 + 58);
-        ctx.restore();
-      }
-      if (n.k === "them" && c.plain) {
-        ctx.save();
-        ctx.font = "11px ui-monospace,Menlo,monospace"; ctx.fillStyle = C.accent;
-        ctx.textAlign = "center"; ctx.globalAlpha = dim;
-        ctx.fillText("halo, ini catatannya", p.x, p.y + n.h / 2 + 20);
-        ctx.restore();
-      }
-      if (n.k === "srv" && c.note) {
-        ctx.save();
-        ctx.font = "italic 11px -apple-system,sans-serif"; ctx.fillStyle = C.ink3;
-        ctx.textAlign = "center"; ctx.globalAlpha = dim;
-        ctx.fillText("tidak melihat isi catatan", p.x, p.y + n.h / 2 + 18);
-        ctx.restore();
-      }
-    }
-    function drawPackets() {
-      ctx.save();
-      packets.forEach(function (pk) {
-        var t = pk.dir > 0 ? pk.t : 1 - pk.t;
-        for (var k = 0; k < 3; k++) {
-          var tt = t - k * .035 * pk.dir;
-          if (tt < 0 || tt > 1) continue;
-          var p = ptOn(pk.l, tt);
-          ctx.globalAlpha = (1 - k * .32) * Math.min(1, Math.sin(Math.PI * pk.t) * 2.6);
-          ctx.fillStyle = C.accent;
-          ctx.beginPath(); ctx.arc(p.x, p.y, 5 - k * 1.2, 0, Math.PI * 2); ctx.fill();
-        }
-      });
-      ctx.restore();
+      fMeta.textContent = n + " partikel · curl field";
+      pts = build(shape); assign();
+      ctx.fillStyle = "rgb(" + col.paper.join(",") + ")";
+      ctx.fillRect(0, 0, w, h);
     }
     function render() {
-      ctx.clearRect(0, 0, W, H);
-      grid();
-      LINKS.forEach(drawLink);
-      drawPackets();
-      N.forEach(drawNode);
-    }
-    function loop(now) {
-      var dt = Math.min(now - (last || now), 60); last = now;
-      spin += dt * .0022;
-      emitters.forEach(function (e) {
-        e.acc += dt;
-        if (e.acc >= e.every && packets.length < 40) { e.acc = 0; packets.push({ l:e.l, dir:e.dir, t:0, dur:e.dur }); }
-      });
-      for (var i = packets.length - 1; i >= 0; i--) {
-        packets[i].t += dt / packets[i].dur;
-        if (packets[i].t >= 1) packets.splice(i, 1);
+      ctx.fillStyle = "rgba(" + col.paper.join(",") + ",.135)";
+      ctx.fillRect(0, 0, w, h);
+      var i, p, inkC = "rgba(" + col.ink.join(",") + ",", accC = "rgba(" + col.accent.join(",") + ",";
+      for (i = 0; i < P.length; i++) {
+        p = P[i];
+        ctx.fillStyle = (p.a ? accC : inkC) + (p.a ? .85 : .5) + ")";
+        ctx.fillRect(p.x, p.y, p.s + (p.a ? .5 : 0), p.s + (p.a ? .5 : 0));
       }
-      if (!paused) {
-        stepAcc += dt;
-        if (stepAcc >= STEP_MS) setStep((cur + 1) % CONF.length);
+    }
+    function tickF(now) {
+      var dt = Math.min(now - (tPrev || now), 50) / 16.7; tPrev = now;
+      form += (target - form) * 0.035 * dt;
+      phase += dt * 16.7;
+      if (phase > (target ? 4200 : 2600)) {
+        phase = 0;
+        if (target) { target = 0; fState.textContent = "terurai"; }
+        else { setShape((shape + 1) % 3); fState.textContent = "terbentuk"; }
+      }
+      var t = now * 0.00007;
+      for (var i = 0; i < P.length; i++) {
+        var p = P[i];
+        var ang = vn(p.x * 0.0021 + t * 3, p.y * 0.0021) * Math.PI * 4;
+        var fr = 1 - form;
+        p.vx += Math.cos(ang) * 0.42 * fr * dt;
+        p.vy += Math.sin(ang) * 0.42 * fr * dt;
+        p.vx += (p.tx - p.x) * 0.014 * form * dt;
+        p.vy += (p.ty - p.y) * 0.014 * form * dt;
+        if (mouse.on) {
+          var dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy;
+          if (d2 < 15000 && d2 > 0.5) {
+            var f = (1 - d2 / 15000) * 2.6 / Math.sqrt(d2);
+            p.vx += dx * f * dt; p.vy += dy * f * dt;
+          }
+        }
+        p.vx *= 0.935; p.vy *= 0.935;
+        p.x += p.vx * dt; p.y += p.vy * dt;
+        if (p.x < -20) p.x = w + 20; else if (p.x > w + 20) p.x = -20;
+        if (p.y < -20) p.y = h + 20; else if (p.y > h + 20) p.y = -20;
       }
       render();
-      raf = running ? requestAnimationFrame(loop) : 0;
+      raf = running ? requestAnimationFrame(tickF) : 0;
     }
-    function start() { if (running || reduce) return; running = true; last = 0; raf = requestAnimationFrame(loop); }
+    function start() { if (running || reduce) return; running = true; tPrev = 0; raf = requestAnimationFrame(tickF); }
     function stop() { running = false; if (raf) cancelAnimationFrame(raf); raf = 0; }
 
-    function hit(mx, my) {
-      for (var i = N.length - 1; i >= 0; i--) {
-        var n = N[i], p = pos[n.k];
-        if (Math.abs(mx - p.x) <= n.w / 2 && Math.abs(my - p.y) <= n.h / 2) return n;
-      }
-      return null;
-    }
-    function rel(ev) {
+    wrap.addEventListener("pointermove", function (e) {
       var r = cv.getBoundingClientRect();
-      return { x: ev.clientX - r.left, y: ev.clientY - r.top };
+      mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; mouse.on = true;
+    });
+    wrap.addEventListener("pointerleave", function () { mouse.on = false; mouse.x = -9999; });
+    cv.addEventListener("click", function () { setShape((shape + 1) % 3, true); fState.textContent = "terbentuk"; });
+    btns.forEach(function (b, n) {
+      b.addEventListener("click", function () { setShape(n, true); fState.textContent = "terbentuk"; });
+    });
+
+    if ("ResizeObserver" in W) new ResizeObserver(function () { resize(); render(); }).observe(wrap);
+    else W.addEventListener("resize", function () { resize(); render(); });
+
+    resize();
+    if (reduce) {
+      form = 1;
+      for (var k = 0; k < P.length; k++) { P[k].x = P[k].tx; P[k].y = P[k].ty; }
+      render(); fState.textContent = "animasi dimatikan";
+      return;
     }
-    cv.addEventListener("pointerdown", function (ev) {
-      var m = rel(ev), n = hit(m.x, m.y);
-      if (!n) return;
-      drag = { n:n, dx:m.x - pos[n.k].x, dy:m.y - pos[n.k].y, moved:false };
-      cv.setPointerCapture(ev.pointerId);
-      cv.style.cursor = "grabbing";
-    });
-    cv.addEventListener("pointermove", function (ev) {
-      var m = rel(ev);
-      if (drag) {
-        var n = drag.n;
-        pos[n.k].x = Math.max(n.w / 2 + 4, Math.min(W - n.w / 2 - 4, m.x - drag.dx));
-        pos[n.k].y = Math.max(n.h / 2 + 4, Math.min(H - n.h / 2 - 4, m.y - drag.dy));
-        pos[n.k].moved = true; drag.moved = true;
-        if (!running) render();
-        return;
-      }
-      var h = hit(m.x, m.y);
-      hover = h;
-      cv.style.cursor = h ? "grab" : "default";
-      if (h) {
-        if (over !== h) { tipT.textContent = h.t; tipS.textContent = h.info; over = h; }
-        var tw = tip.offsetWidth || 230, th = tip.offsetHeight || 80;
-        tip.style.left = Math.max(6, Math.min(W - tw - 6, m.x + 16)) + "px";
-        tip.style.top = Math.max(6, Math.min(H - th - 6, m.y + 16)) + "px";
-        tip.classList.add("on");
-      } else { tip.classList.remove("on"); over = null; }
-      if (!running) render();
-    });
-    function endDrag(ev) {
-      if (drag) {
-        if (!drag.moved) { setStep(drag.n.step, true); stepAcc = 0; }
-        try { cv.releasePointerCapture(ev.pointerId); } catch (e) {}
-        drag = null; cv.style.cursor = hover ? "grab" : "default";
-      }
-    }
-    cv.addEventListener("pointerup", endDrag);
-    cv.addEventListener("pointercancel", endDrag);
-    cv.addEventListener("pointerleave", function () {
-      hover = null; over = null; tip.classList.remove("on");
-      if (!running) render();
-    });
-
-    items.forEach(function (li, n) {
-      li.querySelector("button").addEventListener("click", function () { setStep(n, true); stepAcc = 0; });
-    });
-    playBtn.addEventListener("click", function () {
-      paused = !paused;
-      playBtn.textContent = paused ? "Putar" : "Jeda";
-      playBtn.setAttribute("aria-pressed", paused ? "true" : "false");
-      if (paused) { emitters = []; } else { setStep(cur, true); }
-    });
-    resetBtn.addEventListener("click", function () {
-      N.forEach(function (n) { pos[n.k].moved = false; });
-      layout(false); render();
-    });
-
-    if ("ResizeObserver" in window) new ResizeObserver(function () { resize(); render(); }).observe(wrap);
-    else window.addEventListener("resize", function () { resize(); render(); });
-
-    resize(); setStep(reduce ? 2 : 0, true);
-    if (reduce) { playBtn.disabled = true; playBtn.textContent = "Animasi dimatikan"; return; }
-
-    if ("IntersectionObserver" in window) {
+    if ("IntersectionObserver" in W) {
       new IntersectionObserver(function (es) {
-        es.forEach(function (e) { visible = e.isIntersecting; if (visible) start(); else stop(); });
-      }, { threshold: .2 }).observe(wrap);
-    } else { visible = true; start(); }
-    d.addEventListener("visibilitychange", function () { if (d.hidden) stop(); else if (visible) start(); });
-    themeHooks.push(function () { render(); });
+        es.forEach(function (e) { vis = e.isIntersecting; if (vis) start(); else stop(); });
+      }, { threshold:.08 }).observe(wrap);
+    } else { vis = true; start(); }
+    d.addEventListener("visibilitychange", function () { if (d.hidden) stop(); else if (vis) start(); });
+    themeHooks.push(function () { ctx.fillStyle = "rgb(" + col.paper.join(",") + ")"; ctx.fillRect(0, 0, w, h); });
   })();
 
   /* ============================================================
-     MESIN KRIPTO
+     MESIN KRIPTO + SIDIK JARI
      ============================================================ */
   (function () {
     var inEl = d.getElementById("engIn");
     if (!inEl) return;
-    var hexWrap = d.getElementById("engHex"), bitWrap = d.getElementById("engBits"),
-        avNum = d.getElementById("avNum"), avBar = d.getElementById("avBar"),
-        ivEl = d.getElementById("engIv"), proofEl = d.getElementById("engProof"),
-        lenEl = d.getElementById("engLen"), keyBtn = d.getElementById("engKey");
-    var subtle = window.crypto && window.crypto.subtle;
-    if (!subtle) {
-      lenEl.textContent = "Web Crypto tidak tersedia";
-      proofEl.textContent = "butuh HTTPS";
-      return;
-    }
+    var cipherEl = d.getElementById("engCipher"), ivEl = d.getElementById("engIv"),
+        proofEl = d.getElementById("engProof"), lenEl = d.getElementById("engLen"),
+        keyBtn = d.getElementById("engKey"), avNum = d.getElementById("avNum"),
+        avBar = d.getElementById("avBar"), bc = d.getElementById("bloom");
+    var subtle = W.crypto && W.crypto.subtle;
+    if (!subtle) { lenEl.textContent = "Web Crypto tidak tersedia"; proofEl.textContent = "butuh HTTPS"; return; }
     var enc = new TextEncoder(), dec = new TextDecoder();
-    var HEXN = 120, hexCells = [], bitCells = [], prevBits = null, key = null,
-        deb = 0, flipT = 0, token = 0;
+    var key = null, prevBits = null, deb = 0, token = 0, hotT = 0;
 
-    for (var i = 0; i < HEXN; i++) {
-      var c = d.createElement("span");
-      c.className = "hx"; c.textContent = "··";
-      c.style.transitionDelay = (i % 18) * 9 + "ms";
-      hexWrap.appendChild(c); hexCells.push(c);
+    /* --- sidik jari radial --- */
+    var bx = bc.getContext("2d"), NP = 64;
+    var cur = new Array(NP).fill(.5), tgt = new Array(NP).fill(.5);
+    var bw = 0, bh = 0, brot = 0, braf = 0, brun = false, bvis = false;
+    var bcol = {};
+    function bread() { bcol.ink = toRgb(cssv("--ink")); bcol.accent = toRgb(cssv("--accent")); bcol.line = toRgb(cssv("--line")); bcol.paper = toRgb(cssv("--paper")); }
+    bread(); themeHooks.push(bread);
+    function bresize() {
+      var r = bc.parentNode.getBoundingClientRect();
+      var dp = Math.min(W.devicePixelRatio || 1, 2);
+      bw = r.width; bh = r.height;
+      bc.width = Math.round(bw * dp); bc.height = Math.round(bh * dp);
+      bx.setTransform(dp, 0, 0, dp, 0, 0);
     }
-    for (var j = 0; j < 256; j++) {
-      var b = d.createElement("span");
-      b.className = "bt";
-      bitWrap.appendChild(b); bitCells.push(b);
+    function bdraw() {
+      var cx = bw / 2, cy = bh / 2, R = Math.min(bw, bh) * 0.40, i, a, r;
+      bx.clearRect(0, 0, bw, bh);
+      bx.save(); bx.translate(cx, cy); bx.rotate(brot);
+      bx.strokeStyle = "rgba(" + bcol.line.join(",") + ",1)"; bx.lineWidth = 1;
+      [0.42, 0.72, 1].forEach(function (k) {
+        bx.beginPath(); bx.arc(0, 0, R * k, 0, Math.PI * 2); bx.stroke();
+      });
+      bx.strokeStyle = "rgba(" + bcol.ink.join(",") + ",.30)"; bx.lineWidth = 1;
+      for (i = 0; i < NP; i += 2) {
+        a = i / NP * Math.PI * 2; r = R * (0.42 + cur[i] * 0.58);
+        bx.beginPath(); bx.moveTo(Math.cos(a) * R * 0.42, Math.sin(a) * R * 0.42);
+        bx.lineTo(Math.cos(a) * r, Math.sin(a) * r); bx.stroke();
+      }
+      bx.beginPath();
+      for (i = 0; i <= NP; i++) {
+        var i0 = i % NP, i1 = (i + 1) % NP;
+        a = i0 / NP * Math.PI * 2;
+        var a1 = (i0 + 1) / NP * Math.PI * 2;
+        var r0 = R * (0.42 + cur[i0] * 0.58), r1 = R * (0.42 + cur[i1] * 0.58);
+        var x0 = Math.cos(a) * r0, y0 = Math.sin(a) * r0;
+        var x1 = Math.cos(a1) * r1, y1 = Math.sin(a1) * r1;
+        if (i === 0) bx.moveTo(x0, y0);
+        bx.quadraticCurveTo(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2);
+      }
+      bx.closePath();
+      bx.fillStyle = "rgba(" + bcol.accent.join(",") + ",.11)"; bx.fill();
+      bx.strokeStyle = "rgba(" + bcol.accent.join(",") + ",1)"; bx.lineWidth = 1.6; bx.stroke();
+      for (i = 0; i < NP; i += 4) {
+        a = i / NP * Math.PI * 2; r = R * (0.42 + cur[i] * 0.58);
+        bx.beginPath(); bx.arc(Math.cos(a) * r, Math.sin(a) * r, 2.1, 0, Math.PI * 2);
+        bx.fillStyle = "rgba(" + bcol.accent.join(",") + ",.95)"; bx.fill();
+      }
+      bx.restore();
     }
-    function hex(u8) {
-      var s = "";
-      for (var k = 0; k < u8.length; k++) s += u8[k].toString(16).padStart(2, "0");
-      return s;
+    function bloop() {
+      var moved = 0;
+      for (var i = 0; i < NP; i++) {
+        var dlt = tgt[i] - cur[i];
+        cur[i] += dlt * 0.09;
+        if (Math.abs(dlt) > 0.002) moved++;
+      }
+      brot += 0.0012;
+      bdraw();
+      braf = brun ? requestAnimationFrame(bloop) : 0;
     }
-    function clearFX() {
-      for (var k = 0; k < HEXN; k++) hexCells[k].classList.remove("hot");
-      for (var m = 0; m < 256; m++) bitCells[m].classList.remove("flip");
-    }
-    async function newKey() {
-      key = await subtle.generateKey({ name:"AES-GCM", length:256 }, false, ["encrypt", "decrypt"]);
-    }
+    function bstart() { if (brun || reduce) { bdraw(); return; } brun = true; braf = requestAnimationFrame(bloop); }
+    function bstop() { brun = false; if (braf) cancelAnimationFrame(braf); braf = 0; }
+    if ("ResizeObserver" in W) new ResizeObserver(function () { bresize(); bdraw(); }).observe(bc.parentNode);
+    else W.addEventListener("resize", function () { bresize(); bdraw(); });
+    bresize();
+    if ("IntersectionObserver" in W) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) { bvis = e.isIntersecting; if (bvis) bstart(); else bstop(); });
+      }, { threshold:.15 }).observe(bc);
+    } else { bvis = true; bstart(); }
+    d.addEventListener("visibilitychange", function () { if (d.hidden) bstop(); else if (bvis) bstart(); });
+    themeHooks.push(bdraw);
+
+    /* --- kripto --- */
+    function hex(u8) { var s = "", i; for (i = 0; i < u8.length; i++) s += u8[i].toString(16).padStart(2, "0"); return s; }
+    async function newKey() { key = await subtle.generateKey({ name:"AES-GCM", length:256 }, false, ["encrypt", "decrypt"]); }
+
     async function run() {
-      var me = ++token;
-      var txt = inEl.value, bytes = enc.encode(txt);
+      var me = ++token, txt = inEl.value, bytes = enc.encode(txt), i;
 
       var hb = new Uint8Array(await subtle.digest("SHA-256", bytes));
       if (me !== token) return;
       var bits = [], p, q;
       for (p = 0; p < 32; p++) for (q = 7; q >= 0; q--) bits.push((hb[p] >> q) & 1);
       var diff = 0;
-      for (p = 0; p < 256; p++) {
-        if (prevBits && prevBits[p] !== bits[p]) { diff++; bitCells[p].classList.add("flip"); }
-        bitCells[p].classList.toggle("one", bits[p] === 1);
-      }
-      if (prevBits) { avNum.textContent = diff; avBar.style.width = (diff / 256 * 100) + "%"; }
+      if (prevBits) { for (p = 0; p < 256; p++) if (prevBits[p] !== bits[p]) diff++; avNum.textContent = diff; avBar.style.width = (diff / 256 * 100) + "%"; }
       prevBits = bits;
+      for (i = 0; i < NP; i++) {
+        var nib = i % 2 ? (hb[(i / 2) | 0] & 15) : (hb[(i / 2) | 0] >> 4);
+        tgt[i] = nib / 15;
+      }
+      if (reduce) { for (i = 0; i < NP; i++) cur[i] = tgt[i]; bdraw(); }
 
       if (!key) await newKey();
       if (me !== token) return;
@@ -1214,44 +1066,35 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
       if (me !== token) return;
       ivEl.textContent = hex(iv);
       lenEl.textContent = bytes.length + " bait teks → " + ct.length + " bait sandi";
-      for (p = 0; p < HEXN; p++) {
-        var cell = hexCells[p];
-        if (p < ct.length) {
-          cell.textContent = ct[p].toString(16).padStart(2, "0");
-          cell.classList.add("hot"); cell.style.opacity = "1";
-        } else { cell.textContent = "··"; cell.classList.remove("hot"); cell.style.opacity = ".3"; }
-      }
+      var out = "", lim = Math.min(ct.length, 96);
+      for (i = 0; i < lim; i++) out += "<i class='hot'>" + ct[i].toString(16).padStart(2, "0") + "</i> ";
+      if (ct.length > lim) out += "…";
+      cipherEl.innerHTML = out;
+      clearTimeout(hotT);
+      hotT = setTimeout(function () {
+        cipherEl.querySelectorAll("i").forEach(function (n, k) {
+          setTimeout(function () { n.classList.remove("hot"); }, k * 7);
+        });
+      }, 420);
       try {
         var back = dec.decode(await subtle.decrypt({ name:"AES-GCM", iv:iv }, key, ct));
         proofEl.textContent = back === txt ? "✓ dibuka kembali utuh" : "✗ tidak cocok";
       } catch (e) { proofEl.textContent = "✗ ditolak GCM"; }
-
-      clearTimeout(flipT);
-      flipT = setTimeout(clearFX, 800);
     }
-    inEl.addEventListener("input", function () {
-      clearTimeout(deb);
-      deb = setTimeout(run, 170);
-    });
-    keyBtn.addEventListener("click", async function () {
-      await newKey(); prevBits = null; avNum.textContent = "0"; avBar.style.width = "0";
-      run();
+    inEl.addEventListener("input", function () { clearTimeout(deb); deb = setTimeout(run, 160); });
+    keyBtn.addEventListener("click", function () {
+      newKey().then(function () { prevBits = null; avNum.textContent = "0"; avBar.style.width = "0"; run(); });
     });
     newKey().then(run).catch(function () { proofEl.textContent = "✗ gagal membangkitkan kunci"; });
   })();
 
   /* ---------- salin surel ---------- */
-  var toast = d.getElementById("toast"), tTimer;
-  function ping(msg) {
-    toast.textContent = msg; toast.classList.add("on");
-    clearTimeout(tTimer);
-    tTimer = setTimeout(function () { toast.classList.remove("on"); }, 1800);
-  }
+  var toast = d.getElementById("toast"), tT;
+  function ping(m) { toast.textContent = m; toast.classList.add("on"); clearTimeout(tT); tT = setTimeout(function () { toast.classList.remove("on"); }, 1800); }
   d.getElementById("copyMail").addEventListener("click", function () {
     var mail = "rexha4u@gmail.com";
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(mail).then(function () { ping("Tersalin"); },
-        function () { ping("Gagal menyalin"); });
+      navigator.clipboard.writeText(mail).then(function () { ping("Tersalin"); }, function () { ping("Gagal menyalin"); });
     } else {
       var ta = d.createElement("textarea");
       ta.value = mail; d.body.appendChild(ta); ta.select();
@@ -1261,5 +1104,3 @@ footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidde
   });
 })();
 </script>
-</body>
-</html>
