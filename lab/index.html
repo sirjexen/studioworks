@@ -1,26 +1,29 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="light">
+<html lang="id" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lab — Studioworks</title>
-<meta name="description" content="Tiga belas perkakas kriptografi dan konversi: dari Caesar sampai AES-GCM dan tanda tangan digital ECDSA. Semuanya berjalan di peramban, tanpa server.">
+<title>Studioworks — Muhammad Rafly, Web Developer</title>
+<meta name="description" content="Studioworks: studio kecil yang merancang dan membangun antarmuka web yang cepat, rapi, dan bisa dipakai. Dikerjakan oleh Muhammad Rafly, mahasiswa Sistem Informasi Universitas Budi Luhur.">
 <meta name="author" content="Muhammad Rafly">
 <meta name="theme-color" content="#eeebe4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0c0c0b" media="(prefers-color-scheme: dark)">
-<link rel="canonical" href="https://studioworks.my.id/lab/">
+<meta name="theme-color" content="#0d0d0c" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://studioworks.my.id/">
 <link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Lab — Studioworks">
-<meta property="og:description" content="Tiga belas perkakas kriptografi dan konversi, jalan penuh di peramban.">
-<meta property="og:url" content="https://studioworks.my.id/lab/">
+<meta property="og:title" content="Studioworks — Muhammad Rafly, Web Developer">
+<meta property="og:description" content="Studio kecil yang merancang dan membangun antarmuka web yang cepat, rapi, dan bisa dipakai.">
+<meta property="og:url" content="https://studioworks.my.id/">
 <meta property="og:image" content="https://studioworks.my.id/assets/images/social-preview.png">
 <meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"Muhammad Rafly","url":"https://studioworks.my.id/","email":"mailto:rexha4u@gmail.com","jobTitle":"Web Developer","alumniOf":{"@type":"CollegeOrUniversity","name":"Universitas Budi Luhur"},"knowsAbout":["HTML","CSS","JavaScript","Next.js","Kriptografi"],"brand":{"@type":"Brand","name":"Studioworks"}}
+</script>
 <script>
   (function () {
     try {
       var t = localStorage.getItem("sw-theme");
-      if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      if (!t) t = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", t);
     } catch (e) {}
   })();
@@ -28,504 +31,631 @@
 <style>
 :root{
   --paper:#eeebe4; --paper-2:#e5e1d8; --ink:#16150f; --ink-2:#4a473d; --ink-3:#7a7668;
-  --line:#c9c4b6; --accent:#c2400f; --ok:#2f6d42; --bad:#a32020;
+  --line:#c9c4b6; --accent:#c2400f; --accent-soft:rgba(194,64,15,.09);
   --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
   --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
   --pad:clamp(20px,5vw,72px); --maxw:1360px; --ease:cubic-bezier(.22,.78,.24,1);
 }
 [data-theme="dark"]{
-  --paper:#0c0c0b; --paper-2:#141413; --ink:#f2efe7; --ink-2:#b3ad9f; --ink-3:#7e796c;
-  --line:#2a2925; --accent:#ff6b35; --ok:#5fbf7e; --bad:#ff6b6b;
+  --paper:#0b0b0a; --paper-2:#121211; --ink:#f3f0e8; --ink-2:#b3ad9f; --ink-3:#7e796c;
+  --line:#26251f; --accent:#ff6b35; --accent-soft:rgba(255,107,53,.10);
 }
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}
-  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;
-  -webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .45s var(--ease),color .45s var(--ease)}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.032;
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.65;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .5s ease,color .5s ease}
+body::before{content:"";position:fixed;inset:0;z-index:999;pointer-events:none;opacity:.03;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E")}
-a{color:inherit;text-decoration:none}
-::selection{background:var(--accent);color:var(--paper)}
+img,svg,canvas{display:block;max-width:100%}
+a{color:inherit}
+::selection{background:var(--accent);color:#fff}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
 .wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
 .mono{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
-.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-.skip{position:absolute;left:-999px;top:0;z-index:100;background:var(--ink);color:var(--paper);padding:10px 16px}
-.skip:focus{left:8px;top:8px}
+section{scroll-margin-top:76px}
+.sec-head{display:flex;flex-wrap:wrap;gap:clamp(12px,3vw,48px);align-items:baseline;
+  padding:clamp(56px,9vw,120px) 0 clamp(24px,4vw,44px)}
+.sec-head .idx{color:var(--accent);flex:0 0 auto;min-width:96px}
+.sec-head h2{font-family:var(--serif);font-weight:400;letter-spacing:-.035em;line-height:1;
+  font-size:clamp(2rem,5.4vw,4rem);margin:0;flex:1 1 320px}
+.sec-head p{color:var(--ink-2);margin:0;flex:1 1 300px;max-width:46ch;font-size:.97rem}
 
-/* header */
-header{position:sticky;top:0;z-index:70;background:color-mix(in srgb,var(--paper) 85%,transparent);
-  backdrop-filter:blur(16px) saturate(140%);border-bottom:1px solid var(--line)}
-@supports not (backdrop-filter:blur(1px)){header{background:var(--paper)}}
-.bar{display:flex;align-items:center;justify-content:space-between;gap:24px;height:70px}
-.mark{display:flex;align-items:baseline;gap:10px;font-family:var(--serif);font-size:19px;letter-spacing:-.01em}
-.mark b{font-weight:600}
-.mark span{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--ink-3);text-transform:uppercase}
-nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0}
-nav a{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);position:relative;padding:5px 0}
-nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--accent);transition:width .4s var(--ease)}
-nav a.on{color:var(--ink)}
-nav a.on::after,nav a:hover::after{width:100%}
-nav a:hover{color:var(--ink)}
-.btn-i{width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;
-  background:transparent;color:var(--ink);cursor:pointer;transition:background .28s,border-color .28s,transform .4s var(--ease)}
-.btn-i:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);transform:rotate(-18deg)}
-@media(max-width:780px){nav ul{gap:15px}nav a{font-size:10px}.mark span{display:none}}
+/* NAV */
+.nav{position:sticky;top:0;z-index:80;background:color-mix(in srgb,var(--paper) 84%,transparent);
+  backdrop-filter:saturate(150%) blur(14px);-webkit-backdrop-filter:saturate(150%) blur(14px);
+  border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;gap:18px;height:60px}
+.brand{font-family:var(--serif);font-size:1.16rem;letter-spacing:-.02em;text-decoration:none;
+  margin-right:auto;display:flex;align-items:center;gap:9px}
+.brand b{font-weight:400}
+.brand i{width:7px;height:7px;background:var(--accent);border-radius:50%;font-style:normal}
+.nav ul{display:flex;gap:clamp(10px,1.8vw,26px);list-style:none;margin:0;padding:0}
+.nav ul a{font-family:var(--mono);font-size:11px;letter-spacing:.11em;text-transform:uppercase;
+  text-decoration:none;color:var(--ink-2);padding:6px 0;position:relative;transition:color .25s}
+.nav ul a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;
+  background:var(--accent);transition:right .35s var(--ease)}
+.nav ul a:hover{color:var(--ink)}
+.nav ul a:hover::after{right:0}
+.tgl{width:34px;height:34px;border:1px solid var(--line);background:transparent;color:var(--ink);
+  cursor:pointer;display:grid;place-items:center;border-radius:50%;flex:0 0 auto;
+  transition:border-color .25s,transform .35s var(--ease)}
+.tgl:hover{border-color:var(--accent);transform:rotate(90deg)}
+.tgl svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.5}
+[data-theme="dark"] .tgl .sun{display:none}
+[data-theme="light"] .tgl .moon{display:none}
+@media(max-width:900px){.nav ul{display:none}}
 
-/* hero */
-.top{padding:clamp(44px,8vw,96px) 0 clamp(28px,4vw,52px);border-bottom:1px solid var(--line)}
-.crumb{color:var(--ink-3);margin-bottom:22px;display:flex;gap:10px}
-.crumb a:hover{color:var(--accent)}
-h1{font-family:var(--serif);font-weight:400;margin:0;font-size:clamp(2.4rem,7.4vw,5.6rem);line-height:1.02;
-  letter-spacing:-.035em;padding-bottom:.06em}
+/* HERO */
+.hero{padding:clamp(28px,5vw,58px) 0 0}
+.status{display:flex;flex-wrap:wrap;gap:clamp(14px,3vw,34px);align-items:center;
+  color:var(--ink-3);padding-bottom:clamp(22px,4vw,44px)}
+h1{font-family:var(--serif);font-weight:400;margin:0;letter-spacing:-.04em;line-height:1.06;
+  font-size:clamp(1.75rem,7vw,5.8rem)}
 h1 em{font-style:italic;color:var(--accent)}
-.top p{max-width:56ch;color:var(--ink-2);margin:22px 0 0}
-.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
-.badge{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line);
-  border-radius:100px;padding:5px 12px;color:var(--ink-2)}
-.warn{margin-top:26px;border:1px solid var(--bad);color:var(--bad);padding:13px 16px;font-family:var(--mono);
-  font-size:11.5px;letter-spacing:.06em;display:none}
-.warn.on{display:block}
+.h1-line{display:block;overflow:hidden;padding:.06em .08em .14em;margin:0 -.08em -.14em}
+.h1-line>span{display:block;transform:translateY(110%);transition:transform 1s var(--ease)}
+.ready .h1-line>span{transform:translateY(0)}
+.h1-line:nth-child(2)>span{transition-delay:.09s}
+.sc{white-space:pre-wrap}
+.hero-foot{display:flex;flex-wrap:wrap;gap:clamp(22px,5vw,72px);align-items:flex-end;
+  padding:clamp(28px,5vw,58px) 0 clamp(24px,4vw,44px)}
+.hero-foot p{margin:0;max-width:52ch;color:var(--ink-2);flex:1 1 380px}
+.hero-foot strong{color:var(--ink);font-weight:600}
+.scroll-cue{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);display:flex;align-items:center;gap:9px;white-space:nowrap;text-decoration:none}
+.scroll-cue span{display:inline-block;width:38px;height:1px;background:var(--line);position:relative;overflow:hidden}
+.scroll-cue span::after{content:"";position:absolute;inset:0;background:var(--accent);
+  transform:translateX(-100%);animation:sweep 2.6s var(--ease) infinite}
+@keyframes sweep{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
 
-/* layout */
-.shell{display:grid;grid-template-columns:238px 1fr;border-bottom:1px solid var(--line)}
-@media(max-width:960px){.shell{grid-template-columns:1fr}}
-.side{border-right:1px solid var(--line);padding:clamp(24px,4vw,44px) 0 60px}
-@media(max-width:960px){.side{border-right:0;border-bottom:1px solid var(--line);padding:22px 0 18px}}
-.rail{position:sticky;top:94px}
-@media(max-width:960px){.rail{position:static;display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch}}
-.grp{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--ink-3);margin:0 0 10px;padding-top:2px}
-.grp + .tl{margin-bottom:26px}
-@media(max-width:960px){.grp{display:none}.grp + .tl{margin-bottom:0}}
-.tl{display:flex;flex-direction:column;gap:1px}
-@media(max-width:960px){.tl{flex-direction:row;gap:8px}}
-.tab{display:flex;align-items:baseline;gap:10px;background:none;border:0;cursor:pointer;text-align:left;
-  font-family:var(--mono);font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);
-  padding:8px 12px 8px 0;transition:color .25s,padding .3s var(--ease);white-space:nowrap}
-.tab i{font-style:normal;font-size:9.5px;color:var(--ink-3)}
-.tab:hover{color:var(--ink);padding-left:5px}
-.tab[aria-selected="true"]{color:var(--accent)}
-.tab[aria-selected="true"] i{color:var(--accent)}
-@media(max-width:960px){.tab{border:1px solid var(--line);border-radius:100px;padding:7px 14px}
-  .tab:hover{padding-left:14px}.tab[aria-selected="true"]{border-color:var(--accent)}}
+/* MEDAN PARTIKEL */
+.field{position:relative;height:clamp(300px,46vw,560px);border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);overflow:hidden;touch-action:pan-y;cursor:crosshair}
+#field{width:100%;height:100%}
+.field-ui{position:absolute;inset:auto 0 0 0;display:flex;justify-content:space-between;
+  align-items:flex-end;gap:14px;padding:clamp(12px,2vw,20px) var(--pad);pointer-events:none;flex-wrap:wrap}
+.field-ui .mono{color:var(--ink-3)}
+.shapes{display:flex;gap:7px;pointer-events:auto;flex-wrap:wrap}
+.shapes button{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;
+  background:color-mix(in srgb,var(--paper) 72%,transparent);border:1px solid var(--line);
+  color:var(--ink-3);padding:7px 13px;cursor:pointer;transition:color .3s,border-color .3s}
+.shapes button:hover{color:var(--ink);border-color:var(--ink-3)}
+.shapes button.on{color:var(--accent);border-color:var(--accent)}
+.field-top{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;
+  gap:12px;padding:clamp(12px,2vw,20px) var(--pad);pointer-events:none;color:var(--ink-3)}
 
-.stage{padding:clamp(28px,4vw,52px) 0 clamp(60px,9vw,110px);padding-left:clamp(20px,4vw,56px);min-width:0}
-@media(max-width:960px){.stage{padding-left:0}}
-.panel{display:none;animation:fade .45s var(--ease)}
-.panel.on{display:block}
-@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.p-head{border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:26px}
-.p-head .num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--accent);display:block;margin-bottom:10px}
-.p-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(1.6rem,3.6vw,2.6rem);letter-spacing:-.02em;margin:0 0 10px;line-height:1.1}
-.p-head p{margin:0;color:var(--ink-2);max-width:64ch;font-size:15px}
+/* KERJA */
+.rows{border-top:1px solid var(--line)}
+.row{border-bottom:1px solid var(--line)}
+.row-main{display:grid;grid-template-columns:70px minmax(0,1.5fr) minmax(0,1.4fr) auto;
+  gap:clamp(12px,2.6vw,36px);align-items:center;padding:clamp(20px,3.2vw,34px) 0;transition:opacity .35s ease}
+.rows:hover .row-main{opacity:.4}
+.rows .row:hover .row-main,.rows .row:focus-within .row-main{opacity:1}
+.row-num{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink-3)}
+.row-title{font-family:var(--serif);font-size:clamp(1.4rem,3vw,2.3rem);letter-spacing:-.03em;
+  line-height:1.1;margin:0;transition:transform .45s var(--ease)}
+.row:hover .row-title{transform:translateX(10px)}
+.row-tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid var(--line);padding:4px 9px;color:var(--ink-3);white-space:nowrap}
+.row-act{display:flex;align-items:center;gap:clamp(10px,2vw,22px);justify-self:end}
+.row-stat{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-3);white-space:nowrap}
+.row-stat.live{color:var(--accent)}
+.go{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  text-decoration:none;border:1px solid var(--ink);background:transparent;color:var(--ink);
+  padding:10px 16px;cursor:pointer;white-space:nowrap;transition:background .3s,color .3s}
+.go:hover{background:var(--ink);color:var(--paper)}
+.panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
+.row.open .panel{grid-template-rows:1fr}
+.panel>div{overflow:hidden}
+.panel-in{display:grid;grid-template-columns:70px minmax(0,1fr);gap:clamp(12px,2.6vw,36px);
+  padding:0 0 clamp(24px,3.4vw,38px)}
+.panel-body{max-width:64ch;color:var(--ink-2);font-size:.96rem}
+.panel-body p{margin:0 0 12px}
+.panel-body dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:14px;margin:18px 0 0;padding-top:16px;border-top:1px solid var(--line)}
+.panel-body dt{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.panel-body dd{margin:4px 0 0;color:var(--ink);font-size:.9rem}
+@media(max-width:860px){
+  .row-main{grid-template-columns:44px 1fr;row-gap:12px}
+  .row-tags,.row-act{grid-column:2}
+  .row-act{justify-self:start}
+  .panel-in{grid-template-columns:44px 1fr}
+  .row:hover .row-title{transform:none}
+  .rows:hover .row-main{opacity:1}
+}
 
-/* field */
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-@media(max-width:760px){.grid2{grid-template-columns:1fr}}
-.f{margin-bottom:18px}
-.f label,.lgd{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
-textarea,input[type=text],input[type=password],input[type=number],select{width:100%;background:var(--paper-2);
-  border:1px solid var(--line);color:var(--ink);font-family:var(--mono);font-size:14px;padding:12px 14px;border-radius:0;resize:vertical}
-textarea{min-height:124px;line-height:1.55}
-textarea:focus,input:focus,select:focus{outline:none;border-color:var(--accent)}
-input[type=range]{width:100%;accent-color:var(--accent)}
-.rowf{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:6px}
-.rowf .v{font-family:var(--mono);font-size:13px;color:var(--accent)}
-.checks{display:flex;gap:16px;flex-wrap:wrap}
-.checks label{display:inline-flex;align-items:center;gap:7px;cursor:pointer;margin:0;font-family:var(--mono);
-  font-size:11.5px;letter-spacing:.05em;text-transform:none;color:var(--ink-2)}
-.checks input{accent-color:var(--accent);width:15px;height:15px}
-.acts{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 20px}
-.btn{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--ink);
-  background:transparent;color:var(--ink);padding:11px 18px;cursor:pointer;transition:background .28s,color .28s,border-color .28s,opacity .2s}
+/* METODE */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.step{border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:clamp(24px,3vw,38px);position:relative;overflow:hidden}
+.step::after{content:"";position:absolute;inset:0;background:var(--accent-soft);
+  transform:scaleY(0);transform-origin:bottom;transition:transform .5s var(--ease)}
+.step:hover::after{transform:scaleY(1)}
+.step>*{position:relative;z-index:1}
+.step .n{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--accent)}
+.step h3{font-family:var(--serif);font-weight:400;font-size:1.4rem;letter-spacing:-.02em;margin:14px 0 10px}
+.step p{margin:0;color:var(--ink-2);font-size:.93rem}
+
+/* LAB + BIN */
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));
+  gap:clamp(24px,4vw,64px);align-items:start;padding-bottom:clamp(40px,7vw,90px)}
+.split p{color:var(--ink-2);margin:0 0 16px}
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.13em;text-transform:uppercase;text-decoration:none;border:1px solid var(--ink);
+  padding:14px 22px;color:var(--ink);background:transparent;cursor:pointer;margin:8px 8px 0 0;
+  transition:background .3s,color .3s,border-color .3s}
 .btn:hover{background:var(--ink);color:var(--paper)}
 .btn.solid{background:var(--ink);color:var(--paper)}
 .btn.solid:hover{background:var(--accent);border-color:var(--accent);color:#fff}
-.btn.ghost{border-color:var(--line);color:var(--ink-2)}
-.btn.ghost:hover{border-color:var(--ink);color:var(--paper)}
-.btn[disabled]{opacity:.45;cursor:progress}
+.demo{border:1px solid var(--line);background:var(--paper-2)}
+.demo-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:12px 16px;border-bottom:1px solid var(--line);color:var(--ink-3)}
+.demo-body{padding:18px 16px}
+.fld{margin-bottom:14px}
+.fld label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-3);display:flex;justify-content:space-between;margin-bottom:7px}
+.fld input[type=text]{width:100%;font-family:var(--mono);font-size:.9rem;color:var(--ink);
+  background:var(--paper);border:1px solid var(--line);padding:11px 12px}
+.fld input[type=text]:focus{outline:none;border-color:var(--accent)}
+.fld input[type=range]{width:100%;accent-color:var(--accent)}
+.out{font-family:var(--mono);font-size:.9rem;word-break:break-all;background:var(--paper);
+  border:1px solid var(--line);padding:11px 12px;min-height:42px;color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
+.chip{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  border:1px solid var(--line);padding:5px 10px;color:var(--ink-3)}
+.bin-note{border-left:2px solid var(--accent);padding-left:16px;margin:20px 0 0;color:var(--ink-2);font-size:.92rem}
 
-.out{border:1px dashed var(--line);background:var(--paper-2);padding:15px;font-family:var(--mono);font-size:13.5px;
-  line-height:1.7;word-break:break-all;white-space:pre-wrap;min-height:58px;color:var(--ink)}
-.out.acc{color:var(--accent)}
-.out.err{color:var(--bad);border-color:var(--bad)}
-.out.good{color:var(--ok);border-color:var(--ok)}
-.outhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
-.outhead span{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
-.mini{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;background:none;border:0;
-  color:var(--ink-3);cursor:pointer;padding:4px 0;transition:color .25s}
-.mini:hover{color:var(--accent)}
-.note{font-size:13px;color:var(--ink-3);margin-top:14px}
-.note code{font-family:var(--mono);font-size:12px}
-.meter{height:3px;background:var(--line);margin-top:12px;overflow:hidden}
-.meter i{display:block;height:100%;width:0;background:var(--accent);transition:width .45s var(--ease)}
-.brute{max-height:270px;overflow:auto;border:1px solid var(--line);margin-top:8px}
-.brute div{display:flex;gap:14px;padding:7px 13px;font-family:var(--mono);font-size:12.5px;border-bottom:1px solid var(--line)}
-.brute div:last-child{border-bottom:0}
-.brute b{color:var(--ink-3);font-weight:400;min-width:34px}
-.hashrow{display:grid;grid-template-columns:96px 1fr;gap:12px;align-items:start;padding:11px 0;border-bottom:1px solid var(--line);
-  font-family:var(--mono);font-size:12.5px;word-break:break-all}
-.hashrow:last-child{border-bottom:0}
-.hashrow b{color:var(--ink-3);font-weight:400;letter-spacing:.08em}
+/* MESIN */
+.eng{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:1px;background:var(--line);border:1px solid var(--line)}
+.eng>div{background:var(--paper-2);padding:clamp(18px,2.6vw,30px)}
+.eng h3{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 14px;font-weight:400}
+.eng textarea{width:100%;min-height:120px;resize:vertical;font-family:var(--mono);font-size:.9rem;
+  line-height:1.6;color:var(--ink);background:var(--paper);border:1px solid var(--line);padding:13px}
+.eng textarea:focus{outline:none;border-color:var(--accent)}
+.eng-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-top:14px}
+.eng-row .mono{color:var(--ink-3)}
+.mini{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  background:transparent;border:1px solid var(--line);color:var(--ink-2);padding:8px 14px;cursor:pointer;
+  transition:border-color .25s,color .25s}
+.mini:hover{border-color:var(--accent);color:var(--accent)}
+.cipher{font-family:var(--mono);font-size:.78rem;line-height:1.85;word-break:break-all;
+  color:var(--ink-3);margin-top:18px;max-height:132px;overflow:hidden}
+.cipher i{font-style:normal;transition:color .6s ease}
+.cipher i.hot{color:var(--accent)}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;
+  margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.kv dt{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.kv dd{margin:6px 0 0;font-family:var(--mono);font-size:.82rem;color:var(--ink);word-break:break-all}
+.proof{color:var(--accent)}
+.bloom-wrap{position:relative;aspect-ratio:1;max-width:380px;margin:0 auto}
+#bloom{width:100%;height:100%}
+.av{display:flex;align-items:baseline;gap:12px;margin-top:18px}
+.av b{font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,4vw,2.8rem);
+  line-height:1;letter-spacing:-.03em;color:var(--accent)}
+.av span{font-size:.86rem;color:var(--ink-2)}
+.avbar{height:2px;background:var(--line);margin-top:12px;position:relative;overflow:hidden}
+.avbar i{position:absolute;inset:0 auto 0 0;width:0;background:var(--accent);transition:width .6s var(--ease)}
+.eng-note{color:var(--ink-2);font-size:.88rem;margin:16px 0 0}
 
-/* berkas */
-.drop{border:1px dashed var(--line);background:var(--paper-2);padding:clamp(26px,5vw,48px);text-align:center;
-  cursor:pointer;transition:border-color .3s,background .3s}
-.drop:hover,.drop.hot{border-color:var(--accent);background:var(--paper)}
-.drop b{display:block;font-family:var(--serif);font-weight:400;font-size:1.35rem;letter-spacing:-.01em;margin-bottom:6px}
-.drop span{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
-.fmeta{display:flex;gap:22px;flex-wrap:wrap;margin:18px 0;font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
-.fmeta b{color:var(--ink);font-weight:400}
+/* TENTANG */
+.about{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:clamp(24px,4vw,64px);padding-bottom:clamp(36px,6vw,72px)}
+.about p{color:var(--ink-2);margin:0 0 16px;max-width:60ch}
+.counts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:clamp(20px,3vw,32px) 0;margin:clamp(20px,3vw,32px) 0}
+.count b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(1.8rem,4.4vw,3rem);
+  line-height:1;letter-spacing:-.03em}
+.count span{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-3);display:block;margin-top:9px}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  border-top:1px solid var(--line);border-left:1px solid var(--line);margin:0}
+.meta div{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:16px 18px}
+.meta dt{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.meta dd{margin:7px 0 0;font-size:.93rem}
 
-/* frekuensi */
-.bars{display:flex;align-items:flex-end;gap:3px;height:190px;border-bottom:1px solid var(--line);padding-top:10px}
-.bars div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%}
-.bars i{display:block;width:100%;background:var(--accent);opacity:.75;transition:height .5s var(--ease);min-height:1px}
-.bars div.hi i{opacity:1}
-.bars u{font-family:var(--mono);font-size:9.5px;text-decoration:none;color:var(--ink-3);margin-top:6px}
-.bars div.hi u{color:var(--accent)}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:18px;margin-top:22px;
-  border-top:1px solid var(--line);padding-top:18px}
-.stats b{display:block;font-family:var(--serif);font-size:1.7rem;font-weight:400;line-height:1.1;letter-spacing:-.02em}
-.stats span{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+/* KONTAK */
+.contact{padding-bottom:clamp(50px,8vw,110px)}
+.mailrow{display:flex;flex-wrap:wrap;gap:14px;align-items:center;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(22px,4vw,40px) 0}
+.mail{font-family:var(--serif);font-size:clamp(1.25rem,4vw,2.6rem);letter-spacing:-.03em;
+  text-decoration:none;margin-right:auto;word-break:break-all;transition:color .3s}
+.mail:hover{color:var(--accent)}
 
-/* kunci */
-.keybox{border:1px solid var(--line);padding:16px;font-family:var(--mono);font-size:12px;word-break:break-all;
-  color:var(--ink-2);max-height:150px;overflow:auto;background:var(--paper-2)}
-.verdict{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;letter-spacing:.13em;
-  text-transform:uppercase;border:1px solid var(--line);padding:9px 16px;margin-top:4px}
-.verdict.ok{border-color:var(--ok);color:var(--ok)}
-.verdict.no{border-color:var(--bad);color:var(--bad)}
+/* FOOTER */
+footer{border-top:1px solid var(--line);background:var(--paper-2);overflow:hidden}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:20px;padding:clamp(30px,5vw,54px) 0 clamp(24px,4vw,40px);margin:0}
+.fgrid dt{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.fgrid dd{margin:8px 0 0;font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink)}
+.fgrid a{text-decoration:none}
+.fgrid a:hover{color:var(--accent)}
+.fbar{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;
+  border-top:1px solid var(--line);padding:18px 0;color:var(--ink-3)}
+.fbar a{text-decoration:none}
+.fbar a:hover{color:var(--accent)}
+.wordmark{width:100%;height:auto;display:block;color:var(--ink);opacity:.06;padding-bottom:6px}
+.wordmark text{font-family:var(--serif);fill:currentColor}
+@media(max-width:620px){.fbar .mid{order:3;width:100%}}
 
-footer{padding:30px 0 0}
-.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--ink-3)}
-.bigmark{font-family:var(--serif);font-weight:400;font-size:clamp(3.2rem,15.2vw,15rem);line-height:.82;
-  letter-spacing:-.045em;color:var(--ink);opacity:.09;margin:clamp(30px,5vw,56px) 0 -.12em;padding-inline:var(--pad);
-  white-space:nowrap;overflow:hidden;user-select:none}
 #toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);opacity:0;pointer-events:none;
   background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:11px;letter-spacing:.1em;
-  text-transform:uppercase;padding:12px 20px;z-index:90;transition:transform .45s var(--ease),opacity .3s ease}
+  text-transform:uppercase;padding:12px 20px;z-index:90;
+  transition:transform .45s cubic-bezier(.22,.78,.24,1),opacity .3s ease}
 #toast.on{transform:translate(-50%,0);opacity:1}
+
+.rv{opacity:0;transform:translateY(22px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
+  .rv{opacity:1;transform:none}
+  .h1-line>span{transform:none}
+}
 </style>
 </head>
 <body>
-<a class="skip" href="#stage">Lewati ke perkakas</a>
 
-<header>
-  <div class="wrap bar">
-    <a class="mark" href="/"><b>Studioworks</b><span>lab</span></a>
-    <nav aria-label="Navigasi utama">
-      <ul>
-        <li><a href="/#kerja">Kerja</a></li>
-        <li><a href="/#pendekatan">Pendekatan</a></li>
-        <li><a href="/lab/" class="on" aria-current="page">Lab</a></li>
-        <li><a href="/#kontak">Kontak</a></li>
-      </ul>
-    </nav>
-    <button class="btn-i" id="theme" type="button" aria-label="Ganti tema terang/gelap">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path id="ic" d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top"><i></i><b>Studioworks</b></a>
+    <ul>
+      <li><a href="#kerja">Kerja</a></li>
+      <li><a href="#metode">Pendekatan</a></li>
+      <li><a href="/lab/">Lab</a></li>
+      <li><a href="/bin/">Bin</a></li>
+      <li><a href="#mesin">Mesin</a></li>
+      <li><a href="#tentang">Tentang</a></li>
+      <li><a href="#kontak">Kontak</a></li>
+    </ul>
+    <button class="tgl" id="themeBtn" type="button" aria-label="Ganti tema terang atau gelap">
+      <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
     </button>
   </div>
-</header>
+</nav>
 
-<main>
-  <div class="wrap top">
-    <div class="crumb mono"><a href="/">Beranda</a><span aria-hidden="true">/</span><span>Lab</span></div>
-    <h1>Ruang <em>percobaan</em></h1>
-    <p>Tiga belas perkakas, dari sandi geser abad pertama sampai enkripsi AES-GCM dan tanda tangan digital ECDSA. Semuanya dihitung di perangkat Anda lewat JavaScript murni dan Web Crypto API — tidak ada permintaan jaringan, tidak ada yang disimpan, tidak ada pustaka pihak ketiga.</p>
-    <div class="badges">
-      <span class="badge">Tanpa server</span><span class="badge">Tanpa pustaka</span>
-      <span class="badge">Web Crypto API</span><span class="badge">13 perkakas</span><span class="badge">Untuk belajar</span>
-    </div>
-    <div class="warn mono" id="warn">Web Crypto tidak aktif di konteks ini. Perkakas hash, HMAC, AES, dan tanda tangan memerlukan koneksi HTTPS — buka halaman ini lewat https://studioworks.my.id/lab/</div>
-  </div>
+<main id="top">
 
-  <div class="wrap shell">
-    <div class="side">
-      <div class="rail">
-        <span class="grp">Klasik</span>
-        <div class="tl" role="tablist" aria-orientation="vertical" aria-label="Perkakas klasik">
-          <button class="tab" role="tab" id="t-caesar" aria-controls="p-caesar" aria-selected="true" data-k="caesar"><i>01</i>Caesar</button>
-          <button class="tab" role="tab" id="t-rot13" aria-controls="p-rot13" aria-selected="false" data-k="rot13"><i>02</i>ROT13</button>
-          <button class="tab" role="tab" id="t-xor" aria-controls="p-xor" aria-selected="false" data-k="xor"><i>03</i>XOR</button>
-          <button class="tab" role="tab" id="t-freq" aria-controls="p-freq" aria-selected="false" data-k="freq"><i>04</i>Frekuensi</button>
-        </div>
-        <span class="grp">Pengodean</span>
-        <div class="tl" role="tablist" aria-orientation="vertical" aria-label="Perkakas pengodean">
-          <button class="tab" role="tab" id="t-base64" aria-controls="p-base64" aria-selected="false" data-k="base64"><i>05</i>Base64</button>
-          <button class="tab" role="tab" id="t-url" aria-controls="p-url" aria-selected="false" data-k="url"><i>06</i>URL Encode</button>
-          <button class="tab" role="tab" id="t-bin" aria-controls="p-bin" aria-selected="false" data-k="bin"><i>07</i>Biner &amp; Hex</button>
-        </div>
-        <span class="grp">Modern</span>
-        <div class="tl" role="tablist" aria-orientation="vertical" aria-label="Perkakas modern">
-          <button class="tab" role="tab" id="t-hash" aria-controls="p-hash" aria-selected="false" data-k="hash"><i>08</i>Hash SHA</button>
-          <button class="tab" role="tab" id="t-file" aria-controls="p-file" aria-selected="false" data-k="file"><i>09</i>Hash Berkas</button>
-          <button class="tab" role="tab" id="t-hmac" aria-controls="p-hmac" aria-selected="false" data-k="hmac"><i>10</i>HMAC</button>
-          <button class="tab" role="tab" id="t-aes" aria-controls="p-aes" aria-selected="false" data-k="aes"><i>11</i>AES-GCM</button>
-          <button class="tab" role="tab" id="t-sign" aria-controls="p-sign" aria-selected="false" data-k="sign"><i>12</i>Tanda Tangan</button>
-          <button class="tab" role="tab" id="t-pass" aria-controls="p-pass" aria-selected="false" data-k="pass"><i>13</i>Sandi Acak</button>
-        </div>
+  <header class="hero">
+    <div class="wrap">
+      <div class="status mono">
+        <span>Muhammad Rafly — Web Developer</span>
+        <span>Jakarta <b id="clock">--.--</b></span>
+      </div>
+      <h1>
+        <span class="h1-line"><span><span class="sc">Antarmuka yang </span><em class="sc">tenang</em><span class="sc">,</span></span></span>
+        <span class="h1-line"><span><span class="sc">cepat, dan bisa dipakai.</span></span></span>
+      </h1>
+      <div class="hero-foot">
+        <p>Studioworks adalah studio satu orang. Saya membangun web dari nol — <strong>HTML, CSS, JavaScript</strong> — tanpa framework berat, tanpa dependensi yang tidak perlu. Fokusnya sederhana: halaman yang ringan, terbaca mesin pencari, dan nyaman dipakai siapa pun.</p>
+        <a class="scroll-cue" href="#kerja">Gulir untuk melihat kerja <span></span></a>
       </div>
     </div>
 
-    <div class="stage" id="stage">
-
-      <!-- 01 CAESAR -->
-      <section class="panel on" id="p-caesar" role="tabpanel" aria-labelledby="t-caesar" tabindex="0">
-        <div class="p-head"><span class="num">01 / Klasik</span><h2>Caesar cipher</h2>
-          <p>Menggeser setiap huruf sejauh <em>n</em> posisi dalam alfabet. Sandi tertua yang tercatat dipakai Julius Caesar, dan paling mudah dipecahkan: cukup coba 25 kemungkinan.</p></div>
-        <div class="f"><label for="cz-in">Teks</label>
-          <textarea id="cz-in" spellcheck="false">Studioworks Lab</textarea></div>
-        <div class="f">
-          <div class="rowf"><label for="cz-shift" style="margin:0">Pergeseran</label><span class="v" id="cz-val">3</span></div>
-          <input type="range" id="cz-shift" min="0" max="25" value="3">
+    <div class="field" id="fieldWrap">
+      <canvas id="field" role="img" aria-label="Medan partikel yang mengalir dan berkumpul membentuk kata Studioworks, gambar gembok, dan tulisan AES-256-GCM."></canvas>
+      <div class="field-top mono">
+        <span id="fMeta">—</span>
+        <span>gerakkan kursor · klik untuk ubah</span>
+      </div>
+      <div class="field-ui">
+        <span class="mono" id="fState">terurai</span>
+        <div class="shapes" id="fShapes">
+          <button type="button" class="on">Wordmark</button>
+          <button type="button">Gembok</button>
+          <button type="button">AES-256-GCM</button>
         </div>
-        <div class="acts">
-          <button class="btn solid" id="cz-enc" type="button">Sandikan</button>
-          <button class="btn" id="cz-dec" type="button">Pecahkan</button>
-          <button class="btn ghost" id="cz-brute" type="button">Coba 25 kunci</button>
-        </div>
-        <div class="outhead"><span>Hasil</span><button class="mini" data-copy="cz-out" type="button">Salin</button></div>
-        <div class="out acc" id="cz-out" aria-live="polite"></div>
-        <div class="brute" id="cz-list" hidden></div>
-      </section>
-
-      <!-- 02 ROT13 -->
-      <section class="panel" id="p-rot13" role="tabpanel" aria-labelledby="t-rot13" tabindex="0">
-        <div class="p-head"><span class="num">02 / Klasik</span><h2>ROT13</h2>
-          <p>Caesar dengan pergeseran tetap 13. Karena alfabet Latin punya 26 huruf, proses menyandikan dan membuka sandinya identik — dipakai di forum lama untuk menyembunyikan spoiler, bukan untuk keamanan.</p></div>
-        <div class="grid2">
-          <div class="f"><label for="r-in">Masukan</label><textarea id="r-in" spellcheck="false">Hello Studioworks</textarea></div>
-          <div class="f"><span class="lgd">Keluaran</span>
-            <div class="outhead"><span>ROT13</span><button class="mini" data-copy="r-out" type="button">Salin</button></div>
-            <div class="out acc" id="r-out" aria-live="polite"></div></div>
-        </div>
-        <p class="note">Jalankan dua kali untuk kembali ke teks semula.</p>
-      </section>
-
-      <!-- 03 XOR -->
-      <section class="panel" id="p-xor" role="tabpanel" aria-labelledby="t-xor" tabindex="0">
-        <div class="p-head"><span class="num">03 / Klasik</span><h2>XOR cipher</h2>
-          <p>Setiap byte teks di-XOR dengan byte kunci yang diulang. Operasi yang sama dipakai untuk membuka sandinya. Kalau kuncinya sepanjang pesan dan benar-benar acak, ini menjadi one-time pad; kalau pendek dan berulang, mudah dianalisis.</p></div>
-        <div class="grid2">
-          <div class="f"><label for="x-in">Teks / hex</label><textarea id="x-in" spellcheck="false">rahasia kecil</textarea></div>
-          <div class="f"><label for="x-key">Kunci</label><input type="text" id="x-key" value="studio" spellcheck="false" autocomplete="off">
-            <p class="note">Hasil sandi ditampilkan sebagai heksadesimal agar tetap bisa disalin sebagai teks biasa.</p></div>
-        </div>
-        <div class="acts">
-          <button class="btn solid" id="x-enc" type="button">Sandikan → hex</button>
-          <button class="btn" id="x-dec" type="button">Hex → teks</button>
-        </div>
-        <div class="outhead"><span>Hasil</span><button class="mini" data-copy="x-out" type="button">Salin</button></div>
-        <div class="out acc" id="x-out" aria-live="polite"></div>
-      </section>
-
-      <!-- 04 FREKUENSI -->
-      <section class="panel" id="p-freq" role="tabpanel" aria-labelledby="t-freq" tabindex="0">
-        <div class="p-head"><span class="num">04 / Klasik</span><h2>Analisis frekuensi</h2>
-          <p>Sandi substitusi seperti Caesar tidak mengubah <em>seberapa sering</em> tiap huruf muncul — hanya menukar labelnya. Dengan menghitung sebaran huruf pada teks tersandi, pola bahasa aslinya masih terlihat, dan kunci bisa ditebak tanpa mencoba satu per satu.</p></div>
-        <div class="f"><label for="q-in">Teks yang dianalisis</label>
-          <textarea id="q-in" spellcheck="false" style="min-height:104px">Vwxglrzrunv phpedqjxq dqwdupxnd zhe bdqj fhsdw gdq udsl</textarea></div>
-        <div class="bars" id="q-bars" role="img" aria-label="Diagram batang sebaran huruf"></div>
-        <div class="stats">
-          <div><b id="q-total">0</b><span>Huruf dihitung</span></div>
-          <div><b id="q-top">—</b><span>Paling sering</span></div>
-          <div><b id="q-ic">0.000</b><span>Indeks kebetulan</span></div>
-          <div><b id="q-guess">—</b><span>Tebakan geseran</span></div>
-        </div>
-        <div class="acts" style="margin-top:22px">
-          <button class="btn solid" id="q-apply" type="button">Buka dengan tebakan teratas</button>
-        </div>
-        <div class="outhead"><span>Hasil pembukaan</span><button class="mini" data-copy="q-out" type="button">Salin</button></div>
-        <div class="out acc" id="q-out" aria-live="polite">—</div>
-        <p class="note">Tebakan dihitung dengan mencocokkan sebaran huruf terhadap frekuensi rata-rata bahasa Inggris (perkiraan umum), jadi paling akurat untuk teks Inggris yang cukup panjang. Indeks kebetulan sekitar 0,066 menandakan teks bahasa alami; mendekati 0,038 menandakan teks acak atau sandi polialfabet.</p>
-      </section>
-
-      <!-- 05 BASE64 -->
-      <section class="panel" id="p-base64" role="tabpanel" aria-labelledby="t-base64" tabindex="0">
-        <div class="p-head"><span class="num">05 / Pengodean</span><h2>Base64</h2>
-          <p>Mengubah data biner menjadi 64 karakter ASCII yang aman dikirim lewat teks — dipakai di data URI, lampiran surel, dan token. Ini pengodean, bukan enkripsi: siapa pun bisa membalikkannya.</p></div>
-        <div class="f"><label for="b-in">Masukan</label><textarea id="b-in" spellcheck="false">Studioworks — lab kriptografi</textarea></div>
-        <div class="acts">
-          <button class="btn solid" id="b-enc" type="button">Encode</button>
-          <button class="btn" id="b-dec" type="button">Decode</button>
-          <button class="btn ghost" id="b-swap" type="button">Pindah hasil ke masukan</button>
-        </div>
-        <div class="outhead"><span>Hasil</span><button class="mini" data-copy="b-out" type="button">Salin</button></div>
-        <div class="out acc" id="b-out" aria-live="polite"></div>
-        <p class="note">Mendukung karakter non-ASCII lewat UTF-8 (TextEncoder / TextDecoder).</p>
-      </section>
-
-      <!-- 06 URL -->
-      <section class="panel" id="p-url" role="tabpanel" aria-labelledby="t-url" tabindex="0">
-        <div class="p-head"><span class="num">06 / Pengodean</span><h2>URL encode</h2>
-          <p>Mengganti karakter yang tidak aman di alamat web menjadi bentuk persen, misalnya spasi jadi <code>%20</code>. Berguna saat menyusun parameter kueri atau tautan <code>mailto:</code> dengan subjek panjang.</p></div>
-        <div class="f"><label for="u-in">Masukan</label><textarea id="u-in" spellcheck="false">https://studioworks.my.id/?q=halo dunia&amp;lang=id</textarea></div>
-        <div class="acts">
-          <button class="btn solid" id="u-enc" type="button">Encode</button>
-          <button class="btn" id="u-dec" type="button">Decode</button>
-          <button class="btn ghost" id="u-comp" type="button">Encode komponen</button>
-        </div>
-        <div class="outhead"><span>Hasil</span><button class="mini" data-copy="u-out" type="button">Salin</button></div>
-        <div class="out acc" id="u-out" aria-live="polite"></div>
-        <p class="note">“Encode komponen” menyandikan juga <code>&amp; ? / :</code> — pakai ini untuk isi parameter, bukan untuk URL utuh.</p>
-      </section>
-
-      <!-- 07 BINER -->
-      <section class="panel" id="p-bin" role="tabpanel" aria-labelledby="t-bin" tabindex="0">
-        <div class="p-head"><span class="num">07 / Pengodean</span><h2>Biner &amp; heksadesimal</h2>
-          <p>Melihat teks sebagaimana mesin menyimpannya: deretan byte UTF-8 dalam basis dua atau basis enam belas. Berguna untuk memahami kenapa satu emoji bisa memakan empat byte.</p></div>
-        <div class="f"><label for="n-in">Masukan</label><textarea id="n-in" spellcheck="false">Rafly</textarea></div>
-        <div class="acts">
-          <button class="btn solid" id="n-bin" type="button">Teks → biner</button>
-          <button class="btn solid" id="n-hex" type="button">Teks → hex</button>
-          <button class="btn" id="n-rbin" type="button">Biner → teks</button>
-          <button class="btn" id="n-rhex" type="button">Hex → teks</button>
-        </div>
-        <div class="outhead"><span>Hasil</span><button class="mini" data-copy="n-out" type="button">Salin</button></div>
-        <div class="out acc" id="n-out" aria-live="polite"></div>
-        <p class="note" id="n-stat">—</p>
-      </section>
-
-      <!-- 08 HASH -->
-      <section class="panel" id="p-hash" role="tabpanel" aria-labelledby="t-hash" tabindex="0">
-        <div class="p-head"><span class="num">08 / Modern</span><h2>Hash SHA</h2>
-          <p>Fungsi hash memampatkan masukan apa pun menjadi sidik jari dengan panjang tetap dan satu arah. Ubah satu huruf saja, seluruh hasilnya berubah total — dipakai untuk verifikasi berkas dan tanda tangan digital.</p></div>
-        <div class="f"><label for="h-in">Masukan</label><textarea id="h-in" spellcheck="false">Studioworks</textarea></div>
-        <div class="acts"><button class="btn solid" id="h-run" type="button">Hitung hash</button>
-          <button class="btn ghost" id="h-clear" type="button">Bersihkan</button></div>
-        <div id="h-out" aria-live="polite">
-          <div class="hashrow"><b>SHA-1</b><span id="h-1">—</span></div>
-          <div class="hashrow"><b>SHA-256</b><span id="h-256">—</span></div>
-          <div class="hashrow"><b>SHA-384</b><span id="h-384">—</span></div>
-          <div class="hashrow"><b>SHA-512</b><span id="h-512">—</span></div>
-        </div>
-        <p class="note">SHA-1 ditampilkan untuk perbandingan saja — sudah dianggap tidak aman sejak tabrakan praktis ditemukan pada 2017.</p>
-      </section>
-
-      <!-- 09 HASH BERKAS -->
-      <section class="panel" id="p-file" role="tabpanel" aria-labelledby="t-file" tabindex="0">
-        <div class="p-head"><span class="num">09 / Modern</span><h2>Hash berkas</h2>
-          <p>Kasus pakai hash yang paling sering ditemui: memastikan berkas yang Anda unduh benar-benar sama dengan yang diterbitkan pembuatnya. Tempelkan nilai rujukan dari situs penerbit, lalu bandingkan.</p></div>
-        <div class="drop" id="fd" tabindex="0" role="button" aria-label="Pilih atau jatuhkan berkas">
-          <b>Jatuhkan berkas di sini</b><span>atau klik untuk memilih · berkas tidak diunggah ke mana pun</span>
-        </div>
-        <input type="file" id="fi" class="sr-only">
-        <div class="fmeta" id="f-meta" hidden><span>Nama <b id="f-name">—</b></span><span>Ukuran <b id="f-size">—</b></span><span>Tipe <b id="f-type">—</b></span></div>
-        <div id="f-res" hidden>
-          <div class="hashrow"><b>SHA-256</b><span id="f-256">—</span></div>
-          <div class="hashrow"><b>SHA-512</b><span id="f-512">—</span></div>
-          <div class="f" style="margin-top:22px"><label for="f-cmp">Bandingkan dengan nilai rujukan</label>
-            <input type="text" id="f-cmp" placeholder="tempel SHA-256 dari situs penerbit" spellcheck="false" autocomplete="off"></div>
-          <div id="f-verdict" class="verdict" hidden></div>
-        </div>
-        <p class="note">Berkas dibaca langsung dari disk oleh peramban dan tidak pernah dikirim keluar. Berkas sangat besar akan memakan memori karena dibaca sekaligus.</p>
-      </section>
-
-      <!-- 10 HMAC -->
-      <section class="panel" id="p-hmac" role="tabpanel" aria-labelledby="t-hmac" tabindex="0">
-        <div class="p-head"><span class="num">10 / Modern</span><h2>HMAC</h2>
-          <p>Hash biasa membuktikan bahwa data tidak berubah, tetapi siapa pun bisa menghitung ulang hash-nya. HMAC menambahkan kunci rahasia ke dalam perhitungan, sehingga hasilnya sekaligus membuktikan bahwa pesan berasal dari pihak yang memegang kunci itu. Inilah yang dipakai webhook untuk memverifikasi pengirim.</p></div>
-        <div class="grid2">
-          <div class="f"><label for="m-msg">Pesan</label><textarea id="m-msg" spellcheck="false">transaksi:1200000</textarea></div>
-          <div>
-            <div class="f"><label for="m-key">Kunci rahasia</label><input type="text" id="m-key" value="kunci-bersama" spellcheck="false" autocomplete="off"></div>
-            <div class="f"><label for="m-alg">Algoritma hash</label>
-              <select id="m-alg"><option>SHA-256</option><option>SHA-384</option><option>SHA-512</option><option>SHA-1</option></select></div>
-          </div>
-        </div>
-        <div class="acts"><button class="btn solid" id="m-run" type="button">Hitung HMAC</button></div>
-        <div class="outhead"><span>Tanda pengenal pesan</span><button class="mini" data-copy="m-out" type="button">Salin</button></div>
-        <div class="out acc" id="m-out" aria-live="polite">—</div>
-        <div class="f" style="margin-top:22px"><label for="m-cmp">Verifikasi nilai yang diterima</label>
-          <input type="text" id="m-cmp" placeholder="tempel HMAC yang ingin diperiksa" spellcheck="false" autocomplete="off"></div>
-        <div id="m-verdict" class="verdict" hidden></div>
-        <p class="note">Perbandingan dilakukan tanpa berhenti di byte pertama yang berbeda, meniru praktik <em>constant-time comparison</em> agar waktu proses tidak membocorkan seberapa banyak karakter yang sudah cocok.</p>
-      </section>
-
-      <!-- 11 AES -->
-      <section class="panel" id="p-aes" role="tabpanel" aria-labelledby="t-aes" tabindex="0">
-        <div class="p-head"><span class="num">11 / Modern</span><h2>AES-GCM dengan kata sandi</h2>
-          <p>Satu-satunya perkakas di Lab ini yang enkripsinya sungguhan. Kata sandi Anda diregangkan menjadi kunci 256 bit lewat PBKDF2 dengan garam acak dan ratusan ribu iterasi, lalu pesan dienkripsi dengan AES-GCM yang sekaligus mendeteksi perubahan sekecil apa pun pada sandi-teks.</p></div>
-        <div class="grid2">
-          <div class="f"><label for="a-in">Pesan atau sandi-teks</label><textarea id="a-in" spellcheck="false">Rapat dipindah ke hari Jumat pukul sembilan.</textarea></div>
-          <div>
-            <div class="f"><label for="a-pass">Kata sandi</label><input type="password" id="a-pass" value="rahasia-kuliah" autocomplete="new-password"></div>
-            <div class="f">
-              <div class="rowf"><label for="a-iter" style="margin:0">Iterasi PBKDF2</label><span class="v" id="a-iter-v">250.000</span></div>
-              <input type="range" id="a-iter" min="50000" max="600000" step="50000" value="250000">
-            </div>
-            <label class="checks" style="margin-top:4px"><input type="checkbox" id="a-show"> tampilkan kata sandi</label>
-          </div>
-        </div>
-        <div class="acts">
-          <button class="btn solid" id="a-enc" type="button">Enkripsi</button>
-          <button class="btn" id="a-dec" type="button">Dekripsi</button>
-          <button class="btn ghost" id="a-swap" type="button">Pindah hasil ke masukan</button>
-        </div>
-        <div class="outhead"><span>Hasil</span><button class="mini" data-copy="a-out" type="button">Salin</button></div>
-        <div class="out acc" id="a-out" aria-live="polite">—</div>
-        <p class="note" id="a-info">Sandi-teks dikemas sebagai Base64 berisi penanda versi, jumlah iterasi, garam 16 byte, IV 12 byte, lalu data terenkripsi — sehingga cukup kata sandi yang perlu diingat, sisanya sudah menyatu di dalam hasilnya.</p>
-        <p class="note">Iterasi tinggi membuat penebakan kata sandi jauh lebih mahal bagi penyerang, tetapi juga menambah waktu proses di perangkat Anda sendiri — biasanya satu sampai dua detik.</p>
-      </section>
-
-      <!-- 12 TANDA TANGAN -->
-      <section class="panel" id="p-sign" role="tabpanel" aria-labelledby="t-sign" tabindex="0">
-        <div class="p-head"><span class="num">12 / Modern</span><h2>Tanda tangan digital ECDSA</h2>
-          <p>Kriptografi kunci publik dalam satu layar. Kunci privat menandatangani pesan, kunci publik memverifikasinya, dan kunci publik boleh disebarkan bebas. Coba ubah satu huruf pada pesan setelah ditandatangani, lalu verifikasi lagi — hasilnya langsung ditolak.</p></div>
-        <div class="acts"><button class="btn solid" id="s-gen" type="button">Bangkitkan pasangan kunci</button></div>
-        <div class="f"><span class="lgd">Kunci publik (format SPKI, Base64)</span>
-          <div class="keybox" id="s-pub">Belum ada kunci. Tekan tombol di atas.</div></div>
-        <div class="f"><label for="s-msg">Pesan</label><textarea id="s-msg" spellcheck="false" style="min-height:92px">Saya menyetujui berita acara ini.</textarea></div>
-        <div class="acts">
-          <button class="btn solid" id="s-sign" type="button">Tanda tangani</button>
-          <button class="btn" id="s-ver" type="button">Verifikasi</button>
-        </div>
-        <div class="outhead"><span>Tanda tangan (Base64)</span><button class="mini" data-copy="s-sig" type="button">Salin</button></div>
-        <div class="out acc" id="s-sig" aria-live="polite">—</div>
-        <div id="s-verdict" class="verdict" hidden></div>
-        <p class="note">Kurva yang dipakai P-256 dengan pencerna SHA-256. Kunci privat hanya berada di memori tab ini dan hilang begitu halaman ditutup atau dimuat ulang.</p>
-      </section>
-
-      <!-- 13 SANDI -->
-      <section class="panel" id="p-pass" role="tabpanel" aria-labelledby="t-pass" tabindex="0">
-        <div class="p-head"><span class="num">13 / Modern</span><h2>Pembangkit sandi</h2>
-          <p>Menghasilkan sandi acak memakai <code>crypto.getRandomValues()</code> — sumber acak kriptografis bawaan peramban, bukan <code>Math.random()</code>. Entropi dihitung dari panjang dikali logaritma dua ukuran himpunan karakter.</p></div>
-        <div class="f">
-          <div class="rowf"><label for="w-len" style="margin:0">Panjang</label><span class="v" id="w-len-v">20</span></div>
-          <input type="range" id="w-len" min="8" max="64" value="20">
-        </div>
-        <div class="f"><span class="lgd">Himpunan karakter</span>
-          <div class="checks">
-            <label><input type="checkbox" id="w-low" checked> huruf kecil</label>
-            <label><input type="checkbox" id="w-up" checked> HURUF BESAR</label>
-            <label><input type="checkbox" id="w-num" checked> angka</label>
-            <label><input type="checkbox" id="w-sym" checked> simbol</label>
-            <label><input type="checkbox" id="w-amb"> hindari mirip (0O1lI)</label>
-          </div>
-        </div>
-        <div class="acts"><button class="btn solid" id="w-run" type="button">Buat sandi</button>
-          <button class="btn ghost" data-copy="w-out" type="button">Salin hasil</button></div>
-        <div class="outhead"><span>Hasil</span><span class="mono" id="w-ent">—</span></div>
-        <div class="out acc" id="w-out" style="font-size:16px" aria-live="polite"></div>
-        <div class="meter"><i id="w-bar"></i></div>
-        <p class="note">Sandi dibuat lokal dan tidak pernah meninggalkan peramban. Tetap simpan di pengelola sandi, jangan di catatan biasa.</p>
-      </section>
-
+      </div>
     </div>
-  </div>
+  </header>
+
+  <section id="kerja">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="idx mono">01 / Indeks</span>
+        <h2 class="sc">Kerja terpilih</h2>
+        <p>Enam entri. Status ditulis apa adanya — yang live bisa dibuka sekarang, yang konsep punya catatan prosesnya.</p>
+      </div>
+
+      <div class="rows rv">
+        <article class="row">
+          <div class="row-main">
+            <span class="row-num">001</span>
+            <h3 class="row-title">JexCrypt</h3>
+            <div class="row-tags"><span class="tag">Next.js</span><span class="tag">Web Crypto</span><span class="tag">Edukasi</span></div>
+            <div class="row-act">
+              <span class="row-stat live">Live · 2025</span>
+              <a class="go" href="https://jexcrypt.vercel.app/" target="_blank" rel="noopener">Buka ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="row">
+          <div class="row-main">
+            <span class="row-num">002</span>
+            <h3 class="row-title">Studioworks Lab</h3>
+            <div class="row-tags"><span class="tag">Vanilla JS</span><span class="tag">Tooling</span><span class="tag">No-build</span></div>
+            <div class="row-act">
+              <span class="row-stat live">Live · 2026</span>
+              <a class="go" href="/lab/">Buka ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="row">
+          <div class="row-main">
+            <span class="row-num">003</span>
+            <h3 class="row-title">Studioworks Bin</h3>
+            <div class="row-tags"><span class="tag">Zero-knowledge</span><span class="tag">AES-GCM</span><span class="tag">Tanpa server</span></div>
+            <div class="row-act">
+              <span class="row-stat live">Live · 2026</span>
+              <a class="go" href="/bin/">Buka ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="row">
+          <div class="row-main">
+            <span class="row-num">004</span>
+            <h3 class="row-title">Arsip Nusantara</h3>
+            <div class="row-tags"><span class="tag">Arsip Digital</span><span class="tag">Tipografi</span><span class="tag">Riset</span></div>
+            <div class="row-act">
+              <span class="row-stat">Konsep · 2025</span>
+              <button class="go" type="button" data-toggle aria-expanded="false">Detail</button>
+            </div>
+          </div>
+          <div class="panel"><div><div class="panel-in"><span></span><div class="panel-body">
+            <p>Latihan menata koleksi arsip dalam jumlah besar tanpa membuat pembacanya lelah. Persoalan utamanya bukan gaya, tapi hierarki: bagaimana satu halaman bisa memuat ribuan entri dan tetap mudah disisir.</p>
+            <p>Yang saya kerjakan sejauh ini adalah struktur konten, skala tipografi, dan pola penelusuran. Belum ada data asli, jadi statusnya masih konsep — dan saya menuliskannya apa adanya.</p>
+            <dl>
+              <dt>Peran</dt><dd>Riset &amp; desain antarmuka</dd>
+              <dt>Fokus</dt><dd>Hierarki &amp; keterbacaan</dd>
+              <dt>Tahap</dt><dd>Wireframe dan skala tipografi</dd>
+            </dl>
+          </div></div></div></div>
+        </article>
+
+        <article class="row">
+          <div class="row-main">
+            <span class="row-num">005</span>
+            <h3 class="row-title">Pasar Pagi</h3>
+            <div class="row-tags"><span class="tag">UI Study</span><span class="tag">Mobile-first</span><span class="tag">UMKM</span></div>
+            <div class="row-act">
+              <span class="row-stat">Studi kasus · 2025</span>
+              <button class="go" type="button" data-toggle aria-expanded="false">Detail</button>
+            </div>
+          </div>
+          <div class="panel"><div><div class="panel-in"><span></span><div class="panel-body">
+            <p>Studi kasus untuk pedagang kecil yang pelanggannya membuka web lewat ponsel murah dan jaringan seadanya. Asumsi awalnya dibalik: desain dimulai dari layar sempit dan koneksi lambat, bukan dari layar desktop.</p>
+            <p>Keputusan terbesarnya adalah memangkas gambar besar dan mengandalkan teks serta tata letak. Halaman jadi ringan, dan alur pesan barang bisa selesai dalam tiga ketukan.</p>
+            <dl>
+              <dt>Peran</dt><dd>Desain &amp; prototipe</dd>
+              <dt>Fokus</dt><dd>Performa di jaringan lambat</dd>
+              <dt>Tahap</dt><dd>Prototipe teruji, belum dirilis</dd>
+            </dl>
+          </div></div></div></div>
+        </article>
+
+        <article class="row">
+          <div class="row-main">
+            <span class="row-num">006</span>
+            <h3 class="row-title">Kirim</h3>
+            <div class="row-tags"><span class="tag">Landing</span><span class="tag">Motion</span><span class="tag">Konsep</span></div>
+            <div class="row-act">
+              <span class="row-stat">Dalam pengerjaan · 2026</span>
+              <button class="go" type="button" data-toggle aria-expanded="false">Detail</button>
+            </div>
+          </div>
+          <div class="panel"><div><div class="panel-in"><span></span><div class="panel-body">
+            <p>Halaman pendaratan untuk layanan pengiriman fiktif, dipakai sebagai latihan gerak: kapan animasi membantu pemahaman, kapan ia cuma menambah beban.</p>
+            <p>Aturan yang saya pegang di sini: setiap gerakan harus menjelaskan sesuatu — arah, urutan, atau perubahan keadaan. Semua transisi dimatikan otomatis saat pengguna menyalakan <em>reduced motion</em> di sistemnya.</p>
+            <dl>
+              <dt>Peran</dt><dd>Desain &amp; front-end</dd>
+              <dt>Fokus</dt><dd>Gerak yang punya alasan</dd>
+              <dt>Tahap</dt><dd>Sedang dikerjakan</dd>
+            </dl>
+          </div></div></div></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="metode">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="idx mono">02 / Metode</span>
+        <h2 class="sc">Cara saya bekerja</h2>
+        <p>Empat tahap, tanpa drama. Setiap tahap punya keluaran yang bisa dilihat klien.</p>
+      </div>
+      <div class="steps rv">
+        <div class="step"><span class="n">01</span><h3>Dengar &amp; petakan</h3><p>Apa yang mau dicapai, siapa yang pakai, apa batasannya. Keluaran: ringkasan kebutuhan satu halaman.</p></div>
+        <div class="step"><span class="n">02</span><h3>Struktur dulu</h3><p>Konten dan hierarki disusun sebelum warna. Wireframe kasar lebih murah daripada revisi besar.</p></div>
+        <div class="step"><span class="n">03</span><h3>Bangun ramping</h3><p>HTML semantik, CSS modern, JavaScript seperlunya. Tanpa dependensi yang tidak dipakai.</p></div>
+        <div class="step"><span class="n">04</span><h3>Uji &amp; serahkan</h3><p>Cek performa, kontras, keyboard, dan mesin pencari. Lalu deploy plus catatan pemeliharaan.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="lab">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="idx mono">03 / Lab</span>
+        <h2 class="sc">Ruang percobaan</h2>
+        <p>Perkakas kecil yang saya tulis sendiri. Semuanya jalan di browser — tidak ada data yang dikirim ke server.</p>
+      </div>
+      <div class="split rv">
+        <div>
+          <p>Lab berisi tiga belas perkakas konversi dan kriptografi: Caesar, ROT13, Base64, URL encode, hash SHA, XOR, biner/heksa, pembangkit sandi, sampai AES-GCM berkata sandi, tanda tangan digital, hash berkas, HMAC, dan analisis frekuensi huruf.</p>
+          <p>Cicipi versi mini di sebelah — ketik sesuatu, lalu geser pergeserannya.</p>
+          <div class="chips">
+            <span class="chip">Klasik</span><span class="chip">Pengodean</span><span class="chip">Modern</span><span class="chip">Web Crypto API</span>
+          </div>
+          <a class="btn solid" href="/lab/">Masuk ke Lab lengkap</a>
+        </div>
+        <div class="demo">
+          <div class="demo-bar"><span class="mono">caesar.js</span><span class="mono">lokal</span></div>
+          <div class="demo-body">
+            <div class="fld">
+              <label for="cIn">Teks</label>
+              <input id="cIn" type="text" value="studioworks" autocomplete="off" spellcheck="false">
+            </div>
+            <div class="fld">
+              <label for="cSh">Pergeseran <b id="cShVal">3</b></label>
+              <input id="cSh" type="range" min="1" max="25" value="3">
+            </div>
+            <div class="out" id="cOut">vwxglrzrunv</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="bin">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="idx mono">04 / Bin</span>
+        <h2 class="sc">Catatan sekali pakai</h2>
+        <p>Tempel teks, dapat tautan. Isinya dienkripsi di browser dan kuncinya tidak pernah meninggalkan alamat tautan itu sendiri.</p>
+      </div>
+      <div class="split rv">
+        <div>
+          <p>Bin bekerja tanpa basis data. Teks dienkripsi dengan <strong>AES-GCM</strong> di perangkat Anda, hasilnya ditaruh di belakang tanda pagar pada tautan — bagian yang menurut spesifikasi URL memang tidak pernah dikirim ke server.</p>
+          <p>Server hanya menyerahkan berkas HTML sekali di awal. Setelah itu tidak ada lagi percakapan dengan server: catatan bisa diberi kata sandi, diberi tanggal kedaluwarsa, dan dibuka dalam tampilan mentah untuk disalin cepat.</p>
+          <p class="bin-note">Karena tidak ada server yang menyimpan, tidak ada pula yang bisa diminta menyerahkan isinya. Konsekuensinya jujur: kalau tautannya hilang, catatannya hilang.</p>
+          <a class="btn solid" href="/bin/">Buat catatan</a>
+          <a class="btn" href="#mesin">Lihat mesinnya</a>
+        </div>
+        <div class="demo">
+          <div class="demo-bar"><span class="mono">anatomi tautan</span><span class="mono">tanpa server</span></div>
+          <div class="demo-body">
+            <div class="fld">
+              <label>Dikirim ke server</label>
+              <div class="out" style="color:var(--ink-2)">studioworks.my.id/bin/</div>
+            </div>
+            <div class="fld">
+              <label>Tidak pernah dikirim</label>
+              <div class="out">#v1.aG9sYS4uLmVuY3J5cHRlZA</div>
+            </div>
+            <div class="chips">
+              <span class="chip">Anonim</span><span class="chip">Kedaluwarsa</span><span class="chip">Kata sandi</span><span class="chip">Raw</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="mesin">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="idx mono">05 / Mesin</span>
+        <h2 class="sc">Kripto yang benar-benar jalan</h2>
+        <p>Bukan animasi tiruan. Tiap ketikan dienkripsi ulang dengan AES-256-GCM dan dicacah SHA-256 lewat Web Crypto bawaan peramban.</p>
+      </div>
+
+      <div class="eng rv">
+        <div>
+          <h3>Masukan</h3>
+          <textarea id="engIn" spellcheck="false" aria-label="Teks yang akan dienkripsi">Rahasia kecil untuk penguji sidang.</textarea>
+          <div class="eng-row">
+            <span class="mono" id="engLen">—</span>
+            <button class="mini" type="button" id="engKey">Kunci baru</button>
+          </div>
+          <div class="cipher" id="engCipher" aria-hidden="true"></div>
+          <dl class="kv">
+            <div><dt>IV acak</dt><dd id="engIv">—</dd></div>
+            <div><dt>Uji balik</dt><dd class="proof" id="engProof">—</dd></div>
+          </dl>
+          <p class="eng-note">IV dibangkitkan ulang setiap kali, jadi teks yang sama pun menghasilkan sandi yang sama sekali berbeda. Enam belas bait terakhir adalah tag autentikasi: ubah satu bait, dekripsi ditolak, bukan salah hasil.</p>
+        </div>
+
+        <div>
+          <h3>SHA-256 · sidik jari</h3>
+          <div class="bloom-wrap">
+            <canvas id="bloom" role="img" aria-label="Visualisasi radial dari nilai hash SHA-256 teks yang diketik."></canvas>
+          </div>
+          <div class="av"><b id="avNum">0</b><span>dari 256 bit berubah dibanding ketikan sebelumnya</span></div>
+          <div class="avbar"><i id="avBar"></i></div>
+          <p class="eng-note">Bentuk itu digambar langsung dari 256 bit hash. Ubah satu huruf, sekitar separuh bit terbalik dan siluetnya berganti total — sifat yang membuat hash tidak bisa ditelusuri mundur.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tentang">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="idx mono">06 / Profil</span>
+        <h2 class="sc">Tentang</h2>
+        <p>Saya Muhammad Rafly, mahasiswa Sistem Informasi di Universitas Budi Luhur. Siang kuliah, malam menulis kode dan membongkar cara kerja web.</p>
+      </div>
+      <div class="about rv">
+        <div>
+          <p>Studioworks lahir dari kebiasaan itu: mengerjakan halaman kecil sampai benar-benar beres — bukan cuma terlihat bagus di tangkapan layar, tapi juga cepat dibuka di jaringan lambat dan tetap bisa dipakai lewat keyboard.</p>
+          <p>Kuliah saya banyak membahas analisis sistem dan basis data, dan itu yang saya bawa ke pekerjaan antarmuka: memetakan kebutuhan dulu, baru menggambar. Sisanya saya pelajari sendiri — HTML, CSS, dan JavaScript murni, plus Next.js untuk proyek yang butuh routing. Keamanan dan kriptografi jadi minat khusus, dan itu sebabnya ada Lab dan Bin di situs ini.</p>
+          <div class="counts">
+            <div class="count"><b data-to="6">0</b><span>Proyek dikerjakan</span></div>
+            <div class="count"><b data-to="13">0</b><span>Perkakas di Lab</span></div>
+            <div class="count"><b data-to="0">0</b><span>Dependensi runtime</span></div>
+          </div>
+        </div>
+        <dl class="meta">
+          <div><dt>Peran</dt><dd>Front-end Developer</dd></div>
+          <div><dt>Kampus</dt><dd>Universitas Budi Luhur</dd></div>
+          <div><dt>Program studi</dt><dd>S1 Sistem Informasi</dd></div>
+          <div><dt>Basis</dt><dd>Jakarta (GMT+7)</dd></div>
+          <div><dt>Bahasa</dt><dd>Indonesia, Inggris</dd></div>
+          <div><dt>Stack</dt><dd>HTML, CSS, JS, Next.js</dd></div>
+          <div><dt>Fokus</dt><dd>Performa, aksesibilitas</dd></div>
+          <div><dt>Status</dt><dd>Terbuka untuk proyek</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontak" class="contact">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <span class="idx mono">07 / Kontak</span>
+        <h2 class="sc">Mari bicara</h2>
+        <p>Tidak ada formulir di sini — cukup kirim surel, biasanya saya balas dalam 24 jam.</p>
+      </div>
+      <div class="mailrow rv">
+        <a class="mail" href="mailto:rexha4u@gmail.com">rexha4u@gmail.com</a>
+        <button class="btn" type="button" id="copyMail">Salin alamat</button>
+        <a class="btn solid" href="mailto:rexha4u@gmail.com?subject=Proyek%20lewat%20Studioworks">Kirim surel</a>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer>
-  <div class="wrap foot mono">
-    <span>© <span id="yr">2026</span> Studioworks — Muhammad Rafly</span>
-    <span>Semua perhitungan berjalan di peramban Anda.</span>
-    <a href="/">Kembali ke beranda ↖</a>
+  <div class="wrap">
+    <dl class="fgrid">
+      <div><dt>Respons</dt><dd>±24 jam kerja</dd></div>
+      <div><dt>Zona waktu</dt><dd>GMT+7 Jakarta</dd></div>
+      <div><dt>Kode</dt><dd><a href="https://github.com/sirjexen" target="_blank" rel="noopener">github.com/sirjexen</a></dd></div>
+      <div><dt>Domain</dt><dd>studioworks.my.id</dd></div>
+    </dl>
+    <div class="fbar mono">
+      <span>© <span id="yr">2026</span> Studioworks — Muhammad Rafly</span>
+      <span class="mid">Ditulis tangan. Tanpa framework. Dihosting di GitHub Pages.</span>
+      <a href="#top">Kembali ke atas ↑</a>
+    </div>
   </div>
-  <div class="bigmark" aria-hidden="true">LAB</div>
+  <svg class="wordmark" viewBox="0 0 1200 190" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Studioworks">
+    <text x="600" y="152" text-anchor="middle" font-size="185" textLength="1150" lengthAdjust="spacingAndGlyphs">STUDIOWORKS</text>
+  </svg>
 </footer>
 
 <div id="toast" role="status" aria-live="polite">Tersalin</div>
@@ -533,476 +663,444 @@ footer{padding:30px 0 0}
 <script>
 (function () {
   "use strict";
-  var $ = function (s, c) { return (c || document).querySelector(s); };
-  var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
-  var enc = new TextEncoder(), dec = new TextDecoder();
-  var SC = !!(window.crypto && crypto.subtle);
+  var d = document, W = window;
+  var reduce = false;
+  try { reduce = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+  var themeHooks = [];
 
-  $("#yr").textContent = new Date().getFullYear();
-  if (!SC) $("#warn").classList.add("on");
+  function cssv(n) { return getComputedStyle(d.documentElement).getPropertyValue(n).trim(); }
+  function toRgb(h) {
+    h = h.replace("#", "");
+    if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    var n = parseInt(h, 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
 
-  /* tema */
-  var root = document.documentElement, icon = $("#ic");
-  var sun = "M12 4V2M12 22v-2M4 12H2M22 12h-2M6 6L4.5 4.5M19.5 19.5L18 18M18 6l1.5-1.5M4.5 19.5L6 18M16 12a4 4 0 11-8 0 4 4 0 018 0z";
-  var moon = "M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z";
-  function paint() { icon.setAttribute("d", root.getAttribute("data-theme") === "dark" ? sun : moon); }
-  paint();
-  $("#theme").addEventListener("click", function () {
-    var n = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    root.setAttribute("data-theme", n);
-    try { localStorage.setItem("sw-theme", n); } catch (e) {}
-    paint();
+  /* ---------- tema ---------- */
+  d.getElementById("themeBtn").addEventListener("click", function () {
+    var now = d.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    d.documentElement.setAttribute("data-theme", now);
+    try { localStorage.setItem("sw-theme", now); } catch (e) {}
+    themeHooks.forEach(function (f) { f(); });
   });
 
-  /* toast + salin */
-  var toast = $("#toast"), tt = null;
-  function flash(m) { toast.textContent = m; toast.classList.add("on"); clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove("on"); }, 1700); }
-  function copy(text) {
-    if (!text || text === "—") { flash("Belum ada hasil"); return; }
-    if (navigator.clipboard && isSecureContext) {
-      navigator.clipboard.writeText(text).then(function () { flash("Tersalin"); }, function () { flash("Gagal menyalin"); });
-    } else {
-      var ta = document.createElement("textarea");
-      ta.value = text; ta.style.position = "absolute"; ta.style.left = "-9999px";
-      document.body.appendChild(ta); ta.select();
-      try { document.execCommand("copy"); flash("Tersalin"); } catch (e) { flash("Gagal menyalin"); }
-      document.body.removeChild(ta);
-    }
+  /* ---------- jam & tahun ---------- */
+  function tick() {
+    var s = new Intl.DateTimeFormat("id-ID", { timeZone:"Asia/Jakarta", hour:"2-digit", minute:"2-digit", hour12:false }).format(new Date());
+    d.getElementById("clock").textContent = s.replace(":", ".");
   }
+  tick(); setInterval(tick, 20000);
+  d.getElementById("yr").textContent = new Date().getFullYear();
 
-  $$("[data-copy]").forEach(function (b) {
-    b.addEventListener("click", function () { var el = document.getElementById(b.getAttribute("data-copy")); copy(el ? el.textContent.trim() : ""); });
-  });
-  function say(el, msg, bad, good) {
-    el.textContent = msg;
-    el.classList.toggle("err", !!bad);
-    el.classList.toggle("good", !!good);
-    el.classList.toggle("acc", !bad && !good);
-  }
-  function verdict(el, ok, msg) {
-    el.hidden = false; el.textContent = msg;
-    el.classList.toggle("ok", ok); el.classList.toggle("no", !ok);
-  }
-  function busy(btn, on, label) {
-    btn.disabled = on;
-    if (on) { btn.dataset.lbl = btn.textContent; btn.textContent = label || "Memproses…"; }
-    else if (btn.dataset.lbl) { btn.textContent = btn.dataset.lbl; }
-  }
-
-  /* tab */
-  var tabs = $$(".tab");
-  function open(key, focus) {
-    tabs.forEach(function (t) {
-      var on = t.getAttribute("data-k") === key;
-      t.setAttribute("aria-selected", on ? "true" : "false");
-      document.getElementById(t.getAttribute("aria-controls")).classList.toggle("on", on);
-      if (on && focus) t.focus();
-    });
-    if (history.replaceState) history.replaceState(null, "", "#" + key);
-  }
-  tabs.forEach(function (t, i) {
-    t.addEventListener("click", function () { open(t.getAttribute("data-k")); });
-    t.addEventListener("keydown", function (e) {
-      var d = (e.key === "ArrowDown" || e.key === "ArrowRight") ? 1 : (e.key === "ArrowUp" || e.key === "ArrowLeft") ? -1 : 0;
-      if (!d) return;
-      e.preventDefault();
-      open(tabs[(i + d + tabs.length) % tabs.length].getAttribute("data-k"), true);
-    });
-  });
-  var start = (location.hash || "").replace("#", "");
-  if (start && document.getElementById("p-" + start)) open(start);
-
-  /* util byte */
-  function hex(bytes, spaced) {
-    var s = "";
-    for (var i = 0; i < bytes.length; i++) s += ("0" + bytes[i].toString(16)).slice(-2) + (spaced && i < bytes.length - 1 ? " " : "");
-    return s;
-  }
-  function unhex(str) {
-    var c = str.replace(/0x/gi, "").replace(/[^0-9a-f]/gi, "");
-    if (c.length % 2) throw new Error("Jumlah digit hex harus genap.");
-    var o = new Uint8Array(c.length / 2);
-    for (var i = 0; i < o.length; i++) o[i] = parseInt(c.substr(i * 2, 2), 16);
-    return o;
-  }
-  function b64(bytes) {
-    var s = "";
-    for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
-    return btoa(s);
-  }
-  function unb64(str) {
-    var bin = atob(str.replace(/\s+/g, ""));
-    var o = new Uint8Array(bin.length);
-    for (var i = 0; i < bin.length; i++) o[i] = bin.charCodeAt(i);
-    return o;
-  }
-  function slowEqual(a, b) {
-    if (a.length !== b.length) return false;
-    var diff = 0;
-    for (var i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-    return diff === 0;
-  }
-  function caesar(s, n) {
-    return s.replace(/[a-z]/gi, function (c) {
-      var b = c <= "Z" ? 65 : 97;
-      return String.fromCharCode(((c.charCodeAt(0) - b + n) % 26 + 26) % 26 + b);
-    });
-  }
-
-  /* 01 caesar */
-  var czIn = $("#cz-in"), czSh = $("#cz-shift"), czVal = $("#cz-val"), czOut = $("#cz-out"), czList = $("#cz-list");
-  function czRun(dir) { czList.hidden = true; say(czOut, caesar(czIn.value, parseInt(czSh.value, 10) * (dir || 1)) || "—"); }
-  czSh.addEventListener("input", function () { czVal.textContent = czSh.value; czRun(1); });
-  czIn.addEventListener("input", function () { czRun(1); });
-  $("#cz-enc").addEventListener("click", function () { czRun(1); });
-  $("#cz-dec").addEventListener("click", function () { czRun(-1); });
-  $("#cz-brute").addEventListener("click", function () {
-    czList.textContent = "";
-    for (var k = 1; k <= 25; k++) {
-      var row = document.createElement("div");
-      var b = document.createElement("b"); b.textContent = "+" + k;
-      var s = document.createElement("span"); s.textContent = caesar(czIn.value, -k);
-      row.appendChild(b); row.appendChild(s); czList.appendChild(row);
-    }
-    czList.hidden = false;
-  });
-  czRun(1);
-
-  /* 02 rot13 */
-  var rIn = $("#r-in"), rOut = $("#r-out");
-  function rot13() { say(rOut, caesar(rIn.value, 13) || "—"); }
-  rIn.addEventListener("input", rot13); rot13();
-
-  /* 03 xor */
-  var xIn = $("#x-in"), xKey = $("#x-key"), xOut = $("#x-out");
-  function xorBytes(d, k) { var o = new Uint8Array(d.length); for (var i = 0; i < d.length; i++) o[i] = d[i] ^ k[i % k.length]; return o; }
-  $("#x-enc").addEventListener("click", function () {
-    var k = enc.encode(xKey.value);
-    if (!k.length) { say(xOut, "Kunci tidak boleh kosong.", true); return; }
-    say(xOut, hex(xorBytes(enc.encode(xIn.value), k), true) || "—");
-  });
-  $("#x-dec").addEventListener("click", function () {
-    var k = enc.encode(xKey.value);
-    if (!k.length) { say(xOut, "Kunci tidak boleh kosong.", true); return; }
-    try { say(xOut, dec.decode(xorBytes(unhex(xIn.value), k)) || "—"); }
-    catch (e) { say(xOut, "Masukan harus berupa hex. " + e.message, true); }
-  });
-
-  /* 04 frekuensi */
-  var qIn = $("#q-in"), qBars = $("#q-bars"), qOut = $("#q-out");
-  var ENG = [8.2,1.5,2.8,4.3,12.7,2.2,2.0,6.1,7.0,0.15,0.77,4.0,2.4,6.7,7.5,1.9,0.095,6.0,6.3,9.1,2.8,0.98,2.4,0.15,2.0,0.074];
-  var cells = [];
-  (function buildBars() {
-    for (var i = 0; i < 26; i++) {
-      var d = document.createElement("div");
-      var bar = document.createElement("i");
-      var lab = document.createElement("u");
-      lab.textContent = String.fromCharCode(97 + i);
-      d.appendChild(bar); d.appendChild(lab);
-      qBars.appendChild(d);
-      cells.push({ box: d, bar: bar });
-    }
-  })();
-  var bestShift = 0;
-  function analyse() {
-    var counts = new Array(26).fill(0), total = 0, s = qIn.value.toLowerCase();
-    for (var i = 0; i < s.length; i++) {
-      var c = s.charCodeAt(i) - 97;
-      if (c >= 0 && c < 26) { counts[c]++; total++; }
-    }
-    var max = Math.max.apply(null, counts) || 1;
-    var topIdx = counts.indexOf(max);
-    for (var j = 0; j < 26; j++) {
-      cells[j].bar.style.height = (total ? (counts[j] / max) * 100 : 0) + "%";
-      cells[j].box.classList.toggle("hi", total > 0 && counts[j] === max);
-    }
-    $("#q-total").textContent = total;
-    $("#q-top").textContent = total ? String.fromCharCode(97 + topIdx).toUpperCase() : "—";
-    var ic = 0;
-    if (total > 1) {
-      for (var k = 0; k < 26; k++) ic += counts[k] * (counts[k] - 1);
-      ic = ic / (total * (total - 1));
-    }
-    $("#q-ic").textContent = ic.toFixed(3);
-    var best = 0, bestChi = Infinity;
-    for (var sh = 0; sh < 26; sh++) {
-      var chi = 0;
-      for (var m = 0; m < 26; m++) {
-        var obs = counts[(m + sh) % 26];
-        var exp = total * ENG[m] / 100;
-        if (exp > 0) chi += Math.pow(obs - exp, 2) / exp;
+  /* ---------- scramble teks ---------- */
+  var GLYPH = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%&$@/*<>";
+  d.querySelectorAll(".sc").forEach(function (el) { el.setAttribute("data-txt", el.textContent); });
+  function scramble(el, dur) {
+    var fin = el.getAttribute("data-txt") || el.textContent, len = fin.length, t0 = 0;
+    if (reduce) { el.textContent = fin; return; }
+    function step(now) {
+      if (!t0) t0 = now;
+      var p = Math.min((now - t0) / dur, 1), rev = p * len * 1.25, out = "";
+      for (var i = 0; i < len; i++) {
+        var c = fin.charAt(i);
+        if (c === " " || c === "\n") { out += c; }
+        else if (i < rev) { out += c; }
+        else { out += GLYPH.charAt((Math.random() * GLYPH.length) | 0); }
       }
-      if (chi < bestChi) { bestChi = chi; best = sh; }
+      el.textContent = out;
+      if (p < 1) requestAnimationFrame(step); else el.textContent = fin;
     }
-    bestShift = best;
-    $("#q-guess").textContent = total ? "+" + best : "—";
+    requestAnimationFrame(step);
   }
-  qIn.addEventListener("input", analyse); analyse();
-  $("#q-apply").addEventListener("click", function () { say(qOut, caesar(qIn.value, -bestShift) || "—"); });
-
-  /* 05 base64 */
-  var bIn = $("#b-in"), bOut = $("#b-out");
-  $("#b-enc").addEventListener("click", function () {
-    try { say(bOut, b64(enc.encode(bIn.value)) || "—"); } catch (e) { say(bOut, "Gagal mengodekan.", true); }
-  });
-  $("#b-dec").addEventListener("click", function () {
-    try { say(bOut, dec.decode(unb64(bIn.value)) || "—"); } catch (e) { say(bOut, "Bukan Base64 yang sah.", true); }
-  });
-  $("#b-swap").addEventListener("click", function () { bIn.value = bOut.textContent; bIn.focus(); });
-
-  /* 06 url */
-  var uIn = $("#u-in"), uOut = $("#u-out");
-  $("#u-enc").addEventListener("click", function () { try { say(uOut, encodeURI(uIn.value)); } catch (e) { say(uOut, "Masukan tidak sah.", true); } });
-  $("#u-comp").addEventListener("click", function () { try { say(uOut, encodeURIComponent(uIn.value)); } catch (e) { say(uOut, "Masukan tidak sah.", true); } });
-  $("#u-dec").addEventListener("click", function () { try { say(uOut, decodeURIComponent(uIn.value)); } catch (e) { say(uOut, "Urutan persen tidak sah.", true); } });
-
-  /* 07 biner */
-  var nIn = $("#n-in"), nOut = $("#n-out"), nStat = $("#n-stat");
-  function stat(by) { nStat.textContent = by.length + " byte · " + (by.length * 8) + " bit · " + Array.from(nIn.value).length + " karakter"; }
-  $("#n-bin").addEventListener("click", function () {
-    var by = enc.encode(nIn.value), a = [];
-    by.forEach(function (b) { a.push(("00000000" + b.toString(2)).slice(-8)); });
-    say(nOut, a.join(" ") || "—"); stat(by);
-  });
-  $("#n-hex").addEventListener("click", function () { var by = enc.encode(nIn.value); say(nOut, hex(by, true) || "—"); stat(by); });
-  $("#n-rbin").addEventListener("click", function () {
-    var p = nIn.value.trim().split(/\s+/).filter(Boolean);
-    if (!p.length || !p.every(function (x) { return /^[01]{1,8}$/.test(x); })) { say(nOut, "Masukkan deret biner 8 bit dipisah spasi.", true); return; }
-    var by = new Uint8Array(p.map(function (x) { return parseInt(x, 2); }));
-    say(nOut, dec.decode(by)); nStat.textContent = by.length + " byte dibaca";
-  });
-  $("#n-rhex").addEventListener("click", function () {
-    try { var by = unhex(nIn.value); say(nOut, dec.decode(by)); nStat.textContent = by.length + " byte dibaca"; }
-    catch (e) { say(nOut, e.message, true); }
+  requestAnimationFrame(function () {
+    d.body.classList.add("ready");
+    var hs = d.querySelectorAll("h1 .sc");
+    hs.forEach(function (el, i) { setTimeout(function () { scramble(el, 900); }, 260 + i * 90); });
   });
 
-  /* 08 hash teks */
-  var hIn = $("#h-in");
-  function digestHex(alg, data) {
-    return crypto.subtle.digest(alg, data).then(function (buf) { return hex(new Uint8Array(buf)); });
-  }
-  function hashAll() {
-    if (!SC) { ["h-1","h-256","h-384","h-512"].forEach(function (id) { $("#" + id).textContent = "Butuh HTTPS."; }); return; }
-    [["SHA-1","h-1"],["SHA-256","h-256"],["SHA-384","h-384"],["SHA-512","h-512"]].forEach(function (p) {
-      digestHex(p[0], enc.encode(hIn.value)).then(function (s) { $("#" + p[1]).textContent = s; })
-        .catch(function () { $("#" + p[1]).textContent = "Gagal menghitung."; });
-    });
-  }
-  $("#h-run").addEventListener("click", hashAll);
-  $("#h-clear").addEventListener("click", function () {
-    hIn.value = ""; ["h-1","h-256","h-384","h-512"].forEach(function (id) { $("#" + id).textContent = "—"; });
-  });
-  hashAll();
-
-  /* 09 hash berkas */
-  var fd = $("#fd"), fi = $("#fi"), fRes = $("#f-res"), fMeta = $("#f-meta"), fCmp = $("#f-cmp"), fVer = $("#f-verdict");
-  function human(n) {
-    if (n < 1024) return n + " B";
-    if (n < 1048576) return (n / 1024).toFixed(1) + " KB";
-    if (n < 1073741824) return (n / 1048576).toFixed(2) + " MB";
-    return (n / 1073741824).toFixed(2) + " GB";
-  }
-  function readFile(file) {
-    if (file.arrayBuffer) return file.arrayBuffer();
-    return new Promise(function (res, rej) {
-      var fr = new FileReader();
-      fr.onload = function () { res(fr.result); };
-      fr.onerror = function () { rej(new Error("Gagal membaca berkas.")); };
-      fr.readAsArrayBuffer(file);
-    });
-  }
-  function handleFile(file) {
-    if (!file) return;
-    if (!SC) { flash("Butuh HTTPS"); return; }
-    $("#f-name").textContent = file.name;
-    $("#f-size").textContent = human(file.size);
-    $("#f-type").textContent = file.type || "tidak diketahui";
-    fMeta.hidden = false; fRes.hidden = false; fVer.hidden = true;
-    $("#f-256").textContent = "menghitung…"; $("#f-512").textContent = "menghitung…";
-    readFile(file).then(function (buf) {
-      return Promise.all([digestHex("SHA-256", buf), digestHex("SHA-512", buf)]);
-    }).then(function (r) {
-      $("#f-256").textContent = r[0]; $("#f-512").textContent = r[1];
-      compareFile();
-    }).catch(function (e) {
-      $("#f-256").textContent = "Gagal: " + e.message; $("#f-512").textContent = "—";
-    });
-  }
-  function compareFile() {
-    var want = fCmp.value.trim().toLowerCase().replace(/\s+/g, "");
-    var got = $("#f-256").textContent.trim();
-    if (!want || !/^[0-9a-f]{64}$/.test(got)) { fVer.hidden = true; return; }
-    var ok = slowEqual(want, got);
-    verdict(fVer, ok, ok ? "Cocok — berkas utuh" : "Tidak cocok — berkas berbeda");
-  }
-  fd.addEventListener("click", function () { fi.click(); });
-  fd.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fi.click(); } });
-  fi.addEventListener("change", function () { handleFile(fi.files[0]); });
-  ["dragenter","dragover"].forEach(function (ev) {
-    fd.addEventListener(ev, function (e) { e.preventDefault(); fd.classList.add("hot"); });
-  });
-  ["dragleave","drop"].forEach(function (ev) {
-    fd.addEventListener(ev, function (e) { e.preventDefault(); fd.classList.remove("hot"); });
-  });
-  fd.addEventListener("drop", function (e) {
-    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
-  });
-  fCmp.addEventListener("input", compareFile);
-
-  /* 10 hmac */
-  var mOut = $("#m-out"), mCmp = $("#m-cmp"), mVer = $("#m-verdict");
-  function hmac() {
-    if (!SC) { say(mOut, "Web Crypto tidak aktif — butuh HTTPS.", true); return Promise.resolve(); }
-    var alg = $("#m-alg").value;
-    var secret = $("#m-key").value;
-    if (!secret) { say(mOut, "Kunci rahasia tidak boleh kosong.", true); return Promise.resolve(); }
-    return crypto.subtle.importKey("raw", enc.encode(secret), { name: "HMAC", hash: alg }, false, ["sign"])
-      .then(function (k) { return crypto.subtle.sign("HMAC", k, enc.encode($("#m-msg").value)); })
-      .then(function (sig) { say(mOut, hex(new Uint8Array(sig))); checkHmac(); })
-      .catch(function (e) { say(mOut, "Gagal: " + e.message, true); });
-  }
-  function checkHmac() {
-    var want = mCmp.value.trim().toLowerCase().replace(/\s+/g, "");
-    var got = mOut.textContent.trim();
-    if (!want || !/^[0-9a-f]+$/.test(got)) { mVer.hidden = true; return; }
-    var ok = slowEqual(want, got);
-    verdict(mVer, ok, ok ? "Sah — pesan otentik" : "Tidak sah — kunci atau pesan berbeda");
-  }
-  $("#m-run").addEventListener("click", function () { var b = this; busy(b, true); hmac().then(function () { busy(b, false); }); });
-  mCmp.addEventListener("input", checkHmac);
-  ["#m-msg","#m-key","#m-alg"].forEach(function (s) { $(s).addEventListener("input", function () { mVer.hidden = true; }); });
-
-  /* 11 aes-gcm */
-  var aIn = $("#a-in"), aOut = $("#a-out"), aIter = $("#a-iter"), aIterV = $("#a-iter-v"), aPass = $("#a-pass");
-  aIter.addEventListener("input", function () { aIterV.textContent = Number(aIter.value).toLocaleString("id-ID"); });
-  $("#a-show").addEventListener("change", function () { aPass.type = this.checked ? "text" : "password"; });
-  function deriveKey(pass, salt, iter, use) {
-    return crypto.subtle.importKey("raw", enc.encode(pass), "PBKDF2", false, ["deriveKey"])
-      .then(function (km) {
-        return crypto.subtle.deriveKey(
-          { name: "PBKDF2", salt: salt, iterations: iter, hash: "SHA-256" },
-          km, { name: "AES-GCM", length: 256 }, false, [use]);
+  /* ---------- reveal ---------- */
+  var rv = d.querySelectorAll(".rv");
+  if ("IntersectionObserver" in W) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add("in");
+        var h = e.target.querySelector(".sc");
+        if (h) scramble(h, 650);
+        io.unobserve(e.target);
       });
+    }, { rootMargin:"0px 0px -8% 0px", threshold:.12 });
+    rv.forEach(function (el) { io.observe(el); });
+  } else { rv.forEach(function (el) { el.classList.add("in"); }); }
+
+  /* ---------- penghitung ---------- */
+  var counters = d.querySelectorAll(".count b");
+  function runCount(el) {
+    var to = parseInt(el.getAttribute("data-to"), 10) || 0, t0 = null, dur = 1100;
+    if (to === 0) { el.textContent = "0"; return; }
+    function step(ts) {
+      if (!t0) t0 = ts;
+      var p = Math.min((ts - t0) / dur, 1);
+      el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
   }
-  $("#a-enc").addEventListener("click", function () {
-    var btn = this;
-    if (!SC) { say(aOut, "Web Crypto tidak aktif — butuh HTTPS.", true); return; }
-    if (!aPass.value) { say(aOut, "Kata sandi tidak boleh kosong.", true); return; }
-    var iter = parseInt(aIter.value, 10);
-    var salt = crypto.getRandomValues(new Uint8Array(16));
-    var iv = crypto.getRandomValues(new Uint8Array(12));
-    busy(btn, true, "Mengenkripsi…");
-    deriveKey(aPass.value, salt, iter, "encrypt").then(function (key) {
-      return crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, key, enc.encode(aIn.value));
-    }).then(function (ct) {
-      var body = new Uint8Array(ct);
-      var pack = new Uint8Array(1 + 4 + 16 + 12 + body.length);
-      pack[0] = 1;
-      pack[1] = (iter >>> 24) & 255; pack[2] = (iter >>> 16) & 255; pack[3] = (iter >>> 8) & 255; pack[4] = iter & 255;
-      pack.set(salt, 5); pack.set(iv, 21); pack.set(body, 33);
-      say(aOut, b64(pack));
-      $("#a-info").textContent = "Terenkripsi: " + iter.toLocaleString("id-ID") + " iterasi PBKDF2, garam 16 byte, IV 12 byte, total paket " + pack.length + " byte.";
-      busy(btn, false);
-    }).catch(function (e) { say(aOut, "Gagal: " + e.message, true); busy(btn, false); });
-  });
-  $("#a-dec").addEventListener("click", function () {
-    var btn = this;
-    if (!SC) { say(aOut, "Web Crypto tidak aktif — butuh HTTPS.", true); return; }
-    var pack;
-    try { pack = unb64(aIn.value); } catch (e) { say(aOut, "Masukan bukan Base64 yang sah.", true); return; }
-    if (pack.length < 34 || pack[0] !== 1) { say(aOut, "Paket tidak dikenali. Tempelkan hasil enkripsi dari perkakas ini.", true); return; }
-    var iter = (pack[1] << 24 | pack[2] << 16 | pack[3] << 8 | pack[4]) >>> 0;
-    var salt = pack.slice(5, 21), iv = pack.slice(21, 33), body = pack.slice(33);
-    busy(btn, true, "Mendekripsi…");
-    deriveKey(aPass.value, salt, iter, "decrypt").then(function (key) {
-      return crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, body);
-    }).then(function (pt) {
-      say(aOut, dec.decode(pt) || "—", false, true);
-      $("#a-info").textContent = "Berhasil didekripsi dengan " + iter.toLocaleString("id-ID") + " iterasi PBKDF2 yang terbaca dari paket.";
-      busy(btn, false);
-    }).catch(function () {
-      say(aOut, "Gagal membuka. Kata sandi salah, atau sandi-teks sudah diubah — AES-GCM menolak data yang tidak utuh.", true);
-      busy(btn, false);
+  if ("IntersectionObserver" in W) {
+    var io2 = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { runCount(e.target); io2.unobserve(e.target); } });
+    }, { threshold:.5 });
+    counters.forEach(function (el) { io2.observe(el); });
+  } else { counters.forEach(runCount); }
+
+  /* ---------- panel proyek ---------- */
+  d.querySelectorAll("[data-toggle]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var row = btn.closest(".row"), open = row.classList.toggle("open");
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+      btn.textContent = open ? "Tutup" : "Detail";
     });
   });
-  $("#a-swap").addEventListener("click", function () { aIn.value = aOut.textContent; aIn.focus(); });
 
-  /* 12 ecdsa */
-  var pair = null, sSig = $("#s-sig"), sVer = $("#s-verdict");
-  $("#s-gen").addEventListener("click", function () {
-    var btn = this;
-    if (!SC) { $("#s-pub").textContent = "Web Crypto tidak aktif — butuh HTTPS."; return; }
-    busy(btn, true, "Membangkitkan…");
-    crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-256" }, true, ["sign", "verify"])
-      .then(function (kp) {
-        pair = kp;
-        return crypto.subtle.exportKey("spki", kp.publicKey);
-      })
-      .then(function (raw) {
-        $("#s-pub").textContent = b64(new Uint8Array(raw));
-        say(sSig, "—"); sVer.hidden = true;
-        flash("Pasangan kunci dibuat");
-        busy(btn, false);
-      })
-      .catch(function (e) { $("#s-pub").textContent = "Gagal: " + e.message; busy(btn, false); });
-  });
-  $("#s-sign").addEventListener("click", function () {
-    var btn = this;
-    if (!pair) { say(sSig, "Bangkitkan pasangan kunci terlebih dahulu.", true); return; }
-    busy(btn, true, "Menandatangani…");
-    crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, pair.privateKey, enc.encode($("#s-msg").value))
-      .then(function (sig) { say(sSig, b64(new Uint8Array(sig))); sVer.hidden = true; busy(btn, false); })
-      .catch(function (e) { say(sSig, "Gagal: " + e.message, true); busy(btn, false); });
-  });
-  $("#s-ver").addEventListener("click", function () {
-    var btn = this;
-    if (!pair) { say(sSig, "Bangkitkan pasangan kunci terlebih dahulu.", true); return; }
-    var raw;
-    try { raw = unb64(sSig.textContent.trim()); } catch (e) { verdict(sVer, false, "Belum ada tanda tangan"); return; }
-    busy(btn, true, "Memverifikasi…");
-    crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, pair.publicKey, raw, enc.encode($("#s-msg").value))
-      .then(function (ok) {
-        verdict(sVer, ok, ok ? "Sah — pesan belum diubah" : "Ditolak — pesan tidak cocok dengan tanda tangan");
-        busy(btn, false);
-      })
-      .catch(function () { verdict(sVer, false, "Ditolak — tanda tangan tidak terbaca"); busy(btn, false); });
-  });
-
-  /* 13 sandi */
-  var wLen = $("#w-len"), wOut = $("#w-out"), wEnt = $("#w-ent"), wBar = $("#w-bar");
-  wLen.addEventListener("input", function () { $("#w-len-v").textContent = wLen.value; });
-  function pool() {
-    var low = "abcdefghijklmnopqrstuvwxyz", up = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", num = "0123456789";
-    if ($("#w-amb").checked) { low = "abcdefghijkmnopqrstuvwxyz"; up = "ABCDEFGHJKLMNPQRSTUVWXYZ"; num = "23456789"; }
-    var s = "";
-    if ($("#w-low").checked) s += low;
-    if ($("#w-up").checked) s += up;
-    if ($("#w-num").checked) s += num;
-    if ($("#w-sym").checked) s += "!@#$%^&*()-_=+[]{};:,.?/";
-    return s;
+  /* ---------- caesar mini ---------- */
+  var cIn = d.getElementById("cIn"), cSh = d.getElementById("cSh"),
+      cOut = d.getElementById("cOut"), cShVal = d.getElementById("cShVal");
+  function caesar(t, n) {
+    return t.replace(/[a-z]/gi, function (ch) {
+      var b = ch <= "Z" ? 65 : 97;
+      return String.fromCharCode((ch.charCodeAt(0) - b + n) % 26 + b);
+    });
   }
-  function gen() {
-    var set = pool(), n = parseInt(wLen.value, 10);
-    if (!set) { say(wOut, "Pilih minimal satu himpunan karakter.", true); wEnt.textContent = "—"; wBar.style.width = "0"; return; }
-    var buf = new Uint32Array(n), out = "", max = Math.floor(4294967296 / set.length) * set.length;
-    crypto.getRandomValues(buf);
-    for (var i = 0; i < n; i++) {
-      var v = buf[i];
-      while (v >= max) { var t = new Uint32Array(1); crypto.getRandomValues(t); v = t[0]; }
-      out += set.charAt(v % set.length);
+  function drawC() { var n = +cSh.value; cShVal.textContent = n; cOut.textContent = caesar(cIn.value, n) || "—"; }
+  cIn.addEventListener("input", drawC); cSh.addEventListener("input", drawC); drawC();
+
+  /* ============================================================
+     MEDAN PARTIKEL
+     ============================================================ */
+  (function () {
+    var cv = d.getElementById("field");
+    if (!cv || !cv.getContext) return;
+    var ctx = cv.getContext("2d"), wrap = d.getElementById("fieldWrap");
+    var fMeta = d.getElementById("fMeta"), fState = d.getElementById("fState");
+    var btns = d.querySelectorAll("#fShapes button");
+    var w = 0, h = 0, dpr = 1, P = [], pts = [], shape = 0, form = 0, target = 1,
+        phase = 0, raf = 0, running = false, vis = false, tPrev = 0;
+    var mouse = { x:-9999, y:-9999, on:false };
+    var col = {};
+
+    function readCol() {
+      col.paper = toRgb(cssv("--paper"));
+      col.ink = toRgb(cssv("--ink"));
+      col.accent = toRgb(cssv("--accent"));
     }
-    say(wOut, out);
-    var bits = Math.round(n * Math.log2(set.length));
-    var label = bits < 60 ? "lemah" : bits < 90 ? "cukup" : bits < 128 ? "kuat" : "sangat kuat";
-    wEnt.textContent = bits + " bit entropi · " + label;
-    wBar.style.width = Math.min(100, bits / 1.6) + "%";
-  }
-  $("#w-run").addEventListener("click", gen);
+    readCol(); themeHooks.push(readCol);
 
-  $$("#p-pass input[type=checkbox]").forEach(function (c) { c.addEventListener("change", gen); });
-  wLen.addEventListener("change", gen);
-  gen();
+    /* value noise */
+    var perm = new Uint8Array(512);
+    (function () {
+      var p = [], i, j, t;
+      for (i = 0; i < 256; i++) p[i] = i;
+      for (i = 255; i > 0; i--) { j = (Math.random() * (i + 1)) | 0; t = p[i]; p[i] = p[j]; p[j] = t; }
+      for (i = 0; i < 512; i++) perm[i] = p[i & 255];
+    })();
+    function fade(t) { return t * t * (3 - 2 * t); }
+    function vn(x, y) {
+      var xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+      var a = perm[(perm[xi & 255] + (yi & 255)) & 511] / 255,
+          b = perm[(perm[(xi + 1) & 255] + (yi & 255)) & 511] / 255,
+          c = perm[(perm[xi & 255] + ((yi + 1) & 255)) & 511] / 255,
+          e = perm[(perm[(xi + 1) & 255] + ((yi + 1) & 255)) & 511] / 255;
+      var u = fade(xf), v = fade(yf);
+      return (a * (1 - u) + b * u) * (1 - v) + (c * (1 - u) + e * u) * v;
+    }
+
+    var off = d.createElement("canvas"), octx = off.getContext("2d");
+    function sample() {
+      var img, list = [], step = w < 620 ? 3 : 4, x, y;
+      try { img = octx.getImageData(0, 0, off.width, off.height).data; } catch (e) { return list; }
+      for (y = 0; y < off.height; y += step) {
+        for (x = 0; x < off.width; x += step) {
+          if (img[(y * off.width + x) * 4 + 3] > 130) list.push({ x:x, y:y });
+        }
+      }
+      return list;
+    }
+    function build(kind) {
+      off.width = Math.max(1, Math.round(w)); off.height = Math.max(1, Math.round(h));
+      octx.clearRect(0, 0, off.width, off.height);
+      octx.fillStyle = "#000";
+      if (kind === 1) {
+        var s = Math.min(w, h) * 0.46, cx = w / 2, cy = h / 2 + s * 0.08;
+        octx.beginPath();
+        octx.rect(cx - s * 0.42, cy - s * 0.18, s * 0.84, s * 0.6);
+        octx.fill();
+        octx.lineWidth = s * 0.13; octx.strokeStyle = "#000";
+        octx.beginPath(); octx.arc(cx, cy - s * 0.2, s * 0.26, Math.PI, 0); octx.stroke();
+      } else {
+        var txt = kind === 0 ? "STUDIOWORKS" : "AES-256-GCM";
+        var size = Math.min(h * 0.44, w * 1.9 / txt.length);
+        octx.font = "700 " + size + "px " + (kind === 0 ? "Georgia,serif" : "ui-monospace,Menlo,monospace");
+        octx.textAlign = "center"; octx.textBaseline = "middle";
+        octx.fillText(txt, w / 2, h / 2);
+      }
+      return sample();
+    }
+    function assign() {
+      if (!pts.length) return;
+      for (var i = 0; i < P.length; i++) {
+        var q = pts[(i * 7919) % pts.length];
+        P[i].tx = q.x + (Math.random() - .5) * 2.5;
+        P[i].ty = q.y + (Math.random() - .5) * 2.5;
+      }
+    }
+    function setShape(i, manual) {
+      shape = i; pts = build(i); assign();
+      target = 1; phase = 0;
+      btns.forEach(function (b, n) { b.classList.toggle("on", n === i); });
+      if (manual && !running) render();
+    }
+    function resize() {
+      var r = wrap.getBoundingClientRect();
+      w = r.width; h = r.height;
+      dpr = Math.min(W.devicePixelRatio || 1, 2);
+      cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var n = Math.max(500, Math.min(2200, Math.floor(w * h / 780)));
+      P = [];
+      for (var i = 0; i < n; i++) {
+        P.push({ x:Math.random() * w, y:Math.random() * h, vx:0, vy:0, tx:w / 2, ty:h / 2,
+                 a:Math.random() < .17, s:.7 + Math.random() * .9 });
+      }
+      fMeta.textContent = n + " partikel · curl field";
+      pts = build(shape); assign();
+      ctx.fillStyle = "rgb(" + col.paper.join(",") + ")";
+      ctx.fillRect(0, 0, w, h);
+    }
+    function render() {
+      ctx.fillStyle = "rgba(" + col.paper.join(",") + ",.135)";
+      ctx.fillRect(0, 0, w, h);
+      var i, p, inkC = "rgba(" + col.ink.join(",") + ",", accC = "rgba(" + col.accent.join(",") + ",";
+      for (i = 0; i < P.length; i++) {
+        p = P[i];
+        ctx.fillStyle = (p.a ? accC : inkC) + (p.a ? .85 : .5) + ")";
+        ctx.fillRect(p.x, p.y, p.s + (p.a ? .5 : 0), p.s + (p.a ? .5 : 0));
+      }
+    }
+    function tickF(now) {
+      var dt = Math.min(now - (tPrev || now), 50) / 16.7; tPrev = now;
+      form += (target - form) * 0.035 * dt;
+      phase += dt * 16.7;
+      if (phase > (target ? 4200 : 2600)) {
+        phase = 0;
+        if (target) { target = 0; fState.textContent = "terurai"; }
+        else { setShape((shape + 1) % 3); fState.textContent = "terbentuk"; }
+      }
+      var t = now * 0.00007;
+      for (var i = 0; i < P.length; i++) {
+        var p = P[i];
+        var ang = vn(p.x * 0.0021 + t * 3, p.y * 0.0021) * Math.PI * 4;
+        var fr = 1 - form;
+        p.vx += Math.cos(ang) * 0.42 * fr * dt;
+        p.vy += Math.sin(ang) * 0.42 * fr * dt;
+        p.vx += (p.tx - p.x) * 0.014 * form * dt;
+        p.vy += (p.ty - p.y) * 0.014 * form * dt;
+        if (mouse.on) {
+          var dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy;
+          if (d2 < 15000 && d2 > 0.5) {
+            var f = (1 - d2 / 15000) * 2.6 / Math.sqrt(d2);
+            p.vx += dx * f * dt; p.vy += dy * f * dt;
+          }
+        }
+        p.vx *= 0.935; p.vy *= 0.935;
+        p.x += p.vx * dt; p.y += p.vy * dt;
+        if (p.x < -20) p.x = w + 20; else if (p.x > w + 20) p.x = -20;
+        if (p.y < -20) p.y = h + 20; else if (p.y > h + 20) p.y = -20;
+      }
+      render();
+      raf = running ? requestAnimationFrame(tickF) : 0;
+    }
+    function start() { if (running || reduce) return; running = true; tPrev = 0; raf = requestAnimationFrame(tickF); }
+    function stop() { running = false; if (raf) cancelAnimationFrame(raf); raf = 0; }
+
+    wrap.addEventListener("pointermove", function (e) {
+      var r = cv.getBoundingClientRect();
+      mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; mouse.on = true;
+    });
+    wrap.addEventListener("pointerleave", function () { mouse.on = false; mouse.x = -9999; });
+    cv.addEventListener("click", function () { setShape((shape + 1) % 3, true); fState.textContent = "terbentuk"; });
+    btns.forEach(function (b, n) {
+      b.addEventListener("click", function () { setShape(n, true); fState.textContent = "terbentuk"; });
+    });
+
+    if ("ResizeObserver" in W) new ResizeObserver(function () { resize(); render(); }).observe(wrap);
+    else W.addEventListener("resize", function () { resize(); render(); });
+
+    resize();
+    if (reduce) {
+      form = 1;
+      for (var k = 0; k < P.length; k++) { P[k].x = P[k].tx; P[k].y = P[k].ty; }
+      render(); fState.textContent = "animasi dimatikan";
+      return;
+    }
+    if ("IntersectionObserver" in W) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) { vis = e.isIntersecting; if (vis) start(); else stop(); });
+      }, { threshold:.08 }).observe(wrap);
+    } else { vis = true; start(); }
+    d.addEventListener("visibilitychange", function () { if (d.hidden) stop(); else if (vis) start(); });
+    themeHooks.push(function () { ctx.fillStyle = "rgb(" + col.paper.join(",") + ")"; ctx.fillRect(0, 0, w, h); });
+  })();
+
+  /* ============================================================
+     MESIN KRIPTO + SIDIK JARI
+     ============================================================ */
+  (function () {
+    var inEl = d.getElementById("engIn");
+    if (!inEl) return;
+    var cipherEl = d.getElementById("engCipher"), ivEl = d.getElementById("engIv"),
+        proofEl = d.getElementById("engProof"), lenEl = d.getElementById("engLen"),
+        keyBtn = d.getElementById("engKey"), avNum = d.getElementById("avNum"),
+        avBar = d.getElementById("avBar"), bc = d.getElementById("bloom");
+    var subtle = W.crypto && W.crypto.subtle;
+    if (!subtle) { lenEl.textContent = "Web Crypto tidak tersedia"; proofEl.textContent = "butuh HTTPS"; return; }
+    var enc = new TextEncoder(), dec = new TextDecoder();
+    var key = null, prevBits = null, deb = 0, token = 0, hotT = 0;
+
+    /* --- sidik jari radial --- */
+    var bx = bc.getContext("2d"), NP = 64;
+    var cur = new Array(NP).fill(.5), tgt = new Array(NP).fill(.5);
+    var bw = 0, bh = 0, brot = 0, braf = 0, brun = false, bvis = false;
+    var bcol = {};
+    function bread() { bcol.ink = toRgb(cssv("--ink")); bcol.accent = toRgb(cssv("--accent")); bcol.line = toRgb(cssv("--line")); bcol.paper = toRgb(cssv("--paper")); }
+    bread(); themeHooks.push(bread);
+    function bresize() {
+      var r = bc.parentNode.getBoundingClientRect();
+      var dp = Math.min(W.devicePixelRatio || 1, 2);
+      bw = r.width; bh = r.height;
+      bc.width = Math.round(bw * dp); bc.height = Math.round(bh * dp);
+      bx.setTransform(dp, 0, 0, dp, 0, 0);
+    }
+    function bdraw() {
+      var cx = bw / 2, cy = bh / 2, R = Math.min(bw, bh) * 0.40, i, a, r;
+      bx.clearRect(0, 0, bw, bh);
+      bx.save(); bx.translate(cx, cy); bx.rotate(brot);
+      bx.strokeStyle = "rgba(" + bcol.line.join(",") + ",1)"; bx.lineWidth = 1;
+      [0.42, 0.72, 1].forEach(function (k) {
+        bx.beginPath(); bx.arc(0, 0, R * k, 0, Math.PI * 2); bx.stroke();
+      });
+      bx.strokeStyle = "rgba(" + bcol.ink.join(",") + ",.30)"; bx.lineWidth = 1;
+      for (i = 0; i < NP; i += 2) {
+        a = i / NP * Math.PI * 2; r = R * (0.42 + cur[i] * 0.58);
+        bx.beginPath(); bx.moveTo(Math.cos(a) * R * 0.42, Math.sin(a) * R * 0.42);
+        bx.lineTo(Math.cos(a) * r, Math.sin(a) * r); bx.stroke();
+      }
+      bx.beginPath();
+      for (i = 0; i <= NP; i++) {
+        var i0 = i % NP, i1 = (i + 1) % NP;
+        a = i0 / NP * Math.PI * 2;
+        var a1 = (i0 + 1) / NP * Math.PI * 2;
+        var r0 = R * (0.42 + cur[i0] * 0.58), r1 = R * (0.42 + cur[i1] * 0.58);
+        var x0 = Math.cos(a) * r0, y0 = Math.sin(a) * r0;
+        var x1 = Math.cos(a1) * r1, y1 = Math.sin(a1) * r1;
+        if (i === 0) bx.moveTo(x0, y0);
+        bx.quadraticCurveTo(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2);
+      }
+      bx.closePath();
+      bx.fillStyle = "rgba(" + bcol.accent.join(",") + ",.11)"; bx.fill();
+      bx.strokeStyle = "rgba(" + bcol.accent.join(",") + ",1)"; bx.lineWidth = 1.6; bx.stroke();
+      for (i = 0; i < NP; i += 4) {
+        a = i / NP * Math.PI * 2; r = R * (0.42 + cur[i] * 0.58);
+        bx.beginPath(); bx.arc(Math.cos(a) * r, Math.sin(a) * r, 2.1, 0, Math.PI * 2);
+        bx.fillStyle = "rgba(" + bcol.accent.join(",") + ",.95)"; bx.fill();
+      }
+      bx.restore();
+    }
+    function bloop() {
+      var moved = 0;
+      for (var i = 0; i < NP; i++) {
+        var dlt = tgt[i] - cur[i];
+        cur[i] += dlt * 0.09;
+        if (Math.abs(dlt) > 0.002) moved++;
+      }
+      brot += 0.0012;
+      bdraw();
+      braf = brun ? requestAnimationFrame(bloop) : 0;
+    }
+    function bstart() { if (brun || reduce) { bdraw(); return; } brun = true; braf = requestAnimationFrame(bloop); }
+    function bstop() { brun = false; if (braf) cancelAnimationFrame(braf); braf = 0; }
+    if ("ResizeObserver" in W) new ResizeObserver(function () { bresize(); bdraw(); }).observe(bc.parentNode);
+    else W.addEventListener("resize", function () { bresize(); bdraw(); });
+    bresize();
+    if ("IntersectionObserver" in W) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) { bvis = e.isIntersecting; if (bvis) bstart(); else bstop(); });
+      }, { threshold:.15 }).observe(bc);
+    } else { bvis = true; bstart(); }
+    d.addEventListener("visibilitychange", function () { if (d.hidden) bstop(); else if (bvis) bstart(); });
+    themeHooks.push(bdraw);
+
+    /* --- kripto --- */
+    function hex(u8) { var s = "", i; for (i = 0; i < u8.length; i++) s += u8[i].toString(16).padStart(2, "0"); return s; }
+    async function newKey() { key = await subtle.generateKey({ name:"AES-GCM", length:256 }, false, ["encrypt", "decrypt"]); }
+
+    async function run() {
+      var me = ++token, txt = inEl.value, bytes = enc.encode(txt), i;
+
+      var hb = new Uint8Array(await subtle.digest("SHA-256", bytes));
+      if (me !== token) return;
+      var bits = [], p, q;
+      for (p = 0; p < 32; p++) for (q = 7; q >= 0; q--) bits.push((hb[p] >> q) & 1);
+      var diff = 0;
+      if (prevBits) { for (p = 0; p < 256; p++) if (prevBits[p] !== bits[p]) diff++; avNum.textContent = diff; avBar.style.width = (diff / 256 * 100) + "%"; }
+      prevBits = bits;
+      for (i = 0; i < NP; i++) {
+        var nib = i % 2 ? (hb[(i / 2) | 0] & 15) : (hb[(i / 2) | 0] >> 4);
+        tgt[i] = nib / 15;
+      }
+      if (reduce) { for (i = 0; i < NP; i++) cur[i] = tgt[i]; bdraw(); }
+
+      if (!key) await newKey();
+      if (me !== token) return;
+      var iv = crypto.getRandomValues(new Uint8Array(12));
+      var ct = new Uint8Array(await subtle.encrypt({ name:"AES-GCM", iv:iv }, key, bytes));
+      if (me !== token) return;
+      ivEl.textContent = hex(iv);
+      lenEl.textContent = bytes.length + " bait teks → " + ct.length + " bait sandi";
+      var out = "", lim = Math.min(ct.length, 96);
+      for (i = 0; i < lim; i++) out += "<i class='hot'>" + ct[i].toString(16).padStart(2, "0") + "</i> ";
+      if (ct.length > lim) out += "…";
+      cipherEl.innerHTML = out;
+      clearTimeout(hotT);
+      hotT = setTimeout(function () {
+        cipherEl.querySelectorAll("i").forEach(function (n, k) {
+          setTimeout(function () { n.classList.remove("hot"); }, k * 7);
+        });
+      }, 420);
+      try {
+        var back = dec.decode(await subtle.decrypt({ name:"AES-GCM", iv:iv }, key, ct));
+        proofEl.textContent = back === txt ? "✓ dibuka kembali utuh" : "✗ tidak cocok";
+      } catch (e) { proofEl.textContent = "✗ ditolak GCM"; }
+    }
+    inEl.addEventListener("input", function () { clearTimeout(deb); deb = setTimeout(run, 160); });
+    keyBtn.addEventListener("click", function () {
+      newKey().then(function () { prevBits = null; avNum.textContent = "0"; avBar.style.width = "0"; run(); });
+    });
+    newKey().then(run).catch(function () { proofEl.textContent = "✗ gagal membangkitkan kunci"; });
+  })();
+
+  /* ---------- salin surel ---------- */
+  var toast = d.getElementById("toast"), tT;
+  function ping(m) { toast.textContent = m; toast.classList.add("on"); clearTimeout(tT); tT = setTimeout(function () { toast.classList.remove("on"); }, 1800); }
+  d.getElementById("copyMail").addEventListener("click", function () {
+    var mail = "rexha4u@gmail.com";
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(mail).then(function () { ping("Tersalin"); }, function () { ping("Gagal menyalin"); });
+    } else {
+      var ta = d.createElement("textarea");
+      ta.value = mail; d.body.appendChild(ta); ta.select();
+      try { d.execCommand("copy"); ping("Tersalin"); } catch (e) { ping("Gagal menyalin"); }
+      d.body.removeChild(ta);
+    }
+  });
 })();
 </script>
-</body>
-</html>
