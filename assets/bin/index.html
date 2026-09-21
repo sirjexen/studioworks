@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bin — Studioworks</title>
+<meta name="description" content="Catatan sementara yang dienkripsi di peramban. Isinya menempel di tautan, tidak pernah dikirim ke server mana pun.">
+<meta name="author" content="Muhammad Rafly">
+<meta name="theme-color" content="#eeebe4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c0c0b" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://studioworks.my.id/bin/">
+<link rel="icon" href="/assets/icons/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bin — Studioworks">
+<meta property="og:description" content="Catatan sementara terenkripsi, tanpa server, tanpa akun.">
+<meta property="og:url" content="https://studioworks.my.id/bin/">
+<meta property="og:image" content="https://studioworks.my.id/assets/images/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("sw-theme");
+      if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", t);
+    } catch (e) {}
+  })();
+</script>
+<style>
+:root{
+  --paper:#eeebe4; --paper-2:#e5e1d8; --ink:#16150f; --ink-2:#4a473d; --ink-3:#7a7668;
+  --line:#c9c4b6; --accent:#c2400f; --ok:#2f6d42; --bad:#a32020;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  --pad:clamp(20px,5vw,72px); --maxw:1360px; --ease:cubic-bezier(.22,.78,.24,1);
+}
+[data-theme="dark"]{
+  --paper:#0c0c0b; --paper-2:#141413; --ink:#f2efe7; --ink-2:#b3ad9f; --ink-3:#7e796c;
+  --line:#2a2925; --accent:#ff6b35; --ok:#5fbf7e; --bad:#ff6b6b;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:.001ms!important;animation-duration:.001ms!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .45s var(--ease),color .45s var(--ease)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.032;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E")}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--accent);color:var(--paper)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--pad)}
+.mono{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:absolute;left:-999px;top:0;z-index:100;background:var(--ink);color:var(--paper);padding:10px 16px}
+.skip:focus{left:8px;top:8px}
+
+header{position:sticky;top:0;z-index:70;background:color-mix(in srgb,var(--paper) 85%,transparent);
+  backdrop-filter:blur(16px) saturate(140%);border-bottom:1px solid var(--line)}
+@supports not (backdrop-filter:blur(1px)){header{background:var(--paper)}}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:24px;height:70px}
+.mark{display:flex;align-items:baseline;gap:10px;font-family:var(--serif);font-size:19px;letter-spacing:-.01em}
+.mark b{font-weight:600}
+.mark span{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--ink-3);text-transform:uppercase}
+nav ul{display:flex;gap:24px;list-style:none;margin:0;padding:0}
+nav a{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);position:relative;padding:5px 0}
+nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--accent);transition:width .4s var(--ease)}
+nav a.on{color:var(--ink)}
+nav a.on::after,nav a:hover::after{width:100%}
+nav a:hover{color:var(--ink)}
+.btn-i{width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;
+  background:transparent;color:var(--ink);cursor:pointer;transition:background .28s,border-color .28s,transform .4s var(--ease)}
+.btn-i:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);transform:rotate(-18deg)}
+@media(max-width:820px){nav ul{gap:14px}nav a{font-size:10px}.mark span{display:none}}
+
+.top{padding:clamp(44px,8vw,92px) 0 clamp(26px,4vw,46px);border-bottom:1px solid var(--line)}
+.crumb{color:var(--ink-3);margin-bottom:22px;display:flex;gap:10px}
+.crumb a:hover{color:var(--accent)}
+h1{font-family:var(--serif);font-weight:400;margin:0;font-size:clamp(2.4rem,7.4vw,5.4rem);line-height:1.02;
+  letter-spacing:-.035em;padding-bottom:.06em}
+h1 em{font-style:italic;color:var(--accent)}
+.top p{max-width:58ch;color:var(--ink-2);margin:22px 0 0}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.badge{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line);
+  border-radius:100px;padding:5px 12px;color:var(--ink-2)}
+
+main section{padding:clamp(40px,6vw,76px) 0;border-bottom:1px solid var(--line)}
+.view{display:none}
+.view.on{display:block}
+.f{margin-bottom:20px}
+.f label,.lgd{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
+textarea,input[type=text],input[type=password],select{width:100%;background:var(--paper-2);border:1px solid var(--line);
+  color:var(--ink);font-family:var(--mono);font-size:14px;padding:12px 14px;border-radius:0;resize:vertical}
+textarea{min-height:230px;line-height:1.6}
+textarea:focus,input:focus,select:focus{outline:none;border-color:var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 18px;align-items:center}
+.btn{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--ink);
+  background:transparent;color:var(--ink);padding:12px 20px;cursor:pointer;
+  transition:background .28s,color .28s,border-color .28s,opacity .2s}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.solid{background:var(--ink);color:var(--paper)}
+.btn.solid:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.ghost{border-color:var(--line);color:var(--ink-2)}
+.btn.ghost:hover{border-color:var(--ink);color:var(--paper)}
+.btn[disabled]{opacity:.45;cursor:progress}
+.counter{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-left:auto}
+.note{font-size:13px;color:var(--ink-3);margin-top:12px}
+.note code{font-family:var(--mono);font-size:12px}
+.msg{border:1px solid var(--line);padding:14px 16px;font-family:var(--mono);font-size:12px;letter-spacing:.04em;
+  line-height:1.65;margin-bottom:20px;display:none}
+.msg.on{display:block}
+.msg.bad{border-color:var(--bad);color:var(--bad)}
+.msg.warn{border-color:var(--accent);color:var(--accent)}
+.msg.good{border-color:var(--ok);color:var(--ok)}
+
+.linkbox{border:1px dashed var(--line);background:var(--paper-2);padding:16px;font-family:var(--mono);font-size:12.5px;
+  line-height:1.7;word-break:break-all;max-height:180px;overflow:auto}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:18px;margin:24px 0;
+  border-top:1px solid var(--line);padding-top:18px}
+.facts b{display:block;font-family:var(--serif);font-size:1.55rem;font-weight:400;line-height:1.15;letter-spacing:-.02em;word-break:break-word}
+.facts span{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+
+.paper{border:1px solid var(--line);background:var(--paper-2);padding:clamp(20px,3vw,34px);
+  font-family:var(--mono);font-size:14px;line-height:1.75;white-space:pre-wrap;word-break:break-word;
+  max-height:62vh;overflow:auto}
+.readbar{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:8px}
+.step{background:var(--paper);padding:clamp(20px,2.6vw,30px)}
+.step .n{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--accent);display:block;margin-bottom:16px}
+.step h3{font-family:var(--serif);font-weight:400;font-size:1.2rem;margin:0 0 8px;letter-spacing:-.01em}
+.step p{margin:0;font-size:14px;color:var(--ink-2)}
+h2.sec{font-family:var(--serif);font-weight:400;font-size:clamp(1.5rem,3.2vw,2.2rem);letter-spacing:-.02em;margin:0 0 8px}
+.sec-num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--accent);display:block;margin-bottom:10px}
+
+footer{padding:30px 0 0}
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--ink-3)}
+.bigmark{font-family:var(--serif);font-weight:400;font-size:clamp(3.2rem,15.2vw,15rem);line-height:.82;
+  letter-spacing:-.045em;color:var(--ink);opacity:.09;margin:clamp(30px,5vw,56px) 0 -.12em;padding-inline:var(--pad);
+  white-space:nowrap;overflow:hidden;user-select:none}
+#toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);opacity:0;pointer-events:none;
+  background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;padding:12px 20px;z-index:90;transition:transform .45s var(--ease),opacity .3s ease}
+#toast.on{transform:translate(-50%,0);opacity:1}
+</style>
+</head>
+<body>
+<a class="skip" href="#stage">Lewati ke konten</a>
+
+<header>
+  <div class="wrap bar">
+    <a class="mark" href="/"><b>Studioworks</b><span>bin</span></a>
+    <nav aria-label="Navigasi utama">
+      <ul>
+        <li><a href="/#kerja">Kerja</a></li>
+        <li><a href="/lab/">Lab</a></li>
+        <li><a href="/bin/" class="on" aria-current="page">Bin</a></li>
+        <li><a href="/#kontak">Kontak</a></li>
+      </ul>
+    </nav>
+    <button class="btn-i" id="theme" type="button" aria-label="Ganti tema terang/gelap">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path id="ic" d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="stage">
+  <div class="wrap top">
+    <div class="crumb mono"><a href="/">Beranda</a><span aria-hidden="true">/</span><span>Bin</span></div>
+    <h1>Catatan <em>sementara</em></h1>
+    <p>Tempel teks, dapatkan tautan. Isinya dienkripsi di peramban Anda dan ikut menempel di dalam tautan itu sendiri — tidak ada basis data, tidak ada akun, dan tidak ada server yang pernah menerima catatan Anda.</p>
+    <div class="badges">
+      <span class="badge">Anonim</span><span class="badge">AES-256-GCM</span>
+      <span class="badge">Kata sandi opsional</span><span class="badge">Tampilan raw</span><span class="badge">Tanpa basis data</span>
+    </div>
+  </div>
+
+  <!-- ============ TULIS ============ -->
+  <section class="view on" id="v-write">
+    <div class="wrap">
+      <div class="msg" id="w-msg"></div>
+      <div class="f">
+        <label for="w-text">Isi catatan</label>
+        <textarea id="w-text" spellcheck="false" placeholder="Tempel teks, catatan rapat, potongan kode, apa saja…"></textarea>
+      </div>
+      <div class="grid2">
+        <div class="f">
+          <label for="w-pass">Kata sandi (opsional)</label>
+          <input type="password" id="w-pass" autocomplete="new-password" placeholder="kosongkan jika tidak perlu">
+          <p class="note">Jika diisi, penerima wajib mengetiknya. Kata sandi tidak ikut disimpan di tautan — hanya garam dan data terenkripsinya.</p>
+        </div>
+        <div class="f">
+          <label for="w-exp">Kedaluwarsa</label>
+          <select id="w-exp">
+            <option value="600000">10 menit</option>
+            <option value="3600000">1 jam</option>
+            <option value="86400000" selected>1 hari</option>
+            <option value="604800000">1 minggu</option>
+            <option value="2592000000">30 hari</option>
+            <option value="0">Tidak pernah</option>
+          </select>
+          <p class="note">Halaman akan menolak menampilkan catatan setelah waktunya lewat. Baca catatan kejujuran di bawah soal batas janji ini.</p>
+        </div>
+      </div>
+      <div class="acts">
+        <button class="btn solid" id="w-make" type="button">Buat tautan</button>
+        <button class="btn ghost" id="w-clear" type="button">Bersihkan</button>
+        <span class="counter" id="w-count">0 karakter</span>
+      </div>
+
+      <div id="w-result" hidden>
+        <div class="f">
+          <div class="readbar"><span class="lgd" style="margin:0">Tautan catatan</span>
+            <span class="mono" id="w-len" style="color:var(--ink-3)"></span></div>
+          <div class="linkbox" id="w-link"></div>
+        </div>
+        <div class="acts">
+          <button class="btn solid" id="w-copy" type="button">Salin tautan</button>
+          <button class="btn" id="w-copyraw" type="button">Salin tautan raw</button>
+          <a class="btn ghost" id="w-open" href="#" target="_blank" rel="noopener">Buka di tab baru</a>
+        </div>
+        <div class="facts">
+          <div><b id="w-f-size">—</b><span>Ukuran asli</span></div>
+          <div><b id="w-f-pack">—</b><span>Setelah enkripsi</span></div>
+          <div><b id="w-f-lock">—</b><span>Kata sandi</span></div>
+          <div><b id="w-f-exp">—</b><span>Berlaku sampai</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BACA ============ -->
+  <section class="view" id="v-read">
+    <div class="wrap">
+      <div class="msg" id="r-msg"></div>
+
+      <div id="r-ask" hidden>
+        <div class="f" style="max-width:440px">
+          <label for="r-pass">Catatan ini dikunci kata sandi</label>
+          <input type="password" id="r-pass" autocomplete="current-password" placeholder="ketik kata sandi">
+        </div>
+        <div class="acts"><button class="btn solid" id="r-unlock" type="button">Buka catatan</button></div>
+      </div>
+
+      <div id="r-show" hidden>
+        <div class="readbar">
+          <span class="lgd" style="margin:0">Isi catatan</span>
+          <span class="mono" id="r-meta" style="color:var(--ink-3)"></span>
+        </div>
+        <div class="paper" id="r-body"></div>
+        <div class="acts" style="margin-top:20px">
+          <button class="btn solid" id="r-copy" type="button">Salin isi</button>
+          <a class="btn" id="r-raw" href="#">Lihat raw</a>
+          <a class="btn ghost" href="/bin/">Buat catatan baru</a>
+        </div>
+      </div>
+
+      <div id="r-dead" hidden>
+        <div class="acts"><a class="btn solid" href="/bin/">Buat catatan baru</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PENJELASAN ============ -->
+  <section id="cara">
+    <div class="wrap">
+      <span class="sec-num">Cara kerja</span>
+      <h2 class="sec">Kenapa tidak butuh server</h2>
+      <div class="steps">
+        <div class="step"><span class="n">01</span><h3>Dienkripsi lokal</h3><p>Teks Anda dienkripsi dengan AES-256-GCM di dalam peramban, sebelum apa pun bergerak ke mana pun.</p></div>
+        <div class="step"><span class="n">02</span><h3>Menempel di tautan</h3><p>Hasilnya ditaruh setelah tanda pagar pada alamat. Bagian ini tidak dikirim peramban ke server saat halaman dibuka.</p></div>
+        <div class="step"><span class="n">03</span><h3>Dibuka penerima</h3><p>Peramban penerima membaca bagian itu, lalu mendekripsinya di sisi mereka. Situs ini hanya mengirim halaman kosong.</p></div>
+        <div class="step"><span class="n">04</span><h3>Tidak ada jejak</h3><p>Karena tidak ada yang tersimpan, tidak ada yang bisa bocor, diminta pihak lain, atau terhapus tanpa sengaja.</p></div>
+      </div>
+      <p class="note" style="margin-top:26px;max-width:66ch">Tanpa kata sandi, kunci acak 256 bit dibuat untuk tiap catatan dan ikut ditempel di tautan — siapa pun yang memegang tautannya bisa membaca. Dengan kata sandi, kunci diturunkan lewat PBKDF2 dengan 250.000 iterasi dan garam acak, sehingga tautan saja tidak cukup.</p>
+    </div>
+  </section>
+
+  <section id="jujur" style="border-bottom:none">
+    <div class="wrap">
+      <span class="sec-num">Batas</span>
+      <h2 class="sec">Yang perlu Anda tahu</h2>
+      <p class="note" style="max-width:70ch;font-size:15px;color:var(--ink-2)">Kedaluwarsa di sini bersifat lunak. Waktu berakhir ditanam di dalam data terenkripsi dan halaman ini akan menolak menampilkan catatan yang sudah lewat, tetapi datanya tetap berada di dalam tautan yang sudah Anda bagikan. Orang yang paham teknis masih bisa membukanya sendiri. Penghapusan sungguhan memerlukan server yang menyimpan dan membuang data — dan justru itu yang sengaja tidak ada di sini.</p>
+      <p class="note" style="max-width:70ch;font-size:15px;color:var(--ink-2)">Karena isinya menempel di alamat, catatan panjang menghasilkan tautan panjang. Peramban modern sanggup menanganinya, tetapi sebagian aplikasi pesan memotong tautan yang terlalu panjang. Untuk teks di atas beberapa ribu karakter, kirim sebagai berkas biasa saja.</p>
+      <p class="note" style="max-width:70ch;font-size:15px;color:var(--ink-2)">Jangan pakai untuk hal yang benar-benar berbahaya jika bocor. Ini perkakas belajar, bukan brankas.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot mono">
+    <span>© <span id="yr">2026</span> Studioworks — Muhammad Rafly</span>
+    <span>Catatan tidak pernah meninggalkan peramban Anda.</span>
+    <a href="/">Kembali ke beranda ↖</a>
+  </div>
+  <div class="bigmark" aria-hidden="true">BIN</div>
+</footer>
+
+<div id="toast" role="status" aria-live="polite">Tersalin</div>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var enc = new TextEncoder(), dec = new TextDecoder();
+  var SC = !!(window.crypto && crypto.subtle);
+  var ITER = 250000;
+
+  $("#yr").textContent = new Date().getFullYear();
+
+  /* tema */
+  var root = document.documentElement, icon = $("#ic");
+  var sun = "M12 4V2M12 22v-2M4 12H2M22 12h-2M6 6L4.5 4.5M19.5 19.5L18 18M18 6l1.5-1.5M4.5 19.5L6 18M16 12a4 4 0 11-8 0 4 4 0 018 0z";
+  var moon = "M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z";
+  function paint() { icon.setAttribute("d", root.getAttribute("data-theme") === "dark" ? sun : moon); }
+  paint();
+  $("#theme").addEventListener("click", function () {
+    var n = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", n);
+    try { localStorage.setItem("sw-theme", n); } catch (e) {}
+    paint();
+  });
+
+  /* toast */
+  var toast = $("#toast"), tt = null;
+  function flash(m) { toast.textContent = m; toast.classList.add("on"); clearTimeout(tt); tt = setTimeout(function () { toast.classList.remove("on"); }, 1800); }
+  function copy(text, label) {
+    if (!text) { flash("Belum ada isi"); return; }
+    if (navigator.clipboard && isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { flash(label || "Tersalin"); }, function () { flash("Gagal menyalin"); });
+    } else {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "absolute"; ta.style.left = "-9999px";
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); flash(label || "Tersalin"); } catch (e) { flash("Gagal menyalin"); }
+      document.body.removeChild(ta);
+    }
+  }
+  function msg(el, text, kind) {
+    el.textContent = text;
+    el.className = "msg on" + (kind ? " " + kind : "");
+  }
+  function hide(el) { el.className = "msg"; }
+  function busy(btn, on, label) {
+    btn.disabled = on;
+    if (on) { btn.dataset.lbl = btn.textContent; btn.textContent = label || "Memproses…"; }
+    else if (btn.dataset.lbl) { btn.textContent = btn.dataset.lbl; }
+  }
+
+  /* base64url */
+  function b64u(bytes) {
+    var s = "";
+    for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+    return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
+  function unb64u(str) {
+    var s = str.replace(/-/g, "+").replace(/_/g, "/");
+    while (s.length % 4) s += "=";
+    var bin = atob(s), o = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) o[i] = bin.charCodeAt(i);
+    return o;
+  }
+
+  /* kompresi opsional */
+  function gz(bytes) {
+    if (typeof CompressionStream === "undefined") return Promise.resolve(null);
+    try {
+      var st = new Blob([bytes]).stream().pipeThrough(new CompressionStream("gzip"));
+      return new Response(st).arrayBuffer().then(function (b) { return new Uint8Array(b); })
+        .catch(function () { return null; });
+    } catch (e) { return Promise.resolve(null); }
+  }
+  function ungz(bytes) {
+    if (typeof DecompressionStream === "undefined") return Promise.reject(new Error("Peramban ini tidak mendukung dekompresi."));
+    var st = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
+    return new Response(st).arrayBuffer().then(function (b) { return new Uint8Array(b); });
+  }
+
+  function keyFromPass(pass, salt, use) {
+    return crypto.subtle.importKey("raw", enc.encode(pass), "PBKDF2", false, ["deriveKey"])
+      .then(function (km) {
+        return crypto.subtle.deriveKey({ name: "PBKDF2", salt: salt, iterations: ITER, hash: "SHA-256" },
+          km, { name: "AES-GCM", length: 256 }, false, [use]);
+      });
+  }
+  function keyFromRaw(raw, use) {
+    return crypto.subtle.importKey("raw", raw, { name: "AES-GCM" }, false, [use]);
+  }
+  function human(n) {
+    if (n < 1024) return n + " B";
+    if (n < 1048576) return (n / 1024).toFixed(1) + " KB";
+    return (n / 1048576).toFixed(2) + " MB";
+  }
+  function when(ts) {
+    try {
+      return new Intl.DateTimeFormat("id-ID", { dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Jakarta" }).format(new Date(ts));
+    } catch (e) { return new Date(ts).toISOString(); }
+  }
+
+  /* =============== TULIS =============== */
+  var wText = $("#w-text"), wMsg = $("#w-msg");
+  function count() { wText.value.length; $("#w-count").textContent = wText.value.length.toLocaleString("id-ID") + " karakter"; }
+  wText.addEventListener("input", count); count();
+  $("#w-clear").addEventListener("click", function () {
+    wText.value = ""; $("#w-pass").value = ""; $("#w-result").hidden = true; hide(wMsg); count(); wText.focus();
+  });
+
+  $("#w-make").addEventListener("click", function () {
+    var btn = this;
+    hide(wMsg);
+    if (!SC) { msg(wMsg, "Web Crypto tidak aktif. Halaman ini harus dibuka lewat HTTPS.", "bad"); return; }
+    var text = wText.value;
+    if (!text.trim()) { msg(wMsg, "Catatan masih kosong.", "bad"); return; }
+    var pass = $("#w-pass").value;
+    var life = parseInt($("#w-exp").value, 10);
+    var now = Date.now();
+    var payload = JSON.stringify({ t: text, c: now, x: life ? now + life : 0 });
+    var plain = enc.encode(payload);
+
+    busy(btn, true, "Mengenkripsi…");
+    gz(plain).then(function (packed) {
+      var flags = 0, body = plain;
+      if (packed && packed.length < plain.length) { body = packed; flags |= 2; }
+      if (pass) flags |= 1;
+      var salt = crypto.getRandomValues(new Uint8Array(16));
+      var iv = crypto.getRandomValues(new Uint8Array(12));
+      var rawKey = pass ? null : crypto.getRandomValues(new Uint8Array(32));
+      var kp = pass ? keyFromPass(pass, salt, "encrypt") : keyFromRaw(rawKey, "encrypt");
+      return kp.then(function (key) {
+        return crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, key, body);
+      }).then(function (ct) {
+        var cb = new Uint8Array(ct);
+        var pack = new Uint8Array(2 + 16 + 12 + cb.length);
+        pack[0] = 1; pack[1] = flags;
+        pack.set(salt, 2); pack.set(iv, 18); pack.set(cb, 30);
+        var frag = b64u(pack) + (rawKey ? "." + b64u(rawKey) : "");
+        var url = location.origin + "/bin/#" + frag;
+        var rawUrl = location.origin + "/bin/raw/#" + frag;
+
+        $("#w-link").textContent = url;
+        $("#w-len").textContent = url.length.toLocaleString("id-ID") + " karakter";
+        $("#w-open").href = url;
+        $("#w-copy").onclick = function () { copy(url, "Tautan tersalin"); };
+        $("#w-copyraw").onclick = function () { copy(rawUrl, "Tautan raw tersalin"); };
+        $("#w-f-size").textContent = human(plain.length);
+        $("#w-f-pack").textContent = human(pack.length);
+        $("#w-f-lock").textContent = pass ? "Ya" : "Tidak";
+        $("#w-f-exp").textContent = life ? when(now + life) : "Selamanya";
+        $("#w-result").hidden = false;
+
+        if (url.length > 8000) msg(wMsg, "Tautan sangat panjang (" + url.length.toLocaleString("id-ID") + " karakter). Peramban sanggup membukanya, tetapi banyak aplikasi pesan akan memotongnya. Pertimbangkan mengirim sebagai berkas.", "bad");
+        else if (url.length > 2048) msg(wMsg, "Tautan melewati 2.048 karakter — masih aman di peramban modern, tetapi sebagian aplikasi lama bisa memotongnya.", "warn");
+        else msg(wMsg, "Tautan siap. Catatan tidak tersimpan di mana pun kecuali di tautan ini — kalau hilang, tidak bisa dipulihkan.", "good");
+        busy(btn, false);
+      });
+    }).catch(function (e) {
+      msg(wMsg, "Gagal membuat tautan: " + e.message, "bad");
+      busy(btn, false);
+    });
+  });
+
+  /* =============== BACA =============== */
+  var rMsg = $("#r-msg"), state = null;
+
+  function showRead() {
+    $("#v-write").classList.remove("on");
+    $("#v-read").classList.add("on");
+    $("#cara").hidden = false;
+  }
+
+  function render(obj, pack) {
+    if (obj.x && Date.now() > obj.x) {
+      $("#r-ask").hidden = true;
+      $("#r-dead").hidden = false;
+      msg(rMsg, "Catatan ini sudah melewati tanggal berlakunya (" + when(obj.x) + "), jadi tidak ditampilkan.", "bad");
+      return;
+    }
+    $("#r-ask").hidden = true;
+    $("#r-show").hidden = false;
+    $("#r-body").textContent = obj.t;
+    var meta = "Dibuat " + when(obj.c) + " · " + obj.t.length.toLocaleString("id-ID") + " karakter";
+    if (obj.x) meta += " · berlaku sampai " + when(obj.x);
+    $("#r-meta").textContent = meta;
+    $("#r-raw").href = "/bin/raw/" + location.hash;
+    $("#r-copy").onclick = function () { copy(obj.t, "Isi tersalin"); };
+    hide(rMsg);
+  }
+
+  function decryptWith(keyPromise, pack, flags) {
+    var salt = pack.slice(2, 18), iv = pack.slice(18, 30), body = pack.slice(30);
+    return keyPromise.then(function (key) {
+      return crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, body);
+    }).then(function (buf) {
+      var bytes = new Uint8Array(buf);
+      return (flags & 2) ? ungz(bytes) : bytes;
+    }).then(function (bytes) {
+      return JSON.parse(dec.decode(bytes));
+    });
+  }
+
+  function boot() {
+    var frag = location.hash.slice(1);
+    if (!frag) return;
+    showRead();
+    if (!SC) { msg(rMsg, "Web Crypto tidak aktif. Halaman ini harus dibuka lewat HTTPS.", "bad"); return; }
+
+    var parts = frag.split("."), pack, rawKey = null;
+    try {
+      pack = unb64u(parts[0]);
+      if (parts[1]) rawKey = unb64u(parts[1]);
+    } catch (e) {
+      msg(rMsg, "Tautan rusak atau tidak lengkap. Pastikan seluruh alamat tersalin, termasuk bagian setelah tanda pagar.", "bad");
+      return;
+    }
+    if (pack.length < 31 || pack[0] !== 1) {
+      msg(rMsg, "Format catatan tidak dikenali.", "bad");
+      return;
+    }
+    var flags = pack[1];
+    state = { pack: pack, flags: flags };
+
+    if (flags & 1) {
+      $("#r-ask").hidden = false;
+      msg(rMsg, "Catatan ini dilindungi kata sandi.", "warn");
+      $("#r-pass").focus();
+      return;
+    }
+    if (!rawKey) { msg(rMsg, "Kunci tidak ada di tautan. Kemungkinan alamat terpotong saat dikirim.", "bad"); return; }
+    decryptWith(keyFromRaw(rawKey, "decrypt"), pack, flags)
+      .then(function (obj) { render(obj, pack); })
+      .catch(function () { msg(rMsg, "Gagal membuka catatan. Tautan mungkin terpotong atau sudah diubah.", "bad"); });
+  }
+
+  $("#r-unlock").addEventListener("click", function () {
+    var btn = this;
+    if (!state) return;
+    var pass = $("#r-pass").value;
+    if (!pass) { msg(rMsg, "Ketik kata sandinya terlebih dahulu.", "bad"); return; }
+    busy(btn, true, "Membuka…");
+    decryptWith(keyFromPass(pass, state.pack.slice(2, 18), "decrypt"), state.pack, state.flags)
+      .then(function (obj) { render(obj, state.pack); busy(btn, false); })
+      .catch(function () {
+        msg(rMsg, "Kata sandi salah, atau tautan sudah berubah.", "bad");
+        busy(btn, false);
+        $("#r-pass").select();
+      });
+  });
+  $("#r-pass").addEventListener("keydown", function (e) { if (e.key === "Enter") $("#r-unlock").click(); });
+
+  boot();
+})();
+</script>
+</body>
+</html>
